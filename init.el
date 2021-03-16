@@ -2,16 +2,19 @@
 (setq version-control t )		; use version control
 (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
-(setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
+;;(setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
 (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
 (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
-(setq coding-system-for-read 'utf-8 )	; use utf-8 by default
-(setq coding-system-for-write 'utf-8 )
-(setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
+;;(setq coding-system-for-read 'utf-8 )	; use utf-8 by default
+;;(setq coding-system-for-write 'utf-8 )
+;;(setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
 (setq default-fill-column 80)		; toggle wrapping text at the 80th character
 (setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
 
+
+;;Ici c'est tout ce qui concerne use-package
+;;-------------------------------------------
 (require 'package)
 
 (setq package-enable-at-startup nil) ;; tells emacs not to load any packages before starting up
@@ -30,12 +33,17 @@
 
 (require 'use-package) ; guess what this one does too ?
 
+;;-------------------------------------------
+;;General
+;;-------------------------------------------
 (use-package general :ensure t)
 
 (use-package avy :ensure t
   :commands (avy-goto-word-1))
 
 (use-package counsel :ensure t)
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
 
 (use-package which-key :ensure t)
 

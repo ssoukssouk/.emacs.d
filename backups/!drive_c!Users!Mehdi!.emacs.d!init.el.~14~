@@ -36,8 +36,6 @@
   :commands (avy-goto-word-1))
 
 (use-package counsel :ensure t)
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
 
 (use-package which-key :ensure t)
 
