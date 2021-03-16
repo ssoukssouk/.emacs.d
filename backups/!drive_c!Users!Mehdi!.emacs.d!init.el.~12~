@@ -35,8 +35,6 @@
 (use-package avy :ensure t
   :commands (avy-goto-word-1))
 
-(use-package counsel :ensure t)
-
 (use-package which-key :ensure t)
 
 (use-package evil :ensure t)
@@ -61,27 +59,14 @@
     ;; Applications
     "a" '(:ignore t :which-key "Applications")
     "ar" 'ranger
-    "ad" 'dired
-
-    ;; bind to simple key press
-    "b"	'ivy-switch-buffer  ; change buffer, chose using ivy
-    "/"   'counsel-git-grep   ; find string in git project
-
-    ;; bind to double key press
-    "f"   '(:ignore t :which-key "files")
-    "ff"  'counsel-find-file
-    "fr"  'counsel-recentf
-    "fs"  'save-current-buffer
-    "p"   '(:ignore t :which-key "project")
-    "pf"  '(counsel-git :which-key "find file in git dir")
-   ))
+    "ad" 'dired))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(counsel evil which-key avy use-package general)))
+ '(package-selected-packages '(evil which-key avy use-package general)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
