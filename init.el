@@ -20,10 +20,16 @@
 (set-fringe-mode 10)        ; Give some breathing room
 (menu-bar-mode -1)          ; Désactive la barre de menu 
 
-(set-frame-parameter (selected-frame) 'alpha '(90 . 90))
-(add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+;; (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
+;; (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+;; Scrolling
+(setq mouse-wheel-scroll-amount '(2((shift) . 2))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 2) ;; keyboard scroll one line at a time
 
 ;;-------------------------------------------
 ;;Ici c'est tout ce qui concerne use-package
@@ -37,7 +43,8 @@
 (setq package-archives '(("org"       . "http://orgmode.org/elpa/")
                          ("gnu"       . "http://elpa.gnu.org/packages/")
                          ("melpa"     . "https://melpa.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")))
+                         ;; ("marmalade" . "http://marmalade-repo.org/packages/")
+			 ))
 (package-initialize) ; guess what this one does ?
 
 ;; Bootstrap `use-package'
@@ -123,7 +130,7 @@
 
   (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
   (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
-  
+
   (define-key evil-normal-state-map "U" 'evil-scroll-page-up)
   (define-key evil-normal-state-map "D" 'evil-scroll-page-down)
 
@@ -152,6 +159,7 @@
 
 (use-package general :ensure t
   :config
+  (general-evil-setup t)
   (general-define-key
    :states '(normal visual insert emacs)
    :prefix "SPC"
@@ -192,6 +200,7 @@
     "t"  '(:ignore t :which-key "toggles")
     "tw" 'whitespace-mode
     "tt" '(counsel-load-theme :which-key "choose theme")
+    "tx" 'text-scale-adjust
 
     ;;quit
     "q"  '(:ignore q :which-key "quit")
@@ -203,6 +212,12 @@
     "ut" 'undo-tree-visualize
     "uq" 'undo-tree-visualizer-quit
 
+    ;;jump
+    "j"   '(:ignore t :which-key "jump")
+    "jj"  '(avy-goto-char :which-key "jump to char")
+    "jé"  '(avy-goto-word-0 :which-key "jump to word")
+    "jl"  '(avy-goto-line :which-key "jump to line")
+  
     ;; commenter une sélection
     "#"   'comment-or-uncomment-region
    ))
@@ -262,3 +277,19 @@
 (use-package undo-tree :ensure t
   :init
   (global-undo-tree-mode 1))
+
+(use-package beacon :ensure t
+  :init
+  (beacon-mode t)
+  )
+
+(use-package dired :ensure t)
+
+(require 'dired)
+(evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-single-up-directory
+    "H" 'dired-omit-mode
+    "l" 'dired-single-buffer
+    "y" 'dired-ranger-copy
+    "X" 'dired-ranger-move
+    "p" 'dired-ranger-paste)
