@@ -18,12 +18,6 @@
 (tool-bar-mode -1)          ; Disable the toolbar
 (tooltip-mode -1)           ; Disable tooltips
 (set-fringe-mode 10)        ; Give some breathing room
-(menu-bar-mode -1)          ; Désactive la barre de menu 
-
-(set-frame-parameter (selected-frame) 'alpha '(90 . 90))
-(add-to-list 'default-frame-alist '(alpha . (90 . 90)))
-(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;;-------------------------------------------
 ;;Ici c'est tout ce qui concerne use-package
@@ -94,14 +88,21 @@
 (setq ivy-use-virtual-buffers t)
 
 ;;-------------------------------------------
-;;Evil
+;;Which-key
 ;;-------------------------------------------
 
-;;Exit insert mode by pressing  and then j quickly
-(use-package key-chord :ensure t)
-(require 'key-chord)
-(key-chord-mode 1)
+(use-package which-key :ensure t)
+(require 'which-key)
+(which-key-mode)
+(which-key-setup-minibuffer)
 
+;;-------------------------------------------
+;;Evil
+;;-------------------------------------------
+;;Exit insert mode by pressing  and then j quickly
+(setq key-chord-two-keys-delay 0.5)
+(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+(key-chord-mode 1)
 (use-package evil :ensure t
   :init
   (setq evil-want-integration t)
@@ -112,21 +113,13 @@
   (setq evil-undo-system 'undo-tree)
   :config
   (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
   ;; Use visual line motions even outside of visual-line-mode buffers
   (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
   (define-key evil-normal-state-map "t" 'evil-next-visual-line)
   
-  (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
-  (define-key evil-visual-state-map "t" 'evil-next-visual-line)
-
-  (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
-  (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
-  
-  (define-key evil-normal-state-map "U" 'evil-scroll-page-up)
-  (define-key evil-normal-state-map "D" 'evil-scroll-page-down)
-
   (define-key evil-normal-state-map "r" 'evil-forward-char)
   (define-key evil-normal-state-map "c" 'evil-backward-char)
 
@@ -134,21 +127,7 @@
   (define-key evil-normal-state-map "e" 'evil-forward-word-end)
   (define-key evil-normal-state-map "b" 'evil-backward-word-begin)
   (define-key evil-normal-state-map "h" 'evil-replace)
-)
-
-(setq key-chord-two-keys-delay 0.2)
-(key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
-;; (key-chord-define evil-normal-state-map "uu" 'evil-scroll-page-up)
-;; (key-chord-define evil-insert-state-map "dd" 'evil-scroll-page-down)
-
-;;-------------------------------------------
-;;Which-key
-;;-------------------------------------------
-
-(use-package which-key :ensure t)
-(require 'which-key)
-(which-key-mode)
-(which-key-setup-minibuffer)
+  )
 
 (use-package general :ensure t
   :config
@@ -185,23 +164,7 @@
     "é"   '(:ignore t :which-key "windows")
     "é TAB"'evil-window-next
     "éd"  'evil-window-delete
-    "éD"  'delete-other-windows
     "és"  'evil-window-vsplit
-
-    ;; toggles
-    "t"  '(:ignore t :which-key "toggles")
-    "tw" 'whitespace-mode
-    "tt" '(counsel-load-theme :which-key "choose theme")
-
-    ;;quit
-    "q"  '(:ignore q :which-key "quit")
-    "qq"  'evil-quit-all
-    "qs"  'evil-save-and-quit
-
-    ;;undo-tree
-    "u" '(:ignore u :which-key "undo")
-    "ut" 'undo-tree-visualize
-    "uq" 'undo-tree-visualizer-quit
 
     ;; commenter une sélection
     "#"   'comment-or-uncomment-region
@@ -221,35 +184,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-;;-------------------------------------------
-;;Doom modeline
-;;-------------------------------------------
-
-;; You must run (all-the-icons-install-fonts) one time after
-;; installing this package!
-
-(use-package minions :ensure t
-  :hook (doom-modeline-mode . minions-mode))
-
-(use-package doom-modeline :ensure t
-  :after eshell     ;; Make sure it gets hooked after eshell
-  :hook (after-init . doom-modeline-init)
-  :custom-face
-  (mode-line ((t (:height 0.85))))
-  (mode-line-inactive ((t (:height 0.85))))
-  :custom
-  (doom-modeline-height 15)
-  (doom-modeline-bar-width 6)
-  (doom-modeline-lsp t)
-  (doom-modeline-github nil)
-  (doom-modeline-mu4e nil)
-  (doom-modeline-irc nil)
-  (doom-modeline-minor-modes t)
-  (doom-modeline-persp-name nil)
-  (doom-modeline-buffer-file-name-style 'truncate-except-project)
-  (doom-modeline-major-mode-icon nil))
-
 ;;-------------------------------------------
 ;;Tests
 ;;-------------------------------------------
