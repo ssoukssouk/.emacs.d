@@ -120,7 +120,7 @@
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-  (evil-set-leader nil (kbd "SPC"))
+
   ;; Use visual line motions even outside of visual-line-mode buffers
   (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
   (define-key evil-normal-state-map "t" 'evil-next-visual-line)
@@ -141,16 +141,6 @@
   (define-key evil-normal-state-map "e" 'evil-forward-word-end)
   (define-key evil-normal-state-map "b" 'evil-backward-word-begin)
   (define-key evil-normal-state-map "h" 'evil-replace)
-
-  (define-key ranger-mode-map "t" 'ranger-next-file)
-  (define-key ranger-mode-map "s" 'ranger-prev-file)
-  (define-key ranger-mode-map "c" 'ranger-up-directory)
-  (define-key ranger-mode-map "r" 'ranger-find-file)
-
-  (define-key ranger-mode-map "t" 'dired-goto-subdir)
-  (define-key ranger-mode-map "s" 'dired-prev-file)
-  (define-key ranger-mode-map "c" 'dired-up-directory)
-  (define-key ranger-mode-map "r" 'dired-find-file)
 )
 
 (setq key-chord-two-keys-delay 0.2)
@@ -173,7 +163,7 @@
   (general-define-key
    :states '(normal visual insert emacs)
    :prefix "SPC"
-   :-prefix "M-SPC"
+   :non-normal-prefix "C-SPC"
 
     ;; simple command
     "'"   '(iterm-focus :which-key "iterm")
@@ -313,10 +303,3 @@
   "scroll up the page"
   (interactive)
   (scroll-up (/ (window-body-height) 3)))
-
-
-  (setq evil-emacs-state-modes nil)
-  (setq evil-insert-state-modes nil)
-  (setq evil-motion-state-modes nil)
-
-(evil-make-overriding-map dired-mode-map 'normal)
