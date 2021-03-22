@@ -95,7 +95,7 @@
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
-  (setq doom-modeline-height 25)
+  (setq doom-modeline-height 55)
   (setq doom-modeline-major-mode-icons nil)
   (setq doom-modeline-major-mode-icons nil)
 )
@@ -195,7 +195,7 @@
   ;; (define-key ranger-mode-map "r" 'dired-find-file)
 )
 
-(setq key-chord-two-keys-delay 0.6)
+(setq key-chord-two-keys-delay 0.5)
 (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
 ;; (key-chord-define evil-normal-state-map "uu" 'evil-scroll-page-up)
 ;; (key-chord-define evil-insert-state-map "dd" 'evil-scroll-page-down)
@@ -208,7 +208,6 @@
   (require 'which-key)
   (which-key-mode)
   (which-key-setup-minibuffer)
-  (setq which-key-max-display-columns 6)
 
   (use-package general :ensure t
     :config
@@ -277,12 +276,24 @@
       "xv"  '(describe-variable :which-key "descr-var")
       "xk"  '(describe-package :which-key "descr-pack")
       "xp"  '(check-parens :which-key "check-parens")
-      "xc"  '(clm/toggle-command-log-buffer :which-key "cmd-log")
 
       ;; commenter une sélection
-      "#"   '(comment-or-uncomment-region :which-key "comment")
+      "#"   'comment-or-uncomment-region
       ))
+  ;;    (general-define-key 
+  ;;    :keymaps 'ranger-mode-map
+  ;;    :prefix "SPC"
+  ;;    "d" 'ranger-toggle-dotfiles
+  ;;    ))
+  ;; ;;  
+  (require 'general)
+  ;;    (defconst my-leader "SPC")
+  ;;    (general-define-key
+  ;;    :keymaps 'ranger-mode-map
+  ;;    "C-q" 'ranger-toggle-dotfiles
+  ;;    ) 
 #+END_SRC
+
 * Doom modeline
 #+BEGIN_SRC emacs-lisp
 (use-package minions :ensure t
@@ -309,35 +320,24 @@
 #+END_SRC
 * En cours de test
 #+BEGIN_SRC emacs-lisp
-  (use-package undo-tree :ensure t
-    :init
-    (global-undo-tree-mode 1))
-	 ;; (general-define-key 
-	 ;; :keymaps 'undo-tree-mode-map
-	 ;; "s" 'undo-tree-undo
-	 ;; "t" 'undo-tree-redo
-	 ;; )
-  (use-package beacon :ensure t
-    :init
-    (beacon-mode t)
-    )
+(use-package undo-tree :ensure t
+  :init
+  (global-undo-tree-mode 1))
 
-  (defun scroll-half-page-down ()
-    "scroll down the page"
-    (interactive)
-    (scroll-down (/ (window-body-height) 3)))
+(use-package beacon :ensure t
+  :init
+  (beacon-mode t)
+  )
 
-  (defun scroll-half-page-up ()
-    "scroll up the page"
-    (interactive)
-    (scroll-up (/ (window-body-height) 3)))
+(defun scroll-half-page-down ()
+  "scroll down the page"
+  (interactive)
+  (scroll-down (/ (window-body-height) 3)))
 
-  (use-package command-log-mode
-  :ensure t
-  :init (command-log-mode))
-
-  ;; (use-package visual-basic-mode
-  ;; :ensure t)
+(defun scroll-half-page-up ()
+  "scroll up the page"
+  (interactive)
+  (scroll-up (/ (window-body-height) 3)))
 #+END_SRC
 * Dashboard
 #+BEGIN_SRC emacs-lisp
@@ -370,33 +370,12 @@
 #+END_SRC
 * Org
 #+BEGIN_SRC emacs-lisp
-    (use-package org-bullets
-    :ensure t)
-    (org-bullets-mode 1)
-	 ;; (general-define-key 
-	 ;; :states '(normal visual insert emacs)
-	 ;; :prefix ","
-	 ;; "d" 'ranger-
-	 ;; toggle-dotf
-  ;; iles
+  (use-package org-bullets
+  :ensure t)
+  (org-bullets-mode 1)
 
-  ;; ;
-					  ; org-end-of-subtree
-  ;; org-backward-heading-same-level
-  ;; org-insert-heading-after-current 
-  ;; org-insert-heading-respect-content
-  ;; org-insert-link
-  ;; org-time-stamp
-
-	 ;; "e" '(:ignore t :which-key "mark")
-	 ;; "ec" '(ranger-copy :which-key "copy")
-	 ;; "ep" '(ranger-paste :which-key "paste")
-	 ;; "eu" '(dired-unmark-all-marks :which-key "unmark-all")
-	 ;; "et" '(dired-mark-unmarked-files :which-key "mark-all")
-	 ;; "ed" '(dired-do-delete :which-key "delete")
-
-	 ;; "n" '(ranger-paste :which-key "paste")
-	 )
+  ;; (use-package evil-org
+  ;; :ensure t)
 #+END_SRC
 * All the icons
 #+BEGIN_SRC emacs-lisp

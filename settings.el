@@ -54,7 +54,7 @@
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
 ;;(setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
-(setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
+;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
 (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
 ;;(setq coding-system-for-read 'utf-8 )	; use utf-8 by default
 ;;(setq coding-system-for-write 'utf-8 )
@@ -81,7 +81,10 @@
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+  (setq doom-modeline-height 55)
+  (setq doom-modeline-major-mode-icons nil)
+  (setq doom-modeline-major-mode-icons nil)
+)
 
 (use-package doom-themes
   :ensure t
@@ -244,6 +247,7 @@
     "x"   '(:ignore t :which-key "fun")
     "xf"  '(describe-function :which-key "desc-fun")
     "xv"  '(describe-variable :which-key "descr-var")
+    "xk"  '(describe-package :which-key "descr-pack")
     "xp"  '(check-parens :which-key "check-parens")
 
     ;; commenter une sélection
@@ -283,33 +287,18 @@
   (doom-modeline-buffer-file-name-style 'truncate-except-project)
   (doom-modeline-major-mode-icon nil))
 
-;;-------------------------------------------
-;;Tests
-;;-------------------------------------------
-
-(defun my-clear-message ()
-  (interactive)
-  (message nil))
-
 (use-package undo-tree :ensure t
   :init
   (global-undo-tree-mode 1))
-
+       (general-define-key 
+       :keymaps 'undo-tree-mode-map
+       "s" 'undo-tree-undo
+       "t" 'undo-tree-redo
+       )
 (use-package beacon :ensure t
   :init
   (beacon-mode t)
   )
-
-;; (use-package dired :ensure t)
-
-;; (require 'dired)
-;; (evil-collection-define-key 'normal 'dired-mode-map
-;;     "h" 'dired-single-up-directory
-;;     "H" 'dired-omit-mode
-;;     "l" 'dired-single-buffer
-;;     "y" 'dired-ranger-copy
-;;     "X" 'dired-ranger-move
-;;     "p" 'dired-ranger-paste)
 
 (defun scroll-half-page-down ()
   "scroll down the page"
@@ -320,13 +309,6 @@
   "scroll up the page"
   (interactive)
   (scroll-up (/ (window-body-height) 3)))
-
-
-  (setq evil-emacs-state-modes nil)
-  (setq evil-insert-state-modes nil)
-  (setq evil-motion-state-modes nil)
-
-(evil-make-overriding-map dired-mode-map 'normal)
 
 (use-package dashboard
   :ensure t
@@ -360,3 +342,8 @@
 
 ;; (use-package evil-org
 ;; :ensure t)
+
+(use-package all-the-icons
+  :ensure t
+  :init 
+  )
