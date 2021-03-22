@@ -1,3 +1,9 @@
+* Use package
+#+BEGIN_SRC emacs-lisp
+;;-------------------------------------------
+;;Ici c'est tout ce qui concerne use-package
+;;-------------------------------------------
+
 (require 'package)
 
 (setq package-enable-at-startup nil) ;; tells emacs not to load any packages before starting up
@@ -18,6 +24,10 @@
 (require 'use-package) ; guess what this one does too ?
 ;; (setq use-package-always-ensure t) ;; Cette commande permet d’éviter les ensure t
 
+
+#+END_SRC
+* Custom set variables
+#+BEGIN_SRC emacs-lisp
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -32,6 +42,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+#+END_SRC
+* Nettoyage .emacs.d
+#+BEGIN_SRC emacs-lisp
+;;-------------------------------------------
+;;Nettoyage .emacs.d
+;;-------------------------------------------
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
@@ -48,6 +64,12 @@
         (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
 (load custom-file t)
 
+#+END_SRC
+* UI
+#+BEGIN_SRC emacs-lisp
+;;-------------------------------------------
+;;Modifications interface de bsae
+;;-------------------------------------------
 (setq delete-old-versions -1 )		; delete excess backup versions silently
 (setq version-control t )		; use version control
 (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
@@ -78,6 +100,12 @@
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq scroll-step 2) ;; keyboard scroll one line at a time
 
+#+END_SRC
+* Themes
+#+BEGIN_SRC emacs-lisp
+;;-------------------------------------------
+;;Themes
+;;-------------------------------------------
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
@@ -85,40 +113,40 @@
 
 (use-package doom-themes
   :ensure t
-  :init (load-theme 'doom-one t))
+  :init (load-theme 'doom-dracula t))
 
-(use-package avy :ensure t
-  :commands (avy-goto-word-1))
 
-(use-package counsel :ensure t)
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
+#+END_SRC
+* General
+#+BEGIN_SRC emacs-lisp
+  ;;-------------------------------------------
+  ;;General
+  ;;-------------------------------------------
+  ;; (use-package general :ensure t)
 
-(use-package ranger :ensure t)
-(setq ranger-show-hidden t) 
-(setq ranger-show-literal nil) 
-(setq ranger-parent-depth 4)
-(setq ranger-width-parents 0.07)
-     (require  'general)
-     (general-define-key 
-     :keymaps 'ranger-mode-map
-     :prefix "SPC"
-     "d" 'ranger-toggle-dotfiles
+  (use-package avy :ensure t
+    :commands (avy-goto-word-1))
 
-     "e" '(:ignore t :which-key "mark")
-     "ec" '(ranger-copy :which-key "copy")
-     "ep" '(ranger-paste :which-key "paste")
-     "eu" '(dired-unmark-all-marks :which-key "unmark-all")
-     "et" '(dired-mark-unmarked-files :which-key "mark-all")
-     "ed" '(dired-do-delete :which-key "delete")
+  (use-package counsel :ensure t)
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
 
-     "n" '(ranger-paste :which-key "paste")
-     )
-     (general-define-key 
-     :keymaps 'ranger-mode-map
-     "e" 'ranger-toggle-mark
-     "n" 'dired-create-directory
-     )
+#+END_SRC
+* Ranger
+#+BEGIN_SRC emacs-lisp
+  (use-package ranger :ensure t)
+       (require 'ranger)
+      
+       (require  'general)
+       (general-define-key 
+       :keymaps 'ranger-mode-map
+       :prefix "SPC"
+       "d" 'ranger-toggle-dotfiles
+       )
+       ;; test
+#+END_SRC
+* Evil
+#+BEGIN_SRC emacs-lisp
 
 ;;Exit insert mode by pressing  and then j quickly
 (use-package key-chord :ensure t)
@@ -174,93 +202,101 @@
 ;; (key-chord-define evil-normal-state-map "uu" 'evil-scroll-page-up)
 ;; (key-chord-define evil-insert-state-map "dd" 'evil-scroll-page-down)
 
-(use-package which-key :ensure t)
-(require 'which-key)
-(which-key-mode)
-(which-key-setup-minibuffer)
+#+END_SRC
+* Which-Key
+#+BEGIN_SRC emacs-lisp
 
-(use-package general :ensure t
-  :config
-  (general-evil-setup t)
-  (general-define-key
-   :states '(normal visual insert emacs)
-   :prefix "SPC"
-   :non-normal-prefix "C-SPC"
+  (use-package which-key :ensure t)
+  (require 'which-key)
+  (which-key-mode)
+  (which-key-setup-minibuffer)
 
-    ;; simple command
-    "'"   '(iterm-focus :which-key "iterm")
-    "?"   '(iterm-goto-filedir-or-home :which-key "iterm - goto dir")
-    "/"   'counsel-ag
-    "TAB" '(switch-to-prev-buffer :which-key "prev buffer")
-    "SPC" '(avy-goto-word-or-subword-1  :which-key "go to char")
+  (use-package general :ensure t
+    :config
+    (general-evil-setup t)
+    (general-define-key
+     :states '(normal visual insert emacs)
+     :prefix "SPC"
+     :non-normal-prefix "C-SPC"
 
-    ;; Applications
-    "a" '(:ignore t :which-key "Applications")
-    "ar" 'ranger
-    "ad" 'dired
+      ;; simple command
+      "'"   '(iterm-focus :which-key "iterm")
+      "?"   '(iterm-goto-filedir-or-home :which-key "iterm - goto dir")
+      "/"   'counsel-ag
+      "TAB" '(switch-to-prev-buffer :which-key "prev buffer")
+      "SPC" '(avy-goto-word-or-subword-1  :which-key "go to char")
 
-    ;; bind to simple key press
-    "b"   '(:ignore t :which-key "buffers")
-    "bb"  'ivy-switch-buffer  ; change buffer, chose using ivy
-    "bd"  'kill-current-buffer ;Ferme le buffer 
-    "be"  'eval-buffer
-    "/"   'counsel-git-grep   ; find string in git project
+      ;; Applications
+      "a" '(:ignore t :which-key "Applications")
+      "ar" 'ranger
+      "ad" 'dired
 
-    ;; bind to double key press
-    "f"   '(:ignore t :which-key "files")
-    "ff"  'counsel-find-file
-    "fs"  'save-buffer
+      ;; bind to simple key press
+      "b"   '(:ignore t :which-key "buffers")
+      "bb"  'ivy-switch-buffer  ; change buffer, chose using ivy
+      "bd"  'kill-current-buffer ;Ferme le buffer 
+      "be"  'eval-buffer
+      "/"   'counsel-git-grep   ; find string in git project
 
-    ;; windows
-    "é"   '(:ignore t :which-key "windows")
-    "é TAB"'evil-window-next
-    "éd"  'evil-window-delete
-    "éD"  'delete-other-windows
-    "és"  'evil-window-vsplit
+      ;; bind to double key press
+      "f"   '(:ignore t :which-key "files")
+      "ff"  'counsel-find-file
+      "fs"  'save-buffer
 
-    ;; toggles
-    "t"  '(:ignore t :which-key "toggles")
-    "tw" 'whitespace-mode
-    "tt" '(counsel-load-theme :which-key "choose theme")
-    "tx" 'text-scale-adjust
+      ;; windows
+      "é"   '(:ignore t :which-key "windows")
+      "é TAB"'evil-window-next
+      "éd"  'evil-window-delete
+      "éD"  'delete-other-windows
+      "és"  'evil-window-vsplit
 
-    ;;quit
-    "q"  '(:ignore q :which-key "quit")
-    "qq"  'evil-quit-all
-    "qs"  'evil-save-and-quit
+      ;; toggles
+      "t"  '(:ignore t :which-key "toggles")
+      "tw" 'whitespace-mode
+      "tt" '(counsel-load-theme :which-key "choose theme")
+      "tx" 'text-scale-adjust
 
-    ;;undo-tree
-    "u" '(:ignore u :which-key "undo")
-    "ut" 'undo-tree-visualize
-    "uq" 'undo-tree-visualizer-quit
+      ;;quit
+      "q"  '(:ignore q :which-key "quit")
+      "qq"  'evil-quit-all
+      "qs"  'evil-save-and-quit
 
-    ;;jump
-    "j"   '(:ignore t :which-key "jump")
-    "jj"  '(avy-goto-char :which-key "jump to char")
-    "jé"  '(avy-goto-word-0 :which-key "jump to word")
-    "jl"  '(avy-goto-line :which-key "jump to line")
+      ;;undo-tree
+      "u" '(:ignore u :which-key "undo")
+      "ut" 'undo-tree-visualize
+      "uq" 'undo-tree-visualizer-quit
 
-    ;;functions
-    "x"   '(:ignore t :which-key "fun")
-    "xf"  '(describe-function :which-key "desc-fun")
-    "xv"  '(describe-variable :which-key "descr-var")
-    "xp"  '(check-parens :which-key "check-parens")
+      ;;jump
+      "j"   '(:ignore t :which-key "jump")
+      "jj"  '(avy-goto-char :which-key "jump to char")
+      "jé"  '(avy-goto-word-0 :which-key "jump to word")
+      "jl"  '(avy-goto-line :which-key "jump to line")
 
-    ;; commenter une sélection
-    "#"   'comment-or-uncomment-region
-    ))
-;;    (general-define-key 
-;;    :keymaps 'ranger-mode-map
-;;    :prefix "SPC"
-;;    "d" 'ranger-toggle-dotfiles
-;;    ))
-;; ;;  
-(require 'general)
-;;    (defconst my-leader "SPC")
-;;    (general-define-key
-;;    :keymaps 'ranger-mode-map
-;;    "C-q" 'ranger-toggle-dotfiles
-;;    )
+      ;; commenter une sélection
+      "#"   'comment-or-uncomment-region
+      ))
+  ;;    (general-define-key 
+  ;;    :keymaps 'ranger-mode-map
+  ;;    :prefix "SPC"
+  ;;    "d" 'ranger-toggle-dotfiles
+  ;;    ))
+  ;; ;;  
+  (require 'general)
+  ;;    (defconst my-leader "SPC")
+  ;;    (general-define-key
+  ;;    :keymaps 'ranger-mode-map
+  ;;    "C-q" 'ranger-toggle-dotfiles
+  ;;    ) 
+#+END_SRC
+
+* Doom modeline
+#+BEGIN_SRC emacs-lisp
+;;-------------------------------------------
+;;Doom modeline
+;;-------------------------------------------
+
+;; You must run (all-the-icons-install-fonts) one time after
+;; installing this package!
 
 (use-package minions :ensure t
   :hook (doom-modeline-mode . minions-mode))
@@ -283,6 +319,10 @@
   (doom-modeline-buffer-file-name-style 'truncate-except-project)
   (doom-modeline-major-mode-icon nil))
 
+#+END_SRC
+
+* En cours de test
+#+BEGIN_SRC emacs-lisp
 ;;-------------------------------------------
 ;;Tests
 ;;-------------------------------------------
@@ -327,36 +367,25 @@
   (setq evil-motion-state-modes nil)
 
 (evil-make-overriding-map dired-mode-map 'normal)
-
-(use-package dashboard
+#+END_SRC
+* Dashboard
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
   :ensure t
   :init
-  (progn
-     (setq dashboard-items '((recents  . 5)
-			(bookmarks . 5)))
-     (setq dashboard-center-content t)
+  (setq dashboard-items '((recents  . 5)
+			(bookmarks . 5)
+			(projects . 5)
+			(agenda . 5)
+			(registers . 5)))
+  (setq dashboard-center-content t)
   ;; (setq dashboard-startup-banner 'logo)
 
 
-     (setq dashboard-startup-banner 'logo)
-     (setq dashboard-set-heading-icons t)
-     (setq dashboard-set-file-icons t)
-  )
+  (setq dashboard-startup-banner 2)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
   :config
   (dashboard-setup-startup-hook)
   )
-
-  (general-define-key 
-  :keymaps 'dashboard-mode-map
-  "e" 'dashboard-jump-to-bookmark
-  "n" 'dashboard-jump-to-recent-files
-   )
-;;(require 'evil)
-;;(define-key evil-dashboard-state-map "e" 'dashboard-jump-to-recent-files)
-
-(use-package org-bullets
-:ensure t)
-(org-bullets-mode 1)
-
-;; (use-package evil-org
-;; :ensure t)
+#+END_SRC
