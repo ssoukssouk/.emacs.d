@@ -396,7 +396,7 @@
 	 ;; "ed" '(dired-do-delete :which-key "delete")
 
 	 ;; "n" '(ranger-paste :which-key "paste")
-	 ;;)
+	 )
 #+END_SRC
 * All the icons
 #+BEGIN_SRC emacs-lisp

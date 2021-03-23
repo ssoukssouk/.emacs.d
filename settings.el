@@ -81,7 +81,7 @@
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
-  (setq doom-modeline-height 55)
+  (setq doom-modeline-height 25)
   (setq doom-modeline-major-mode-icons nil)
   (setq doom-modeline-major-mode-icons nil)
 )
@@ -172,7 +172,7 @@
   ;; (define-key ranger-mode-map "r" 'dired-find-file)
 )
 
-(setq key-chord-two-keys-delay 0.5)
+(setq key-chord-two-keys-delay 0.6)
 (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
 ;; (key-chord-define evil-normal-state-map "uu" 'evil-scroll-page-up)
 ;; (key-chord-define evil-insert-state-map "dd" 'evil-scroll-page-down)
@@ -181,6 +181,7 @@
 (require 'which-key)
 (which-key-mode)
 (which-key-setup-minibuffer)
+(setq which-key-max-display-columns 6)
 
 (use-package general :ensure t
   :config
@@ -249,22 +250,11 @@
     "xv"  '(describe-variable :which-key "descr-var")
     "xk"  '(describe-package :which-key "descr-pack")
     "xp"  '(check-parens :which-key "check-parens")
+    "xc"  '(clm/toggle-command-log-buffer :which-key "cmd-log")
 
     ;; commenter une sélection
-    "#"   'comment-or-uncomment-region
+    "#"   '(comment-or-uncomment-region :which-key "comment")
     ))
-;;    (general-define-key 
-;;    :keymaps 'ranger-mode-map
-;;    :prefix "SPC"
-;;    "d" 'ranger-toggle-dotfiles
-;;    ))
-;; ;;  
-(require 'general)
-;;    (defconst my-leader "SPC")
-;;    (general-define-key
-;;    :keymaps 'ranger-mode-map
-;;    "C-q" 'ranger-toggle-dotfiles
-;;    )
 
 (use-package minions :ensure t
   :hook (doom-modeline-mode . minions-mode))
@@ -290,11 +280,11 @@
 (use-package undo-tree :ensure t
   :init
   (global-undo-tree-mode 1))
-       (general-define-key 
-       :keymaps 'undo-tree-mode-map
-       "s" 'undo-tree-undo
-       "t" 'undo-tree-redo
-       )
+       ;; (general-define-key 
+       ;; :keymaps 'undo-tree-mode-map
+       ;; "s" 'undo-tree-undo
+       ;; "t" 'undo-tree-redo
+       ;; )
 (use-package beacon :ensure t
   :init
   (beacon-mode t)
@@ -309,6 +299,13 @@
   "scroll up the page"
   (interactive)
   (scroll-up (/ (window-body-height) 3)))
+
+(use-package command-log-mode
+:ensure t
+:init (command-log-mode))
+
+;; (use-package visual-basic-mode
+;; :ensure t)
 
 (use-package dashboard
   :ensure t
@@ -337,11 +334,32 @@
 ;;(define-key evil-dashboard-state-map "e" 'dashboard-jump-to-recent-files)
 
 (use-package org-bullets
-:ensure t)
-(org-bullets-mode 1)
+  :ensure t)
+  (org-bullets-mode 1)
+       ;; (general-define-key 
+       ;; :states '(normal visual insert emacs)
+       ;; :prefix ","
+       ;; "d" 'ranger-
+       ;; toggle-dotf
+;; iles
 
-;; (use-package evil-org
-;; :ensure t)
+;; ;
+					; org-end-of-subtree
+;; org-backward-heading-same-level
+;; org-insert-heading-after-current 
+;; org-insert-heading-respect-content
+;; org-insert-link
+;; org-time-stamp
+
+       ;; "e" '(:ignore t :which-key "mark")
+       ;; "ec" '(ranger-copy :which-key "copy")
+       ;; "ep" '(ranger-paste :which-key "paste")
+       ;; "eu" '(dired-unmark-all-marks :which-key "unmark-all")
+       ;; "et" '(dired-mark-unmarked-files :which-key "mark-all")
+       ;; "ed" '(dired-do-delete :which-key "delete")
+
+       ;; "n" '(ranger-paste :which-key "paste")
+       ;;)
 
 (use-package all-the-icons
   :ensure t
