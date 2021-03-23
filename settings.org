@@ -38,6 +38,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+ (setq auto-save-default nil)
 #+END_SRC
 * Nettoyage .emacs.d
 #+BEGIN_SRC emacs-lisp
@@ -188,18 +189,10 @@
   (define-key ranger-mode-map "s" 'ranger-prev-file)
   (define-key ranger-mode-map "c" 'ranger-up-directory)
   (define-key ranger-mode-map "r" 'ranger-find-file)
-
-  ;; (define-key ranger-mode-map "t" 'dired-goto-subdir)
-  ;; (define-key ranger-mode-map "s" 'dired-prev-file)
-  ;; (define-key ranger-mode-map "c" 'dired-up-directory)
-  ;; (define-key ranger-mode-map "r" 'dired-find-file)
 )
 
 (setq key-chord-two-keys-delay 0.6)
 (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
-;; (key-chord-define evil-normal-state-map "uu" 'evil-scroll-page-up)
-;; (key-chord-define evil-insert-state-map "dd" 'evil-scroll-page-down)
-
 #+END_SRC
 * Which-Key
 #+BEGIN_SRC emacs-lisp
@@ -342,31 +335,31 @@
 #+END_SRC
 * Dashboard
 #+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-  :ensure t
-  :init
-  (progn
-     (setq dashboard-items '((recents  . 5)
-			(bookmarks . 5)))
-     (setq dashboard-center-content t)
-  ;; (setq dashboard-startup-banner 'logo)
+    (use-package dashboard
+    :ensure t
+    :init
+    (progn
+       (setq dashboard-items '((recents  . 5)
+			  (bookmarks . 5)))
+       (setq dashboard-center-content t)
+    ;; (setq dashboard-startup-banner 'logo)
 
 
-     (setq dashboard-startup-banner 'logo)
-     (setq dashboard-set-heading-icons t)
-     (setq dashboard-set-file-icons t)
-  )
-  :config
-  (dashboard-setup-startup-hook)
-  )
+       (setq dashboard-startup-banner 'logo)
+       (setq dashboard-set-heading-icons t)
+       (setq dashboard-set-file-icons t)
+    )
+    :config
+    (dashboard-setup-startup-hook)
+    )
 
-  (general-define-key 
-  :keymaps 'dashboard-mode-map
-  "e" 'dashboard-jump-to-bookmark
-  "n" 'dashboard-jump-to-recent-files
-   )
-;;(require 'evil)
-;;(define-key evil-dashboard-state-map "e" 'dashboard-jump-to-recent-files)
+  ;;   (general-define-key 
+  ;;   :keymaps 'dashboard-mode-map
+  ;;   "e" 'dashboard-jump-to-bookmark
+  ;;   "n" 'dashboard-jump-to-recent-files
+  ;;    )
+  ;;   (require 'evil)
+  ;; (define-key dashboard-mode-map "l" 'dashboard-jump-to-recent-files)
 
 #+END_SRC
 * Org
@@ -386,21 +379,6 @@
 	 "is" '(org-insert-heading-respect-content :which-key "heading")
 	 "il" '(org-insert-link :which-key "link")
     )
-  ;; org-backward-heading-same-level
-  ;; org-insert-heading-after-current 
-  ;; org-insert-heading-respect-content
-  ;; org-insert-link
-  ;; org-time-stamp
-
-	 ;; "e" '(:ignore t :which-key "mark")
-	 ;; "ec" '(ranger-copy :which-key "copy")
-	 ;; "ep" '(ranger-paste :which-key "paste")
-	 ;; "eu" '(dired-unmark-all-marks :which-key "unmark-all")
-	 ;; "et" '(dired-mark-unmarked-files :which-key "mark-all")
-	 ;; "ed" '(dired-do-delete :which-key "delete")
-
-	 ;; "n" '(ranger-paste :which-key "paste")
-	 ;;)
 #+END_SRC
 * All the icons
 #+BEGIN_SRC emacs-lisp
