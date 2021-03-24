@@ -32,6 +32,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+ (setq auto-save-default nil)
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
@@ -150,8 +151,8 @@
   (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
   (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
 
-  (define-key evil-normal-state-map "D" 'scroll-half-page-up)
-  (define-key evil-normal-state-map "U" 'scroll-half-page-down)
+  (define-key evil-normal-state-map (kbd "C-t") 'scroll-half-page-up)
+  (define-key evil-normal-state-map (kbd "C-s") 'scroll-half-page-down)
 
   (define-key evil-normal-state-map "r" 'evil-forward-char)
   (define-key evil-normal-state-map "c" 'evil-backward-char)
@@ -165,23 +166,17 @@
   (define-key ranger-mode-map "s" 'ranger-prev-file)
   (define-key ranger-mode-map "c" 'ranger-up-directory)
   (define-key ranger-mode-map "r" 'ranger-find-file)
-
-  ;; (define-key ranger-mode-map "t" 'dired-goto-subdir)
-  ;; (define-key ranger-mode-map "s" 'dired-prev-file)
-  ;; (define-key ranger-mode-map "c" 'dired-up-directory)
-  ;; (define-key ranger-mode-map "r" 'dired-find-file)
 )
 
 (setq key-chord-two-keys-delay 0.6)
 (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
-;; (key-chord-define evil-normal-state-map "uu" 'evil-scroll-page-up)
-;; (key-chord-define evil-insert-state-map "dd" 'evil-scroll-page-down)
 
 (use-package which-key :ensure t)
 (require 'which-key)
 (which-key-mode)
 (which-key-setup-minibuffer)
 (setq which-key-max-display-columns 6)
+(setq which-key-idle-delay 0.5)
 
 (use-package general :ensure t
   :config
@@ -325,41 +320,29 @@
   (dashboard-setup-startup-hook)
   )
 
-  (general-define-key 
-  :keymaps 'dashboard-mode-map
-  "e" 'dashboard-jump-to-bookmark
-  "n" 'dashboard-jump-to-recent-files
-   )
-;;(require 'evil)
-;;(define-key evil-dashboard-state-map "e" 'dashboard-jump-to-recent-files)
+;;   (general-define-key 
+;;   :keymaps 'dashboard-mode-map
+;;   "e" 'dashboard-jump-to-bookmark
+;;   "n" 'dashboard-jump-to-recent-files
+;;    )
+;;   (require 'evil)
+;; (define-key dashboard-mode-map "l" 'dashboard-jump-to-recent-files)
 
 (use-package org-bullets
-  :ensure t)
-  (org-bullets-mode 1)
-       ;; (general-define-key 
-       ;; :states '(normal visual insert emacs)
-       ;; :prefix ","
-       ;; "d" 'ranger-
-       ;; toggle-dotf
-;; iles
+:ensure t)
+(org-bullets-mode 1)
+     (general-define-key 
+     :states '(normal visual emacs)
+     :prefix ","
 
-;; ;
-					; org-end-of-subtree
-;; org-backward-heading-same-level
-;; org-insert-heading-after-current 
-;; org-insert-heading-respect-content
-;; org-insert-link
-;; org-time-stamp
+     "e" '(org-end-of-subtree :which-key "end-subtree")
+     "h" '(outline-up-heading :which-key "prev-heading")
 
-       ;; "e" '(:ignore t :which-key "mark")
-       ;; "ec" '(ranger-copy :which-key "copy")
-       ;; "ep" '(ranger-paste :which-key "paste")
-       ;; "eu" '(dired-unmark-all-marks :which-key "unmark-all")
-       ;; "et" '(dired-mark-unmarked-files :which-key "mark-all")
-       ;; "ed" '(dired-do-delete :which-key "delete")
-
-       ;; "n" '(ranger-paste :which-key "paste")
-       ;;)
+     "i" '(:ignore t :which-key "insert")
+     "it" '(org-time-stamp :which-key "timestamp")
+     "is" '(org-insert-heading-respect-content :which-key "heading")
+     "il" '(org-insert-link :which-key "link")
+)
 
 (use-package all-the-icons
   :ensure t
