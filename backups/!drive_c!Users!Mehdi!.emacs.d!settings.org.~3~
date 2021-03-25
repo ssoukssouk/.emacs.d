@@ -90,12 +90,6 @@
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 2) ;; keyboard scroll one line at a time
 
-  (use-package smooth-scrolling
-  :ensure t
-  :init
-  (smooth-scrolling-mode t)
-  )
-
 #+END_SRC
 * Themes
 #+BEGIN_SRC emacs-lisp
@@ -335,7 +329,6 @@
   (use-package command-log-mode
   :ensure t
   :init (command-log-mode))
-  
 
   ;; (use-package visual-basic-mode
   ;; :ensure t)
@@ -385,16 +378,7 @@
 	 "it" '(org-time-stamp :which-key "timestamp")
 	 "is" '(org-insert-heading-respect-content :which-key "heading")
 	 "il" '(org-insert-link :which-key "link")
-
-	 "o" '(:ignore t :which-key "org")
-	 "oc" '(org-toggle-checkbox :which-key "check")
-	 "oa" '(org-agenda :which-key "agenda")
-	 "os" '(org-schedule :which-key "schedule")
     )
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
-   (setq org-log-done nil)
-   (setq org-agenda-files '("~/tasks.org"))
 #+END_SRC
 * All the icons
 #+BEGIN_SRC emacs-lisp
