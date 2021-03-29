@@ -79,6 +79,12 @@
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq scroll-step 2) ;; keyboard scroll one line at a time
 
+(use-package smooth-scrolling
+:ensure t
+:init
+(smooth-scrolling-mode t)
+)
+
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
@@ -144,15 +150,15 @@
   ;; Use visual line motions even outside of visual-line-mode buffers
   (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
   (define-key evil-normal-state-map "t" 'evil-next-visual-line)
-  
+
   (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
   (define-key evil-visual-state-map "t" 'evil-next-visual-line)
 
-  (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
-  (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
+  ;; (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
+  ;; (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
 
-  (define-key evil-normal-state-map (kbd "C-t") 'scroll-half-page-up)
-  (define-key evil-normal-state-map (kbd "C-s") 'scroll-half-page-down)
+  (define-key evil-normal-state-map "T" 'scroll-half-page-up)
+  (define-key evil-normal-state-map "S" 'scroll-half-page-down)
 
   (define-key evil-normal-state-map "r" 'evil-forward-char)
   (define-key evil-normal-state-map "c" 'evil-backward-char)
@@ -220,8 +226,10 @@
     ;; toggles
     "t"  '(:ignore t :which-key "toggles")
     "tw" 'whitespace-mode
-    "tt" '(counsel-load-theme :which-key "choose theme")
+    "th" '(counsel-load-theme :which-key "choose theme")
     "tx" 'text-scale-adjust
+    "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
+    "tt" '(toggle-transparency :which-key "transparancy")
 
     ;;quit
     "q"  '(:ignore q :which-key "quit")
@@ -273,34 +281,42 @@
   (doom-modeline-major-mode-icon nil))
 
 (use-package undo-tree :ensure t
-  :init
-  (global-undo-tree-mode 1))
-       ;; (general-define-key 
-       ;; :keymaps 'undo-tree-mode-map
-       ;; "s" 'undo-tree-undo
-       ;; "t" 'undo-tree-redo
-       ;; )
-(use-package beacon :ensure t
-  :init
-  (beacon-mode t)
-  )
+    :init
+    (global-undo-tree-mode 1))
+	 ;; (general-define-key 
+	 ;; :keymaps 'undo-tree-mode-map
+	 ;; "s" 'undo-tree-undo
+	 ;; "t" 'undo-tree-redo
+	 ;; )
+  (use-package beacon :ensure t
+    :init
+    (beacon-mode t)
+    )
 
-(defun scroll-half-page-down ()
-  "scroll down the page"
+  (defun scroll-half-page-down ()
+    "scroll down the page"
+    (interactive)
+    (scroll-down (/ (window-body-height) 3)))
+
+  (defun scroll-half-page-up ()
+    "scroll up the page"
+    (interactive)
+    (scroll-up (/ (window-body-height) 3)))
+
+  (use-package command-log-mode
+  :ensure t
+  :init (command-log-mode))
+  
+(defun toggle-transparency ()
   (interactive)
-  (scroll-down (/ (window-body-height) 3)))
-
-(defun scroll-half-page-up ()
-  "scroll up the page"
-  (interactive)
-  (scroll-up (/ (window-body-height) 3)))
-
-(use-package command-log-mode
-:ensure t
-:init (command-log-mode))
-
-;; (use-package visual-basic-mode
-;; :ensure t)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (if (eq
+     (if (numberp alpha)
+         alpha
+       (cdr alpha)) ; may also be nil
+     100)
+    (set-frame-parameter nil 'alpha '(85 . 50))
+      (set-frame-parameter nil 'alpha '(100 . 100)))))
 
 (use-package dashboard
   :ensure t
@@ -342,7 +358,15 @@
      "it" '(org-time-stamp :which-key "timestamp")
      "is" '(org-insert-heading-respect-content :which-key "heading")
      "il" '(org-insert-link :which-key "link")
+
+     "o" '(:ignore t :which-key "org")
+     "oc" '(org-toggle-checkbox :which-key "check")
+     "oa" '(org-agenda :which-key "agenda")
+     "os" '(org-schedule :which-key "schedule")
 )
+
+(setq org-log-done nil)
+(setq org-agenda-files '("~/tasks.org"))
 
 (use-package all-the-icons
   :ensure t

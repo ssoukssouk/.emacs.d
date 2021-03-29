@@ -153,52 +153,52 @@
 * Evil
 #+BEGIN_SRC emacs-lisp
 
-  ;;Exit insert mode by pressing  and then j quickly
-  (use-package key-chord :ensure t)
-  (require 'key-chord)
-  (key-chord-mode 1)
+;;Exit insert mode by pressing  and then j quickly
+(use-package key-chord :ensure t)
+(require 'key-chord)
+(key-chord-mode 1)
 
-  (use-package evil :ensure t
-    :init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
-    (setq evil-want-C-u-scroll t)
-    (setq evil-want-C-i-jump nil)
-    (setq evil-respect-visual-line-mode t)
-    (setq evil-undo-system 'undo-tree)
-    :config
-    (evil-mode 1)
-    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-    (evil-set-leader nil (kbd "SPC"))
-    ;; Use visual line motions even outside of visual-line-mode buffers
-    (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
-    (define-key evil-normal-state-map "t" 'evil-next-visual-line)
+(use-package evil :ensure t
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  (setq evil-respect-visual-line-mode t)
+  (setq evil-undo-system 'undo-tree)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  (evil-set-leader nil (kbd "SPC"))
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
+  (define-key evil-normal-state-map "t" 'evil-next-visual-line)
   
-    (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
-    (define-key evil-visual-state-map "t" 'evil-next-visual-line)
+  (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
+  (define-key evil-visual-state-map "t" 'evil-next-visual-line)
 
-    ;; (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
-    ;; (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
+  (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
+  (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
 
-    (define-key evil-normal-state-map "T" 'scroll-half-page-up)
-    (define-key evil-normal-state-map "S" 'scroll-half-page-down)
+  (define-key evil-normal-state-map (kbd "C-t") 'scroll-half-page-up)
+  (define-key evil-normal-state-map (kbd "C-s") 'scroll-half-page-down)
 
-    (define-key evil-normal-state-map "r" 'evil-forward-char)
-    (define-key evil-normal-state-map "c" 'evil-backward-char)
+  (define-key evil-normal-state-map "r" 'evil-forward-char)
+  (define-key evil-normal-state-map "c" 'evil-backward-char)
 
-    (define-key evil-normal-state-map "é" 'evil-forward-word-begin)
-    (define-key evil-normal-state-map "e" 'evil-forward-word-end)
-    (define-key evil-normal-state-map "b" 'evil-backward-word-begin)
-    (define-key evil-normal-state-map "h" 'evil-replace)
+  (define-key evil-normal-state-map "é" 'evil-forward-word-begin)
+  (define-key evil-normal-state-map "e" 'evil-forward-word-end)
+  (define-key evil-normal-state-map "b" 'evil-backward-word-begin)
+  (define-key evil-normal-state-map "h" 'evil-replace)
 
-    (define-key ranger-mode-map "t" 'ranger-next-file)
-    (define-key ranger-mode-map "s" 'ranger-prev-file)
-    (define-key ranger-mode-map "c" 'ranger-up-directory)
-    (define-key ranger-mode-map "r" 'ranger-find-file)
-  )
+  (define-key ranger-mode-map "t" 'ranger-next-file)
+  (define-key ranger-mode-map "s" 'ranger-prev-file)
+  (define-key ranger-mode-map "c" 'ranger-up-directory)
+  (define-key ranger-mode-map "r" 'ranger-find-file)
+)
 
-  (setq key-chord-two-keys-delay 0.6)
-  (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
+(setq key-chord-two-keys-delay 0.6)
+(key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
 #+END_SRC
 * Which-Key
 #+BEGIN_SRC emacs-lisp
@@ -252,10 +252,8 @@
       ;; toggles
       "t"  '(:ignore t :which-key "toggles")
       "tw" 'whitespace-mode
-      "th" '(counsel-load-theme :which-key "choose theme")
+      "tt" '(counsel-load-theme :which-key "choose theme")
       "tx" 'text-scale-adjust
-      "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
-      "tt" '(toggle-transparency :which-key "transparancy")
 
       ;;quit
       "q"  '(:ignore q :which-key "quit")
@@ -338,16 +336,9 @@
   :ensure t
   :init (command-log-mode))
   
-(defun toggle-transparency ()
-  (interactive)
-  (let ((alpha (frame-parameter nil 'alpha)))
-    (if (eq
-     (if (numberp alpha)
-         alpha
-       (cdr alpha)) ; may also be nil
-     100)
-    (set-frame-parameter nil 'alpha '(85 . 50))
-      (set-frame-parameter nil 'alpha '(100 . 100)))))
+
+  ;; (use-package visual-basic-mode
+  ;; :ensure t)
 #+END_SRC
 * Dashboard
 #+BEGIN_SRC emacs-lisp
