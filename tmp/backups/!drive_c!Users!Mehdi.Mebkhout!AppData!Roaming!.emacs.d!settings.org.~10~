@@ -1,4 +1,3 @@
-ceci est un test
 * Use package
 #+BEGIN_SRC emacs-lisp
 (require 'package)
@@ -59,19 +58,14 @@ ceci est un test
 (load custom-file t)
 
 #+END_SRC
-* Backups
+* UI
 #+BEGIN_SRC emacs-lisp
   (setq delete-old-versions -1 )		; delete excess backup versions silently
   (setq version-control t )		; use version control
   (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
-  (setq kept-old-versions 2 )	;number of oldest versions to keep when a new numbered backup is made
-  (setq kept-new-versions 2 ) ;number of newest versions to keep when a new numbered backup is made. Includes the new backup.
-  (setq backup-directory-alist `(("." . "~/.emacs.d/tmp/backups")) ) ; which directory to put backups file
+  (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
   ;;(setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/auto-save-list/" t)) ) ;transform backups file name
-#+END_SRC
-* UI
-#+BEGIN_SRC emacs-lisp
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
   ;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
   (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
   ;;(setq coding-system-for-read 'utf-8 )	; use utf-8 by default
@@ -149,12 +143,11 @@ ceci est un test
        "ed" '(dired-do-delete :which-key "delete")
 
        "n" '(ranger-paste :which-key "paste")
-       "r" 'ranger-show-drives
-       "q" 'ranger-close
        )
        (general-define-key 
        :keymaps 'ranger-mode-map
        "e" 'ranger-toggle-mark
+       "n" 'dired-create-directory
        )
 #+END_SRC
 * Evil
@@ -242,7 +235,6 @@ ceci est un test
       "bb"  'ivy-switch-buffer  ; change buffer, chose using ivy
       "bd"  'kill-current-buffer ;Ferme le buffer 
       "be"  'eval-buffer
-      "bk" '(bookmark-set :which-key "bookmark")
       "/"   'counsel-git-grep   ; find string in git project
 
       ;; bind to double key press
@@ -288,11 +280,6 @@ ceci est un test
       "xk"  '(describe-package :which-key "descr-pack")
       "xp"  '(check-parens :which-key "check-parens")
       "xc"  '(clm/toggle-command-log-buffer :which-key "cmd-log")
-
-      ;;dashboard
-      "d"   '(:ignore t :which-key "dash")
-      "dk" 'dashboard-jump-to-bookmarks
-      "dr" 'dashboard-jump-to-recent-files
 
       ;; commenter une sélection
       "#"   '(comment-or-uncomment-region :which-key "comment")
@@ -377,11 +364,19 @@ ceci est un test
        (setq dashboard-startup-banner 'logo)
        (setq dashboard-set-heading-icons t)
        (setq dashboard-set-file-icons t)
-       (setq dashboard-show-shortcuts nil)
     )
     :config
     (dashboard-setup-startup-hook)
     )
+
+  ;;   (general-define-key 
+  ;;   :keymaps 'dashboard-mode-map
+  ;;   "e" 'dashboard-jump-to-bookmark
+  ;;   "n" 'dashboard-jump-to-recent-files
+  ;;    )
+  ;;   (require 'evil)
+  ;; (define-key dashboard-mode-map "l" 'dashboard-jump-to-recent-files)
+
 #+END_SRC
 * Org
 #+BEGIN_SRC emacs-lisp

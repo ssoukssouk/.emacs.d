@@ -1,4 +1,3 @@
-ceci est un test
 * Use package
 #+BEGIN_SRC emacs-lisp
 (require 'package)
@@ -25,21 +24,20 @@ ceci est un test
 #+END_SRC
 * Custom set variables
 #+BEGIN_SRC emacs-lisp
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(package-selected-packages
-     (quote
-      (doom-modeline doom-themes counsel evil which-key avy use-package general))))
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   )
-   (setq auto-save-default t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (doom-modeline doom-themes counsel evil which-key avy use-package general))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 #+END_SRC
 * Nettoyage .emacs.d
 #+BEGIN_SRC emacs-lisp
@@ -59,19 +57,14 @@ ceci est un test
 (load custom-file t)
 
 #+END_SRC
-* Backups
+* UI
 #+BEGIN_SRC emacs-lisp
   (setq delete-old-versions -1 )		; delete excess backup versions silently
   (setq version-control t )		; use version control
   (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
-  (setq kept-old-versions 2 )	;number of oldest versions to keep when a new numbered backup is made
-  (setq kept-new-versions 2 ) ;number of newest versions to keep when a new numbered backup is made. Includes the new backup.
-  (setq backup-directory-alist `(("." . "~/.emacs.d/tmp/backups")) ) ; which directory to put backups file
+  (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
   ;;(setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/auto-save-list/" t)) ) ;transform backups file name
-#+END_SRC
-* UI
-#+BEGIN_SRC emacs-lisp
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
   ;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
   (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
   ;;(setq coding-system-for-read 'utf-8 )	; use utf-8 by default
@@ -96,19 +89,13 @@ ceci est un test
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 2) ;; keyboard scroll one line at a time
 
-  (use-package smooth-scrolling
-  :ensure t
-  :init
-  (smooth-scrolling-mode t)
-  )
-
 #+END_SRC
 * Themes
 #+BEGIN_SRC emacs-lisp
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
-  (setq doom-modeline-height 25)
+  (setq doom-modeline-height 55)
   (setq doom-modeline-major-mode-icons nil)
   (setq doom-modeline-major-mode-icons nil)
 )
@@ -149,63 +136,70 @@ ceci est un test
        "ed" '(dired-do-delete :which-key "delete")
 
        "n" '(ranger-paste :which-key "paste")
-       "r" 'ranger-show-drives
-       "q" 'ranger-close
        )
        (general-define-key 
        :keymaps 'ranger-mode-map
        "e" 'ranger-toggle-mark
+       "n" 'dired-create-directory
        )
 #+END_SRC
 * Evil
 #+BEGIN_SRC emacs-lisp
 
-  ;;Exit insert mode by pressing  and then j quickly
-  (use-package key-chord :ensure t)
-  (require 'key-chord)
-  (key-chord-mode 1)
+;;Exit insert mode by pressing  and then j quickly
+(use-package key-chord :ensure t)
+(require 'key-chord)
+(key-chord-mode 1)
 
-  (use-package evil :ensure t
-    :init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
-    (setq evil-want-C-u-scroll t)
-    (setq evil-want-C-i-jump nil)
-    (setq evil-respect-visual-line-mode t)
-    (setq evil-undo-system 'undo-tree)
-    :config
-    (evil-mode 1)
-    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-    (evil-set-leader nil (kbd "SPC"))
-    ;; Use visual line motions even outside of visual-line-mode buffers
-    (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
-    (define-key evil-normal-state-map "t" 'evil-next-visual-line)
+(use-package evil :ensure t
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  (setq evil-respect-visual-line-mode t)
+  (setq evil-undo-system 'undo-tree)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  (evil-set-leader nil (kbd "SPC"))
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
+  (define-key evil-normal-state-map "t" 'evil-next-visual-line)
   
-    (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
-    (define-key evil-visual-state-map "t" 'evil-next-visual-line)
+  (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
+  (define-key evil-visual-state-map "t" 'evil-next-visual-line)
 
-    ;; (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
-    ;; (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
+  (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
+  (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
 
-    (define-key evil-normal-state-map "T" 'scroll-half-page-up)
-    (define-key evil-normal-state-map "S" 'scroll-half-page-down)
+  (define-key evil-normal-state-map "D" 'scroll-half-page-up)
+  (define-key evil-normal-state-map "U" 'scroll-half-page-down)
 
-    (define-key evil-normal-state-map "r" 'evil-forward-char)
-    (define-key evil-normal-state-map "c" 'evil-backward-char)
+  (define-key evil-normal-state-map "r" 'evil-forward-char)
+  (define-key evil-normal-state-map "c" 'evil-backward-char)
 
-    (define-key evil-normal-state-map "é" 'evil-forward-word-begin)
-    (define-key evil-normal-state-map "e" 'evil-forward-word-end)
-    (define-key evil-normal-state-map "b" 'evil-backward-word-begin)
-    (define-key evil-normal-state-map "h" 'evil-replace)
+  (define-key evil-normal-state-map "é" 'evil-forward-word-begin)
+  (define-key evil-normal-state-map "e" 'evil-forward-word-end)
+  (define-key evil-normal-state-map "b" 'evil-backward-word-begin)
+  (define-key evil-normal-state-map "h" 'evil-replace)
 
-    (define-key ranger-mode-map "t" 'ranger-next-file)
-    (define-key ranger-mode-map "s" 'ranger-prev-file)
-    (define-key ranger-mode-map "c" 'ranger-up-directory)
-    (define-key ranger-mode-map "r" 'ranger-find-file)
-  )
+  (define-key ranger-mode-map "t" 'ranger-next-file)
+  (define-key ranger-mode-map "s" 'ranger-prev-file)
+  (define-key ranger-mode-map "c" 'ranger-up-directory)
+  (define-key ranger-mode-map "r" 'ranger-find-file)
 
-  (setq key-chord-two-keys-delay 0.6)
-  (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
+  ;; (define-key ranger-mode-map "t" 'dired-goto-subdir)
+  ;; (define-key ranger-mode-map "s" 'dired-prev-file)
+  ;; (define-key ranger-mode-map "c" 'dired-up-directory)
+  ;; (define-key ranger-mode-map "r" 'dired-find-file)
+)
+
+(setq key-chord-two-keys-delay 0.5)
+(key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
+;; (key-chord-define evil-normal-state-map "uu" 'evil-scroll-page-up)
+;; (key-chord-define evil-insert-state-map "dd" 'evil-scroll-page-down)
+
 #+END_SRC
 * Which-Key
 #+BEGIN_SRC emacs-lisp
@@ -214,8 +208,6 @@ ceci est un test
   (require 'which-key)
   (which-key-mode)
   (which-key-setup-minibuffer)
-  (setq which-key-max-display-columns 6)
-  (setq which-key-idle-delay 0.5)
 
   (use-package general :ensure t
     :config
@@ -242,7 +234,6 @@ ceci est un test
       "bb"  'ivy-switch-buffer  ; change buffer, chose using ivy
       "bd"  'kill-current-buffer ;Ferme le buffer 
       "be"  'eval-buffer
-      "bk" '(bookmark-set :which-key "bookmark")
       "/"   'counsel-git-grep   ; find string in git project
 
       ;; bind to double key press
@@ -260,10 +251,8 @@ ceci est un test
       ;; toggles
       "t"  '(:ignore t :which-key "toggles")
       "tw" 'whitespace-mode
-      "th" '(counsel-load-theme :which-key "choose theme")
+      "tt" '(counsel-load-theme :which-key "choose theme")
       "tx" 'text-scale-adjust
-      "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
-      "tt" '(toggle-transparency :which-key "transparancy")
 
       ;;quit
       "q"  '(:ignore q :which-key "quit")
@@ -287,17 +276,24 @@ ceci est un test
       "xv"  '(describe-variable :which-key "descr-var")
       "xk"  '(describe-package :which-key "descr-pack")
       "xp"  '(check-parens :which-key "check-parens")
-      "xc"  '(clm/toggle-command-log-buffer :which-key "cmd-log")
-
-      ;;dashboard
-      "d"   '(:ignore t :which-key "dash")
-      "dk" 'dashboard-jump-to-bookmarks
-      "dr" 'dashboard-jump-to-recent-files
 
       ;; commenter une sélection
-      "#"   '(comment-or-uncomment-region :which-key "comment")
+      "#"   'comment-or-uncomment-region
       ))
+  ;;    (general-define-key 
+  ;;    :keymaps 'ranger-mode-map
+  ;;    :prefix "SPC"
+  ;;    "d" 'ranger-toggle-dotfiles
+  ;;    ))
+  ;; ;;  
+  (require 'general)
+  ;;    (defconst my-leader "SPC")
+  ;;    (general-define-key
+  ;;    :keymaps 'ranger-mode-map
+  ;;    "C-q" 'ranger-toggle-dotfiles
+  ;;    ) 
 #+END_SRC
+
 * Doom modeline
 #+BEGIN_SRC emacs-lisp
 (use-package minions :ensure t
@@ -324,91 +320,62 @@ ceci est un test
 #+END_SRC
 * En cours de test
 #+BEGIN_SRC emacs-lisp
-  (use-package undo-tree :ensure t
-    :init
-    (global-undo-tree-mode 1))
-	 ;; (general-define-key 
-	 ;; :keymaps 'undo-tree-mode-map
-	 ;; "s" 'undo-tree-undo
-	 ;; "t" 'undo-tree-redo
-	 ;; )
-  (use-package beacon :ensure t
-    :init
-    (beacon-mode t)
-    )
+(use-package undo-tree :ensure t
+  :init
+  (global-undo-tree-mode 1))
 
-  (defun scroll-half-page-down ()
-    "scroll down the page"
-    (interactive)
-    (scroll-down (/ (window-body-height) 3)))
+(use-package beacon :ensure t
+  :init
+  (beacon-mode t)
+  )
 
-  (defun scroll-half-page-up ()
-    "scroll up the page"
-    (interactive)
-    (scroll-up (/ (window-body-height) 3)))
-
-  (use-package command-log-mode
-  :ensure t
-  :init (command-log-mode))
-  
-(defun toggle-transparency ()
+(defun scroll-half-page-down ()
+  "scroll down the page"
   (interactive)
-  (let ((alpha (frame-parameter nil 'alpha)))
-    (if (eq
-     (if (numberp alpha)
-         alpha
-       (cdr alpha)) ; may also be nil
-     100)
-    (set-frame-parameter nil 'alpha '(85 . 50))
-      (set-frame-parameter nil 'alpha '(100 . 100)))))
+  (scroll-down (/ (window-body-height) 3)))
+
+(defun scroll-half-page-up ()
+  "scroll up the page"
+  (interactive)
+  (scroll-up (/ (window-body-height) 3)))
 #+END_SRC
 * Dashboard
 #+BEGIN_SRC emacs-lisp
-    (use-package dashboard
-    :ensure t
-    :init
-    (progn
-       (setq dashboard-items '((recents  . 5)
-			  (bookmarks . 5)))
-       (setq dashboard-center-content t)
-    ;; (setq dashboard-startup-banner 'logo)
+  (use-package dashboard
+  :ensure t
+  :init
+  (progn
+     (setq dashboard-items '((recents  . 5)
+			(bookmarks . 5)))
+     (setq dashboard-center-content t)
+  ;; (setq dashboard-startup-banner 'logo)
 
 
-       (setq dashboard-startup-banner 'logo)
-       (setq dashboard-set-heading-icons t)
-       (setq dashboard-set-file-icons t)
-       (setq dashboard-show-shortcuts nil)
-    )
-    :config
-    (dashboard-setup-startup-hook)
-    )
+     (setq dashboard-startup-banner 'logo)
+     (setq dashboard-set-heading-icons t)
+     (setq dashboard-set-file-icons t)
+  )
+  :config
+  (dashboard-setup-startup-hook)
+  )
+
+  (general-define-key 
+  :keymaps 'dashboard-mode-map
+  "e" 'dashboard-jump-to-bookmark
+  "n" 'dashboard-jump-to-recent-files
+   )
+;;(require 'evil)
+;;(define-key evil-dashboard-state-map "e" 'dashboard-jump-to-recent-files)
+
 #+END_SRC
 * Org
 #+BEGIN_SRC emacs-lisp
-    (use-package org-bullets
-    :ensure t)
-    (org-bullets-mode 1)
-	 (general-define-key 
-	 :states '(normal visual emacs)
-	 :prefix ","
-	 
-	 "e" '(org-end-of-subtree :which-key "end-subtree")
-	 "h" '(outline-up-heading :which-key "prev-heading")
+  (use-package org-bullets
+  :ensure t)
+  (org-bullets-mode 1)
 
-	 "i" '(:ignore t :which-key "insert")
-	 "it" '(org-time-stamp :which-key "timestamp")
-	 "is" '(org-insert-heading-respect-content :which-key "heading")
-	 "il" '(org-insert-link :which-key "link")
-
-	 "o" '(:ignore t :which-key "org")
-	 "oc" '(org-toggle-checkbox :which-key "check")
-	 "oa" '(org-agenda :which-key "agenda")
-	 "os" '(org-schedule :which-key "schedule")
-    )
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
-   (setq org-log-done nil)
-   (setq org-agenda-files '("~/tasks.org"))
+  ;; (use-package evil-org
+  ;; :ensure t)
 #+END_SRC
 * All the icons
 #+BEGIN_SRC emacs-lisp
