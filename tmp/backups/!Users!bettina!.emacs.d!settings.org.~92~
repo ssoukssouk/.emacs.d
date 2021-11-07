@@ -434,3 +434,12 @@
     :init 
     )
 #+END_SRC
+* Org pomodoro
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-pomodoro-start-sound "~/.emacs.d/downloads/ding.wav")
+  (setq org-pomodoro-short-break-sound "~/.emacs.d/downloads/ding.wav")
+  (setq org-pomodoro-long-break-sound "~/.emacs.d/downloads/ding.wav")
+  (setq org-pomodoro-finished-sound-p "~/.emacs.d/downloads/ding.wav")
+  (setq org-pomodoro-play-sounds 1)
+#+END_SRC

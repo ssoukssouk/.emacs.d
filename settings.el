@@ -17,8 +17,10 @@
 
 (require 'use-package) ; guess what this one does too ?
 ;; (setq use-package-always-ensure t) ;; Cette commande permet d’éviter les ensure t
+(require 'org)
 
 (custom-set-variables
+ ;;(setq org-clock-sound "~/Téléchargements/ding.wav")
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
@@ -32,7 +34,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
- (setq auto-save-default t)
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
@@ -59,8 +60,9 @@
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/auto-save-list/" t)) ) ;transform backups file name
 
 ;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
-(setq ring-bell-function 'ignore )	; silent bell when you make a mistake
-;;(setq coding-system-for-read 'utf-8 )	; use utf-8 by default
+;; (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
+;;
+(setq coding-system-for-read 'utf-8 )	; use utf-8 by default
 ;;(setq coding-system-for-write 'utf-8 )
 ;;(setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
 (setq default-fill-column 80)		; toggle wrapping text at the 80th character
@@ -88,6 +90,16 @@
 (smooth-scrolling-mode t)
 )
 
+;;modification simple de la taille tu texte
+(use-package hydra
+:ensure t)
+
+(defhydra hydra-text-scale (:timeout 4)
+"scale text"
+("t" text-scale-increase "in")
+("s" text-scale-decrease "out")
+("e" nil "finished" :exit t))
+
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
@@ -112,7 +124,7 @@
 (setq ranger-show-literal nil) 
 (setq ranger-parent-depth 4)
 (setq ranger-width-parents 0.07)
-     (require  'general)
+     (require 'general)
      (general-define-key 
      :keymaps 'ranger-mode-map
      :prefix "SPC"
@@ -213,7 +225,7 @@
     "bb"  'ivy-switch-buffer  ; change buffer, chose using ivy
     "bd"  'kill-current-buffer ;Ferme le buffer 
     "be"  'eval-buffer
-    "bk" '(bookmark-set :which-key "bookmark")
+    "bn"  'evil-buffer-new
     "/"   'counsel-git-grep   ; find string in git project
 
     ;; bind to double key press
@@ -232,9 +244,9 @@
     "t"  '(:ignore t :which-key "toggles")
     "tw" 'whitespace-mode
     "th" '(counsel-load-theme :which-key "choose theme")
-    "tx" 'text-scale-adjust
     "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
     "tt" '(toggle-transparency :which-key "transparancy")
+    "tx" '(hydra-text-scale/body :which-key "scale text")
 
     ;;quit
     "q"  '(:ignore q :which-key "quit")
@@ -264,6 +276,11 @@
     "d"   '(:ignore t :which-key "dash")
     "dk" 'dashboard-jump-to-bookmarks
     "dr" 'dashboard-jump-to-recent-files
+
+    ;;pomodoro
+    "p"   '(:ignore t :which-key "pomodoro")
+    "ps"  'org-timer-set-timer
+    "pp"  'org-timer-pause-or-continue
 
     ;; commenter une sélection
     "#"   '(comment-or-uncomment-region :which-key "comment")
@@ -375,3 +392,9 @@
   :ensure t
   :init 
   )
+
+(setq org-pomodoro-start-sound "~/.emacs.d/downloads/ding.wav")
+(setq org-pomodoro-short-break-sound "~/.emacs.d/downloads/ding.wav")
+(setq org-pomodoro-long-break-sound "~/.emacs.d/downloads/ding.wav")
+(setq org-pomodoro-finished-sound-p "~/.emacs.d/downloads/ding.wav")
+(setq org-pomodoro-play-sounds 1)

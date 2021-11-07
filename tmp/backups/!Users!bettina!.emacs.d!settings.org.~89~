@@ -434,3 +434,15 @@
     :init 
     )
 #+END_SRC
+* Org pomodoro
+
+#+BEGIN_SRC emacs-lisp
+(setup (:pkg org-pomodoro)
+  (setq org-pomodoro-start-sound "~/.dotfiles/.emacs.d/sounds/focus_bell.wav")
+  (setq org-pomodoro-short-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
+  (setq org-pomodoro-long-break-sound "~/.dotfiles/.emacs.d/sounds/three_beeps.wav")
+  (setq org-pomodoro-finished-sound "~/.dotfiles/.emacs.d/sounds/meditation_bell.wav")
+
+  (dw/leader-key-def
+    "op"  '(org-pomodoro :which-key "pomodoro")))
+#+END_SRC

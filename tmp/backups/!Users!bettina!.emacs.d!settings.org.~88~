@@ -308,6 +308,7 @@
 
       ;;pomodoro
       "p"   '(:ignore t :which-key "pomodoro")
+      "po"   '(org-pomodoro :which-key "pomodoro")
       "ps"  'org-timer-set-timer
       "pp"  'org-timer-pause-or-continue
 
