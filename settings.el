@@ -358,8 +358,8 @@
 
 
    (setq dashboard-startup-banner 'logo)
-   (setq dashboard-set-heading-icons t)
-   (setq dashboard-set-file-icons t)
+   (setq dashboard-set-heading-icons nil)
+   (setq dashboard-set-file-icons nil)
    (setq dashboard-show-shortcuts nil)
 )
 :config
@@ -389,8 +389,3 @@
 
 (setq org-log-done nil)
 (setq org-agenda-files '("~/tasks.org"))
-
-(use-package all-the-icons
-  :ensure t
-  :init 
-  )
