@@ -1,4 +1,7 @@
 * Use package
+  :LOGBOOK:
+  CLOCK: [2021-11-06 Sat 12:09]--[2021-11-06 Sat 12:10] =>  0:01
+  :END:
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 
@@ -25,6 +28,7 @@
 * Custom set variables
 #+BEGIN_SRC emacs-lisp
   (custom-set-variables
+   ;;(setq org-clock-sound "~/Téléchargements/ding.wav")
    ;; custom-set-variables was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
@@ -38,18 +42,14 @@
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
    )
-<<<<<<< HEAD
-   (setq org-clock-sound "~/.emacs.d/downloads/ding.wav" )
-   ;; (setq org-clock-sound t)
-=======
    (setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
->>>>>>> 83116bdeac3a5e7b1951a378caa89faf3df9127c
+   ;; (setq org-clock-sound t)
 
 #+END_SRC
 * Nettoyage .emacs.d
 #+BEGIN_SRC emacs-lisp
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-(setq user-emacs-directory (expand-file-name "~/.emacs.d/bin/emacs/")
+(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
       url-history-file (expand-file-name "url/history" user-emacs-directory))
 
 ;; Use no-littering to automatically set common paths to the new user-emacs-directory
@@ -252,11 +252,6 @@
       "ar" 'ranger
       "ad" 'dired
 
-      ;; Subtree
-      "s" '(:ignore t :which-key "Subtree")
-      "sn" 'org-narrow-to-subtree
-      "sw" 'widen
-
       ;; bind to simple key press
       "b"   '(:ignore t :which-key "buffers")
       "bb"  'ivy-switch-buffer  ; change buffer, chose using ivy
@@ -400,8 +395,8 @@
 
 
        (setq dashboard-startup-banner 'logo)
-       (setq dashboard-set-heading-icons nil)
-       (setq dashboard-set-file-icons nil)
+       (setq dashboard-set-heading-icons t)
+       (setq dashboard-set-file-icons t)
        (setq dashboard-show-shortcuts nil)
     )
     :config
@@ -436,9 +431,9 @@
    (setq org-agenda-files '("~/tasks.org"))
 #+END_SRC
 * All the icons
-# #+BEGIN_SRC emacs-lisp
-#   (use-package all-the-icons
-#     :ensure t
-#     :init 
-#     )
-# #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons
+    :ensure t
+    :init 
+    )
+#+END_SRC
