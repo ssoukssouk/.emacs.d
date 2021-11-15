@@ -1,4 +1,7 @@
 * Use package
+  :LOGBOOK:
+  CLOCK: [2021-11-06 Sat 12:09]--[2021-11-06 Sat 12:10] =>  0:01
+  :END:
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 
@@ -248,11 +251,6 @@
       "a" '(:ignore t :which-key "Applications")
       "ar" 'ranger
       "ad" 'dired
-
-      ;; Subtree
-      "s" '(:ignore t :which-key "Subtree")
-      "sn" 'org-narrow-to-subtree
-      "sw" 'widen
 
       ;; bind to simple key press
       "b"   '(:ignore t :which-key "buffers")

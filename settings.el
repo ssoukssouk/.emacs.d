@@ -34,7 +34,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
- (setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
+ (setq org-clock-sound "~/.emacs.d/downloads/ding.wav" )
  ;; (setq org-clock-sound t)
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
@@ -221,6 +221,11 @@
     "a" '(:ignore t :which-key "Applications")
     "ar" 'ranger
     "ad" 'dired
+
+    ;; Subtree
+    "s" '(:ignore t :which-key "Subtree")
+    "sn" 'org-narrow-to-subtree
+    "sw" 'widen
 
     ;; bind to simple key press
     "b"   '(:ignore t :which-key "buffers")
