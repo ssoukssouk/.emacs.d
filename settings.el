@@ -20,7 +20,6 @@
 (require 'org)
 
 (custom-set-variables
- ;;(setq org-clock-sound "~/Téléchargements/ding.wav")
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
@@ -34,11 +33,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
- (setq org-clock-sound "~/.emacs.d/downloads/ding.wav" )
- ;; (setq org-clock-sound t)
+ (setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+(setq user-emacs-directory (expand-file-name "~/.emacs.d/bin/emacs/")
       url-history-file (expand-file-name "url/history" user-emacs-directory))
 
 ;; Use no-littering to automatically set common paths to the new user-emacs-directory
@@ -112,7 +110,7 @@
 
 (use-package doom-themes
   :ensure t
-  :init (load-theme 'doom-one t))
+  :init (load-theme 'wombat t))
 
 (use-package avy :ensure t
   :commands (avy-goto-word-1))
@@ -171,9 +169,6 @@
 
   (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
   (define-key evil-visual-state-map "t" 'evil-next-visual-line)
-
-  ;; (define-key evil-normal-state-map "S" 'evil-scroll-line-up)
-  ;; (define-key evil-normal-state-map "T" 'evil-scroll-line-down)
 
   (define-key evil-normal-state-map "T" 'scroll-half-page-up)
   (define-key evil-normal-state-map "S" 'scroll-half-page-down)
@@ -293,35 +288,32 @@
     "#"   '(comment-or-uncomment-region :which-key "comment")
     ))
 
-(use-package minions :ensure t
-  :hook (doom-modeline-mode . minions-mode))
+;; (use-package minions :ensure t
+  ;;   :hook (doom-modeline-mode . minions-mode))
 
-(use-package doom-modeline :ensure t
-  :after eshell     ;; Make sure it gets hooked after eshell
-  :hook (after-init . doom-modeline-init)
-  :custom-face
-  (mode-line ((t (:height 0.85))))
-  (mode-line-inactive ((t (:height 0.85))))
-  :custom
-  (doom-modeline-height 15)
-  (doom-modeline-bar-width 6)
-  (doom-modeline-lsp t)
-  (doom-modeline-github nil)
-  (doom-modeline-mu4e nil)
-  (doom-modeline-irc nil)
-  (doom-modeline-minor-modes t)
-  (doom-modeline-persp-name nil)
-  (doom-modeline-buffer-file-name-style 'truncate-except-project)
-  (doom-modeline-major-mode-icon nil))
+  (use-package doom-modeline :ensure t
+    :after eshell     ;; Make sure it gets hooked after eshell
+    :hook (after-init . doom-modeline-init)
+    :custom-face
+    (mode-line ((t (:height 0.85))))
+    (mode-line-inactive ((t (:height 0.85))))
+    :custom
+    (doom-modeline-height 15)
+    (doom-modeline-bar-width 6)
+    (doom-modeline-lsp t)
+    (doom-modeline-github nil)
+    (doom-modeline-mu4e nil)
+    (doom-modeline-irc nil)
+    (doom-modeline-minor-modes t)
+    (doom-modeline-persp-name nil)
+    (doom-modeline-buffer-file-name-style 'truncate-except-project)
+    (doom-modeline-major-mode-icon nil))
+(setq doom-modeline-icon nil)
 
 (use-package undo-tree :ensure t
     :init
     (global-undo-tree-mode 1))
-	 ;; (general-define-key 
-	 ;; :keymaps 'undo-tree-mode-map
-	 ;; "s" 'undo-tree-undo
-	 ;; "t" 'undo-tree-redo
-	 ;; )
+
   (use-package beacon :ensure t
     :init
     (beacon-mode t)
@@ -337,16 +329,12 @@
     (interactive)
     (scroll-up (/ (window-body-height) 3)))
 
-  (use-package command-log-mode
-  :ensure t
-  :init (command-log-mode))
-  
 (defun toggle-transparency ()
   (interactive)
   (let ((alpha (frame-parameter nil 'alpha)))
     (if (eq
      (if (numberp alpha)
-         alpha
+	 alpha
        (cdr alpha)) ; may also be nil
      100)
     (set-frame-parameter nil 'alpha '(85 . 50))
@@ -372,25 +360,24 @@
 )
 
 (use-package org-bullets
-:ensure t)
-(org-bullets-mode 1)
-     (general-define-key 
-     :states '(normal visual emacs)
-     :prefix ","
+ :ensure t)
+ (org-bullets-mode 1)
+      (general-define-key 
+      :states '(normal visual emacs)
+      :prefix ","
 
-     "e" '(org-end-of-subtree :which-key "end-subtree")
-     "h" '(outline-up-heading :which-key "prev-heading")
+      "e" '(org-end-of-subtree :which-key "end-subtree")
+      "h" '(outline-up-heading :which-key "prev-heading")
 
-     "i" '(:ignore t :which-key "insert")
-     "it" '(org-time-stamp :which-key "timestamp")
-     "is" '(org-insert-heading-respect-content :which-key "heading")
-     "il" '(org-insert-link :which-key "link")
+      "i" '(:ignore t :which-key "insert")
+      "it" '(org-time-stamp :which-key "timestamp")
+      "is" '(org-insert-heading-respect-content :which-key "heading")
+      "il" '(org-insert-link :which-key "link")
 
-     "o" '(:ignore t :which-key "org")
-     "oc" '(org-toggle-checkbox :which-key "check")
-     "oa" '(org-agenda :which-key "agenda")
-     "os" '(org-schedule :which-key "schedule")
-)
-
+      "o" '(:ignore t :which-key "org")
+      "oc" '(org-toggle-checkbox :which-key "check")
+      "oa" '(org-agenda :which-key "agenda")
+      "os" '(org-schedule :which-key "schedule")
+ )
 (setq org-log-done nil)
 (setq org-agenda-files '("~/tasks.org"))
