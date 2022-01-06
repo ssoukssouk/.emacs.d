@@ -39,7 +39,7 @@
    ;; If there is more than one, they won't work right.
    )
   (setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
-  (setq display-line-numbers 'relative)
+
 #+END_SRC
 * Nettoyage .emacs.d
 #+BEGIN_SRC emacs-lisp
@@ -176,7 +176,7 @@
 * Evil
 #+BEGIN_SRC emacs-lisp
 
-;;Exit insert by pressing  and then j quickly
+  ;;Exit insert mode by pressing  and then j quickly
   (use-package key-chord :ensure t)
   (require 'key-chord)
   (key-chord-mode 1)
@@ -282,15 +282,11 @@
       "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
       "tt" '(toggle-transparency :which-key "transparancy")
       "tx" '(hydra-text-scale/body :which-key "scale text")
-      "tl" '(display-line-numbers-mode :which-key "linum")
 
       ;; macros
       "m"  '(:ignore t :which-key "macros")
       "ms" 'weekly-schedule
       "mj" 'archive-jour
-      "mt" 'gotoday
-      "ml" 'listecocher
-
 
       ;;quit
       "q"  '(:ignore q :which-key "quit")
@@ -438,11 +434,4 @@
 
 (fset 'archive-jour
    (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([1 134217848 111 114 103 32 100 101 109 111 116 101 32 115 117 98 116 114 101 101 return 115 tab 116] 0 "%d")) arg)))
-
-(fset 'gotoday
-   [?g ?g ?O escape ?, ?i ?t return ?d ?d ?/ ?\C-y escape])
-
-(fset 'listecocher
-   [?i ?- ?  ?  escape ?\C-q ?1 ?3 ?3 return ?i ?i backspace ?  ?  escape ?\C-q ?1 ?3 ?5 return ?o escape])
-
 #+END_SRC

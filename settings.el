@@ -33,7 +33,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
- (setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
+(setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
+(setq display-line-numbers 'relative)
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.emacs.d/bin/emacs/")
@@ -53,11 +54,11 @@
 (setq delete-old-versions -1 )		; delete excess backup versions silently
 (setq version-control t )		; use version control
 (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
-(setq kept-old-versions 2 )	;number of oldest versions to keep when a new numbered backup is made
-(setq kept-new-versions 2 ) ;number of newest versions to keep when a new numbered backup is made. Includes the new backup.
-(setq backup-directory-alist `(("." . "~/.emacs.d/tmp/backups")) ) ; which directory to put backups file
-;;(setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/auto-save-list/" t)) ) ;transform backups file name
+;; (setq kept-old-versions 2 )	;number of oldest versions to keep when a new numbered backup is made
+;; (setq kept-new-versions 2 ) ;number of newest versions to keep when a new numbered backup is made. Includes the new backup.
+;; (setq backup-directory-alist `(("." . "~/.emacs.d/tmp/backups")) ) ; which directory to put backups file
+;; (setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
+;; (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/auto-save-list/" t)) ) ;transform backups file name
 
 ;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
 (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
@@ -99,6 +100,7 @@
 ("t" text-scale-increase "in")
 ("s" text-scale-decrease "out")
 ("e" nil "finished" :exit t))
+(fset 'yes-or-no-p  'y-or-n-p)
 
 (use-package doom-modeline
   :ensure t
@@ -110,7 +112,13 @@
 
 (use-package doom-themes
   :ensure t
-  :init (load-theme 'wombat t))
+  :init (load-theme 'doom-gruvbox t))
+
+;; (use-package cycle-themes
+;;   :ensure t
+;;   :init (setq cycle-themes-theme-list
+;;           '(doom-Iosvkem doom-gruvbox doom-dracula))
+;;   :config (cycle-themes-mode))
 
 (use-package avy :ensure t
   :commands (avy-goto-word-1))
@@ -146,49 +154,49 @@
      "e" 'ranger-toggle-mark
      )
 
-;;Exit insert mode by pressing  and then j quickly
-(use-package key-chord :ensure t)
-(require 'key-chord)
-(key-chord-mode 1)
+;;Exit insert by pressing  and then j quickly
+  (use-package key-chord :ensure t)
+  (require 'key-chord)
+  (key-chord-mode 1)
 
-(use-package evil :ensure t
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  (setq evil-respect-visual-line-mode t)
-  (setq evil-undo-system 'undo-tree)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-  (evil-set-leader nil (kbd "SPC"))
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
-  (define-key evil-normal-state-map "t" 'evil-next-visual-line)
+  (use-package evil :ensure t
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump nil)
+    (setq evil-respect-visual-line-mode t)
+    (setq evil-undo-system 'undo-tree)
+    :config
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+    (evil-set-leader nil (kbd "SPC"))
+    ;; Use visual line motions even outside of visual-line-mode buffers
+    (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
+    (define-key evil-normal-state-map "t" 'evil-next-visual-line)
+  
+    (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
+    (define-key evil-visual-state-map "t" 'evil-next-visual-line)
 
-  (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
-  (define-key evil-visual-state-map "t" 'evil-next-visual-line)
+    (define-key evil-normal-state-map "T" 'scroll-half-page-up)
+    (define-key evil-normal-state-map "S" 'scroll-half-page-down)
 
-  (define-key evil-normal-state-map "T" 'scroll-half-page-up)
-  (define-key evil-normal-state-map "S" 'scroll-half-page-down)
+    (define-key evil-normal-state-map "r" 'evil-forward-char)
+    (define-key evil-normal-state-map "c" 'evil-backward-char)
 
-  (define-key evil-normal-state-map "r" 'evil-forward-char)
-  (define-key evil-normal-state-map "c" 'evil-backward-char)
+    (define-key evil-normal-state-map "é" 'evil-forward-word-begin)
+    (define-key evil-normal-state-map "e" 'evil-forward-word-end)
+    (define-key evil-normal-state-map "b" 'evil-backward-word-begin)
+    (define-key evil-normal-state-map "h" 'evil-replace)
 
-  (define-key evil-normal-state-map "é" 'evil-forward-word-begin)
-  (define-key evil-normal-state-map "e" 'evil-forward-word-end)
-  (define-key evil-normal-state-map "b" 'evil-backward-word-begin)
-  (define-key evil-normal-state-map "h" 'evil-replace)
+    (define-key ranger-mode-map "t" 'ranger-next-file)
+    (define-key ranger-mode-map "s" 'ranger-prev-file)
+    (define-key ranger-mode-map "c" 'ranger-up-directory)
+    (define-key ranger-mode-map "r" 'ranger-find-file)
+  )
 
-  (define-key ranger-mode-map "t" 'ranger-next-file)
-  (define-key ranger-mode-map "s" 'ranger-prev-file)
-  (define-key ranger-mode-map "c" 'ranger-up-directory)
-  (define-key ranger-mode-map "r" 'ranger-find-file)
-)
-
-(setq key-chord-two-keys-delay 0.6)
-(key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
+  (setq key-chord-two-keys-delay 0.6)
+  (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
 
 (use-package which-key :ensure t)
 (require 'which-key)
@@ -249,6 +257,15 @@
     "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
     "tt" '(toggle-transparency :which-key "transparancy")
     "tx" '(hydra-text-scale/body :which-key "scale text")
+    "tl" '(display-line-numbers-mode :which-key "linum")
+
+    ;; macros
+    "m"  '(:ignore t :which-key "macros")
+    "ms" 'weekly-schedule
+    "mj" 'archive-jour
+    "mt" 'gotoday
+    "ml" 'listecocher
+
 
     ;;quit
     "q"  '(:ignore q :which-key "quit")
@@ -341,43 +358,53 @@
       (set-frame-parameter nil 'alpha '(100 . 100)))))
 
 (use-package dashboard
-:ensure t
-:init
-(progn
-   (setq dashboard-items '((recents  . 5)
-		      (bookmarks . 5)))
-   (setq dashboard-center-content t)
-;; (setq dashboard-startup-banner 'logo)
-
-
-   (setq dashboard-startup-banner 'logo)
-   (setq dashboard-set-heading-icons nil)
-   (setq dashboard-set-file-icons nil)
-   (setq dashboard-show-shortcuts nil)
-)
-:config
-(dashboard-setup-startup-hook)
-)
+  :ensure t
+  :init
+  (progn
+    (setq dashboard-items '((recents  . 5)
+			    (bookmarks . 5)))
+    (setq dashboard-center-content t)
+    (setq dashboard-startup-banner 'logo)
+    (setq dashboard-set-heading-icons nil)
+    (setq dashboard-set-file-icons nil)
+    (setq dashboard-show-shortcuts nil)
+    )
+  :config
+  (dashboard-setup-startup-hook)
+  )
 
 (use-package org-bullets
- :ensure t)
- (org-bullets-mode 1)
-      (general-define-key 
-      :states '(normal visual emacs)
-      :prefix ","
+  :ensure t)
+(org-bullets-mode 1)
+(general-define-key 
+ :states '(normal visual emacs)
+ :prefix ","
 
-      "e" '(org-end-of-subtree :which-key "end-subtree")
-      "h" '(outline-up-heading :which-key "prev-heading")
+ "e" '(org-end-of-subtree :which-key "end-subtree")
+ "h" '(outline-up-heading :which-key "prev-heading")
 
-      "i" '(:ignore t :which-key "insert")
-      "it" '(org-time-stamp :which-key "timestamp")
-      "is" '(org-insert-heading-respect-content :which-key "heading")
-      "il" '(org-insert-link :which-key "link")
+ "i" '(:ignore t :which-key "insert")
+ "it" '(org-time-stamp :which-key "timestamp")
+ "is" '(org-insert-heading-respect-content :which-key "heading")
+ "il" '(org-insert-link :which-key "link")
 
-      "o" '(:ignore t :which-key "org")
-      "oc" '(org-toggle-checkbox :which-key "check")
-      "oa" '(org-agenda :which-key "agenda")
-      "os" '(org-schedule :which-key "schedule")
+ "o" '(:ignore t :which-key "org")
+ "oc" '(org-toggle-checkbox :which-key "check")
+ "oa" '(org-agenda :which-key "agenda")
+ "os" '(org-schedule :which-key "schedule")
  )
 (setq org-log-done nil)
 (setq org-agenda-files '("~/tasks.org"))
+
+(fset 'weekly-schedule
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([121 121 112 112 112 112 112 112 112 114 114 114 114 114 114 114 114 114 114 114 114 S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up up S-up S-up S-up S-up S-up S-up up S-up S-up S-up S-up S-up up S-up S-up S-up S-up up S-up S-up S-up up S-up S-up up S-up 111 1 backspace backspace backspace backspace escape 1 105 42 42 42 32] 0 "%d")) arg)))
+
+
+(fset 'archive-jour
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([1 134217848 111 114 103 32 100 101 109 111 116 101 32 115 117 98 116 114 101 101 return 115 tab 116] 0 "%d")) arg)))
+
+(fset 'gotoday
+   [?g ?g ?O escape ?, ?i ?t return ?d ?d ?/ ?\C-y escape])
+
+(fset 'listecocher
+   [?i ?- ?  ?  escape ?\C-q ?1 ?3 ?3 return ?i ?i backspace ?  ?  escape ?\C-q ?1 ?3 ?5 return ?o escape])
