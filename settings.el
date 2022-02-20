@@ -193,6 +193,16 @@
     (define-key ranger-mode-map "s" 'ranger-prev-file)
     (define-key ranger-mode-map "c" 'ranger-up-directory)
     (define-key ranger-mode-map "r" 'ranger-find-file)
+
+    (define-key evil-insert-state-map (kbd "M-«") "<")
+    (define-key evil-insert-state-map (kbd "M-»") ">")
+    (define-key evil-insert-state-map (kbd "M-(") "[")
+    (define-key evil-insert-state-map (kbd "M-)") "]")
+    (define-key evil-insert-state-map (kbd "M-b") "|")
+    (define-key evil-insert-state-map (kbd "M-ê") "\\")
+    (define-key evil-insert-state-map (kbd "M-à") "/")
+    (define-key evil-insert-state-map (kbd "M-y") "{")
+    (define-key evil-insert-state-map (kbd "M-x") "}")
   )
 
   (setq key-chord-two-keys-delay 0.6)
@@ -265,7 +275,7 @@
     "mj" 'archive-jour
     "mt" 'gotoday
     "ml" 'listecocher
-
+    "md" 'flush-empty-lines
 
     ;;quit
     "q"  '(:ignore q :which-key "quit")
@@ -410,3 +420,6 @@
 
 (fset 'listecocher
    [?i ?- ?  ?  escape ?\C-q ?1 ?3 ?3 return ?i ?i backspace ?  ?  escape ?\C-q ?1 ?3 ?5 return ?o escape])
+
+(fset 'flush-empty-lines
+   [?\M-x ?f ?l ?u ?s ?h ?  ?l ?i ?n ?e ?s return ?^ ?$ return])
