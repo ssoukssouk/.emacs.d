@@ -114,26 +114,26 @@
   ("e" nil "finished" :exit t))
   (fset 'yes-or-no-p  'y-or-n-p)
 #+END_SRC
- Themes
+* Themes
 #+BEGIN_SRC emacs-lisp
-    (use-package doom-modeline
-      :ensure t
-      :init (doom-modeline-mode 1)
-      (setq doom-modeline-height 25)
-      (setq doom-modeline-major-mode-icons nil)
-      (setq doom-modeline-major-mode-icons nil)
-    )
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1)
+    (setq doom-modeline-height 25)
+    (setq doom-modeline-major-mode-icons nil)
+    (setq doom-modeline-major-mode-icons nil)
+  )
 
-    (use-package doom-themes
-      :ensure t
-      :init (load-theme 'doom-gruvbox t))
+  (use-package doom-themes
+    :ensure t
+    :init (load-theme 'doom-gruvbox t))
 
-    (use-package cycle-themes
-       :ensure t
-       :init (setq cycle-themes-theme-list
-              '(doom-gruvbox doom-dracula))
-       :config (cycle-themes-mode))
-  
+  (use-package cycle-themes)
+    ;; :ensure t
+    ;; :init (setq cycle-themes-theme-list
+    ;;         '(doom-gruvbox doom-dracula))
+    ;; :config (cycle-themes-mode))
+
 #+END_SRC
 * General
 #+BEGIN_SRC emacs-lisp
@@ -215,16 +215,6 @@
     (define-key ranger-mode-map "s" 'ranger-prev-file)
     (define-key ranger-mode-map "c" 'ranger-up-directory)
     (define-key ranger-mode-map "r" 'ranger-find-file)
-
-    (define-key evil-insert-state-map (kbd "M-«") "<")
-    (define-key evil-insert-state-map (kbd "M-»") ">")
-    (define-key evil-insert-state-map (kbd "M-(") "[")
-    (define-key evil-insert-state-map (kbd "M-)") "]")
-    (define-key evil-insert-state-map (kbd "M-b") "|")
-    (define-key evil-insert-state-map (kbd "M-ê") "\\")
-    (define-key evil-insert-state-map (kbd "M-à") "/")
-    (define-key evil-insert-state-map (kbd "M-y") "{")
-    (define-key evil-insert-state-map (kbd "M-x") "}")
   )
 
   (setq key-chord-two-keys-delay 0.6)
@@ -420,8 +410,6 @@
   (use-package org-bullets
     :ensure t)
   (org-bullets-mode 1)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
   (general-define-key 
    :states '(normal visual emacs)
    :prefix ","

@@ -114,11 +114,11 @@
   :ensure t
   :init (load-theme 'doom-gruvbox t))
 
-;; (use-package cycle-themes
-;;   :ensure t
-;;   :init (setq cycle-themes-theme-list
-;;           '(doom-Iosvkem doom-gruvbox doom-dracula))
-;;   :config (cycle-themes-mode))
+(use-package cycle-themes
+   :ensure t
+   :init (setq cycle-themes-theme-list
+          '(doom-gruvbox doom-dracula))
+   :config (cycle-themes-mode))
 
 (use-package avy :ensure t
   :commands (avy-goto-word-1))
@@ -162,7 +162,7 @@
   (use-package evil :ensure t
     :init
     (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
+    (setq evil-want-keybinding t)
     (setq evil-want-C-u-scroll t)
     (setq evil-want-C-i-jump nil)
     (setq evil-respect-visual-line-mode t)
@@ -376,6 +376,8 @@
 (use-package org-bullets
   :ensure t)
 (org-bullets-mode 1)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
 (general-define-key 
  :states '(normal visual emacs)
  :prefix ","
