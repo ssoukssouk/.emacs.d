@@ -226,7 +226,6 @@
     (define-key evil-insert-state-map (kbd "M-y") "{")
     (define-key evil-insert-state-map (kbd "M-x") "}")
     (define-key evil-insert-state-map (kbd "M-p") "&")
-    (define-key evil-insert-state-map (kbd "M-n") "~")
   )
 
   (setq key-chord-two-keys-delay 0.6)

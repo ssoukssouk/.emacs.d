@@ -203,6 +203,8 @@
     (define-key evil-insert-state-map (kbd "M-à") "/")
     (define-key evil-insert-state-map (kbd "M-y") "{")
     (define-key evil-insert-state-map (kbd "M-x") "}")
+    (define-key evil-insert-state-map (kbd "M-p") "&")
+    (define-key evil-insert-state-map (kbd "M-n") "~")
   )
 
   (setq key-chord-two-keys-delay 0.6)
@@ -268,6 +270,7 @@
     "tt" '(toggle-transparency :which-key "transparancy")
     "tx" '(hydra-text-scale/body :which-key "scale text")
     "tl" '(display-line-numbers-mode :which-key "linum")
+    "tc" '(toggle-truncate-lines :which-key "truncate-lines")
 
     ;; macros
     "m"  '(:ignore t :which-key "macros")
@@ -300,6 +303,7 @@
     "xk"  '(describe-package :which-key "descr-pack")
     "xp"  '(check-parens :which-key "check-parens")
     "xc"  '(clm/toggle-command-log-buffer :which-key "cmd-log")
+    "xr"  '(query-replace :which-key "searchAndReplace")
 
     ;;dashboard
     "d"   '(:ignore t :which-key "dash")
