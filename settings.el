@@ -66,7 +66,7 @@
 (setq coding-system-for-read 'utf-8 )	; use utf-8 by default
 ;;(setq coding-system-for-write 'utf-8 )
 ;;(setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
-(setq default-fill-column 80)		; toggle wrapping text at the 80th character
+;;(setq default-fill-column 80)		; toggle wrapping text at the 80th character
 (setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
@@ -91,17 +91,6 @@
 (smooth-scrolling-mode t)
 )
 
-;;modification simple de la taille tu texte
-(use-package hydra
-:ensure t)
-
-(defhydra hydra-text-scale (:timeout 4)
-"scale text"
-("t" text-scale-increase "in")
-("s" text-scale-decrease "out")
-("e" nil "finished" :exit t))
-(fset 'yes-or-no-p  'y-or-n-p)
-
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
@@ -112,12 +101,12 @@
 
 (use-package doom-themes
   :ensure t
-  :init (load-theme 'doom-gruvbox t))
+  :init (load-theme 'doom-old-hope t))
 
 (use-package cycle-themes
    :ensure t
    :init (setq cycle-themes-theme-list
-          '(doom-gruvbox doom-dracula))
+          '('doom-one 'doom-molokai 'doom-snazzy 'doom-old-hope 'doom-henna 'doom-peacock))
    :config (cycle-themes-mode))
 
 (use-package which-key
@@ -146,7 +135,7 @@
  "." '(counsel-find-file :which-key "find file")
  "," '(counsel-recentf :which-key "recent files")
  "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
- "SPC" '(avy-goto-word-or-subword-1  :which-key "go to char")
+ "SPC" '(avy-goto-char  :which-key "go to char")
  "x" '(counsel-M-x :which-key "M-x")
  "q" '(save-buffers-kill-terminal :which-key "quit emacs")
  "r" '(jump-to-register :which-key "registers")
@@ -174,8 +163,8 @@
 "b" '(nil :which-key "buffer")
 "bb" '(counsel-switch-buffer :which-key "switch buffers")
 "bd" '(evil-delete-buffer :which-key "delete buffer")
-"bs" '(jib/switch-to-scratch-buffer :which-key "scratch buffer")
-"bm" '(jib/kill-other-buffers :which-key "kill other buffers")
+;;"bs" '(jib/switch-to-scratch-buffer :which-key "scratch buffer")
+;;"bm" '(jib/kill-other-buffers :which-key "kill other buffers")
 "bi" '(clone-indirect-buffer  :which-key "indirect buffer")
 "br" '(revert-buffer :which-key "revert buffer")
 "bn" '(evil-buffer-new :which-key "new")
@@ -190,7 +179,7 @@
 "fs" '(save-buffer :which-key "save buffer")
 "fS" '(evil-write-all :which-key "save all buffers")
 "fo" '(reveal-in-osx-finder :which-key "reveal in finder")
-"fO" '(jib/open-buffer-file-mac :which-key "open buffer file")
+;; "fO" '(jib/open-buffer-file-mac :which-key "open buffer file")
 
 ;; macros
 "m"  '(:ignore t :which-key "macros")
@@ -247,7 +236,7 @@
 
 ;; Windows
 "é" '(nil :which-key "window")
-"ém" '(jib/toggle-maximize-buffer :which-key "maximize buffer")
+;;"ém" '(jib/toggle-maximize-buffer :which-key "maximize buffer")
 "éN" '(make-frame :which-key "make frame")
 "éd" '(evil-window-delete :which-key "delete window")
 "é-" '(split-window-vertically :which-key "split below")
@@ -285,10 +274,10 @@
 "if" '(jb-hydra-variable-fonts/body :which-key "mixed-pitch face")
 "ié" '(jb-hydra-window/body :which-key "window control")
 
-;;(define-key ranger-mode-map "t" 'ranger-next-file)
-;;(define-key ranger-mode-map "s" 'ranger-prev-file)
-;;(define-key ranger-mode-map "c" 'ranger-up-directory)
-;;(define-key ranger-mode-map "r" 'ranger-find-file)
+;(define-key ranger-mode-map "t" 'ranger-next-file)
+;(define-key ranger-mode-map "s" 'ranger-prev-file)
+;(define-key ranger-mode-map "c" 'ranger-up-directory)
+;(define-key ranger-mode-map "r" 'ranger-find-file)
 
 ;; Subtree
   "s" '(:ignore t :which-key "Subtree")
@@ -383,6 +372,7 @@
   "C-S-e" 'evil-end-of-line
   "C-n" 'evil-next-visual-line
   "C-p" 'evil-previous-visual-line
+  )
 
    ;;(define-key evil-insert-state-map (kbd "M-«") "<")
    ;;(define-key evil-insert-state-map (kbd "M-»") ">")
@@ -396,114 +386,6 @@
    ;;(define-key evil-insert-state-map (kbd "M-p") "&")
    ;;(define-key evil-insert-state-map (kbd "M-n") "~")
    ;;(define-key evil-insert-state-map (kbd "M-e") "€")
-  )
-
-(use-package hydra
-  :defer t)
-
-;; This Hydra lets me swich between variable pitch fonts. It turns off mixed-pitch 
-;; WIP
-(defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 0)
-                                     :post (mixed-pitch-mode 1))
-  ("t" (set-face-attribute 'variable-pitch nil :family "Times New Roman" :height 160) "Times New Roman")
-  ("g" (set-face-attribute 'variable-pitch nil :family "EB Garamond" :height 160 :weight 'normal) "EB Garamond")
-  ;; ("r" (set-face-attribute 'variable-pitch nil :font "Roboto" :weight 'medium :height 160) "Roboto")
-  ("n" (set-face-attribute 'variable-pitch nil :slant 'normal :weight 'normal :height 160 :width 'normal :foundry "nil" :family "Nunito") "Nunito")
-  )
-
-(defhydra jb-hydra-theme-switcher (:hint nil)
-  "
-     Dark                ^Light^
-----------------------------------------------
-_1_ one              _z_ one-light 
-_2_ vivendi          _x_ operandi
-_3_ molokai          _c_ jake-plain
-_4_ snazzy           _v_ flatwhite
-_5_ old-hope         _b_ opera-light 
-_6_ henna                ^
-_7_ kaolin-galaxy        ^
-_8_ peacock              ^
-_9_ jake-plain-dark      ^
-_0_ monokai-machine      ^
-_-_ xcode                ^
-_q_ quit                 ^
-^                        ^
-"
-
-  ;; Dark
-  ("1" (jib/load-theme 'doom-one) "one")
-  ("2" (jib/load-theme 'modus-vivendi) "modus-vivendi")
-  ("3" (jib/load-theme 'doom-molokai) "molokai")
-  ("4" (jib/load-theme 'doom-snazzy) "snazzy")
-  ("5" (jib/load-theme 'doom-old-hope) "old-hope")
-  ("6" (jib/load-theme 'doom-henna) "henna")
-  ("7" (jib/load-theme 'kaolin-galaxy) "kaolin-galaxy")
-  ("8" (jib/load-theme 'doom-peacock) "peacock")
-  ("9" (jib/load-theme 'jake-doom-plain-dark) "jake-plain-dark")
-  ("0" (jib/load-theme 'doom-monokai-machine) "monokai-machine")
-  ("-" (jib/load-theme 'doom-xcode) "xcode")
-
-  ;; Light
-  ("z" (jib/load-theme 'doom-one-light) "one-light")
-  ("x" (jib/load-theme 'modus-operandi) "modus-operandi")
-  ("c" (jib/load-theme 'jake-doom-plain) "jake-plain")
-  ("v" (jib/load-theme 'doom-flatwhite) "flatwhite")
-  ("b" (jib/load-theme 'doom-opera-light) "opera-light")
-  ("q" nil))
-
-;; I think I need to initialize windresize to use its commands
-;;(windresize)
-;;(windresize-exit)
-
-(use-package windresize)
-
-;; All-in-one window managment. Makes use of some custom functions,
-;; `ace-window' (for swapping), `windmove' (could probably be replaced
-;; by evil?) and `windresize'.
-;; inspired by https://github.com/jmercouris/configuration/blob/master/.emacs.d/hydra.el#L86
-(defhydra jb-hydra-window (:hint nil)
-   "
-Movement      ^Split^            ^Switch^        ^Resize^
-----------------------------------------------------------------
-_M-<left>_  <   _/_ vertical      _b_uffer        _<left>_  <
-_M-<right>_ >   _-_ horizontal    _f_ind file     _<down>_  ↓
-_M-<up>_    ↑   _m_aximize        _s_wap          _<up>_    ↑
-_M-<down>_  ↓   _c_lose           _[_backward     _<right>_ >
-_q_uit          _e_qualize        _]_forward     ^
-^               ^               _K_ill         ^
-^               ^                  ^             ^
-"
-   ;; Movement
-   ("M-<left>" windmove-left)
-   ("M-<down>" windmove-down)
-   ("M-<up>" windmove-up)
-   ("M-<right>" windmove-right)
-
-   ;; Split/manage
-   ("-" jib/split-window-vertically-and-switch)
-   ("/" jib/split-window-horizontally-and-switch)
-   ("c" evil-window-delete)
-   ("d" evil-window-delete)
-   ("m" delete-other-windows)
-   ("e" balance-windows)
-
-   ;; Switch
-   ("b" counsel-switch-buffer)
-   ("f" counsel-find-file)
-   ("P" project-find-file)
-   ("s" ace-swap-window)
-   ("[" previous-buffer)
-   ("]" next-buffer)
-   ("K" kill-this-buffer)
-
-   ;; Resize
-   ("<left>" windresize-left)
-   ("<right>" windresize-right)
-   ("<down>" windresize-down)
-   ("<up>" windresize-up)
-
-
-   ("q" nil))
 
 (use-package ranger :ensure t)
 (setq ranger-show-hidden t) 
@@ -527,10 +409,10 @@ _q_uit          _e_qualize        _]_forward     ^
      "r" 'ranger-show-drives
      "q" 'ranger-close
      )
-     (general-define-key 
-     :keymaps 'ranger-mode-map
-     "e" 'ranger-toggle-mark
-     )
+     ;;(general-define-key 
+     ;;:keymaps 'ranger-mode-map
+     ;;"e" 'ranger-toggle-mark
+     ;;)
 
 (use-package evil
   :init
@@ -574,6 +456,120 @@ _q_uit          _e_qualize        _]_forward     ^
   (key-chord-mode 1)
   (setq key-chord-two-keys-delay 0.6)
   (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
+
+(use-package hydra
+   :defer t)
+
+ ;; This Hydra lets me swich between variable pitch fonts. It turns off mixed-pitch 
+ ;; WIP
+ (defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 0)
+				      :post (mixed-pitch-mode 1))
+   ("t" (set-face-attribute 'variable-pitch nil :family "Times New Roman" :height 160) "Times New Roman")
+   ("g" (set-face-attribute 'variable-pitch nil :family "EB Garamond" :height 160 :weight 'normal) "EB Garamond")
+   ;; ("r" (set-face-attribute 'variable-pitch nil :font "Roboto" :weight 'medium :height 160) "Roboto")
+   ("n" (set-face-attribute 'variable-pitch nil :slant 'normal :weight 'normal :height 160 :width 'normal :foundry "nil" :family "Nunito") "Nunito")
+   )
+
+ (defhydra jb-hydra-theme-switcher (:hint nil)
+   "
+      Dark                ^Light^
+ ----------------------------------------------
+ _1_ one              _z_ one-light 
+ _2_ vivendi          _x_ operandi
+ _3_ molokai          _c_ jake-plain
+ _4_ snazzy           _v_ flatwhite
+ _5_ old-hope         _b_ opera-light 
+ _6_ henna                ^
+ _7_ kaolin-galaxy        ^
+ _8_ peacock              ^
+ _9_ jake-plain-dark      ^
+ _0_ monokai-machine      ^
+ _-_ xcode                ^
+ _q_ quit                 ^
+ ^                        ^
+ "
+
+   ;; Dark
+   ("1" (load-theme 'doom-one) "one")
+   ("2" (load-theme 'modus-vivendi) "modus-vivendi")
+   ("3" (load-theme 'doom-molokai) "molokai")
+   ("4" (load-theme 'doom-snazzy) "snazzy")
+   ("5" (load-theme 'doom-old-hope) "old-hope")
+   ("6" (load-theme 'doom-henna) "henna")
+   ("7" (load-theme 'kaolin-galaxy) "kaolin-galaxy")
+   ("8" (load-theme 'doom-peacock) "peacock")
+   ("9" (load-theme 'jake-doom-plain-dark) "jake-plain-dark")
+   ("0" (load-theme 'doom-monokai-machine) "monokai-machine")
+   ("-" (load-theme 'doom-xcode) "xcode")
+
+   ;; Light
+   ("z" (load-theme 'doom-one-light) "one-light")
+   ("x" (load-theme 'modus-operandi) "modus-operandi")
+   ("c" (load-theme 'jake-doom-plain) "jake-plain")
+   ("v" (load-theme 'doom-flatwhite) "flatwhite")
+   ("b" (load-theme 'doom-opera-light) "opera-light")
+   ("q" nil))
+
+ ;; I think I need to initialize windresize to use its commands
+ ;;(windresize)
+ ;;(windresize-exit)
+
+ ;;(use-package windresize)
+
+ ;; All-in-one window managment. Makes use of some custom functions,
+ ;; `ace-window' (for swapping), `windmove' (could probably be replaced
+ ;; by evil?) and `windresize'.
+ ;; inspired by https://github.com/jmercouris/configuration/blob/master/.emacs.d/hydra.el#L86
+ ;;(defhydra jb-hydra-window (:hint nil)
+;;    "
+;; Movement      ^Split^            ^Switch^        ^Resize^
+;; ----------------------------------------------------------------
+;; _M-<left>_  <   _/_ vertical      _b_uffer        _<left>_  <
+;; _M-<right>_ >   _-_ horizontal    _f_ind file     _<down>_  ↓
+;; _M-<up>_    ↑   _m_aximize        _s_wap          _<up>_    ↑
+;; _M-<down>_  ↓   _c_lose           _[_backward     _<right>_ >
+;; _q_uit          _e_qualize        _]_forward     ^
+;; ^               ^               _K_ill         ^
+;; ^               ^                  ^             ^
+;; "
+    ;; Movement
+    ;;("M-<left>" windmove-left)
+    ;;("M-<down>" windmove-down)
+    ;;("M-<up>" windmove-up)
+    ;;("M-<right>" windmove-right)
+
+    ;; Split/manage
+    ;;("-" jib/split-window-vertically-and-switch)
+    ;;("/" jib/split-window-horizontally-and-switch)
+    ;;("c" evil-window-delete)
+    ;;("d" evil-window-delete)
+    ;;("m" delete-other-windows)
+    ;;("e" balance-windows)
+
+    ;; Switch
+    ;;("b" counsel-switch-buffer)
+    ;;("f" counsel-find-file)
+    ;;("P" project-find-file)
+    ;;("s" ace-swap-window)
+    ;;("[" previous-buffer)
+    ;;("]" next-buffer)
+    ;;("K" kill-this-buffer)
+
+    ;; Resize
+    ;;("<left>" windresize-left)
+    ;;("<right>" windresize-right)
+    ;;("<down>" windresize-down)
+    ;;("<up>" windresize-up)
+
+
+    ;;("q" nil))
+
+ (defhydra hydra-text-scale (:timeout 4)
+ "scale text"
+ ("t" text-scale-increase "in")
+ ("s" text-scale-decrease "out")
+ ("e" nil "finished" :exit t))
+ (fset 'yes-or-no-p  'y-or-n-p)
 
 (use-package undo-fu)
 

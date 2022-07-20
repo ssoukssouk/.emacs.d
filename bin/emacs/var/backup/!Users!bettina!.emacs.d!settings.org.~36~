@@ -1,6 +1,6 @@
 #+TITLE: Mehdi's Emacs Config
 :PROPERTIES:
-#+AUTHOR: Mehdi’s
+#+AUTHOR: Mehdi.s
 #+STARTUP: fold
 #+PROPERTY: header-args :results silent :tangle yes
 #+HTML_HEAD: <link rel="stylesheet" href="https://sandyuraz.com/styles/org.min.css">
@@ -8,16 +8,7 @@
 
 * Todo
 ** split window AND switch
-** cycle themes
-** installer les thèmes de jack
-** regarder les fonctions de jack
-*** split and switch
-*** les autres
-** insert mode carac spéciaux
-** open browser
-** régler la zone bizarre en fin de lignes c’est moche
 * Use package
-
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 
@@ -39,10 +30,9 @@
 (require 'use-package) ; guess what this one does too ?
 ;; (setq use-package-always-ensure t) ;; Cette commande permet d’éviter les ensure t
 (require 'org)
+
 #+END_SRC
-
 * Custom set variables
-
 #+BEGIN_SRC emacs-lisp
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
@@ -61,9 +51,7 @@
   (setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
   (setq display-line-numbers 'relative)
 #+END_SRC
-
-* Nettoyage .emacs. 
-
+* Nettoyage .emacs.d
 #+BEGIN_SRC emacs-lisp
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.emacs.d/bin/emacs/")
@@ -81,9 +69,7 @@
 (load custom-file t)
 
 #+END_SRC
-
 * Backups
-
 #+BEGIN_SRC emacs-lisp
   (setq delete-old-versions -1 )		; delete excess backup versions silently
   (setq version-control t )		; use version control
@@ -94,9 +80,7 @@
   ;; (setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
   ;; (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/auto-save-list/" t)) ) ;transform backups file name
 #+END_SRC
-
 * UI
-
 #+BEGIN_SRC emacs-lisp
   ;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
   (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
@@ -104,7 +88,7 @@
   (setq coding-system-for-read 'utf-8 )	; use utf-8 by default
   ;;(setq coding-system-for-write 'utf-8 )
   ;;(setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
-  ;;(setq default-fill-column 80)		; toggle wrapping text at the 80th character
+  (setq default-fill-column 80)		; toggle wrapping text at the 80th character
   (setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
   (scroll-bar-mode -1)        ; Disable visible scrollbar
   (tool-bar-mode -1)          ; Disable the toolbar
@@ -128,10 +112,19 @@
   :init
   (smooth-scrolling-mode t)
   )
+
+  ;;modification simple de la taille tu texte
+  (use-package hydra
+  :ensure t)
+
+  (defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("t" text-scale-increase "in")
+  ("s" text-scale-decrease "out")
+  ("e" nil "finished" :exit t))
+  (fset 'yes-or-no-p  'y-or-n-p)
 #+END_SRC
-
 * Themes
-
 #+BEGIN_SRC emacs-lisp
     (use-package doom-modeline
       :ensure t
@@ -143,18 +136,17 @@
 
     (use-package doom-themes
       :ensure t
-      :init (load-theme 'doom-old-hope t))
-      
+      :init (load-theme 'doom-gruvbox t))
+
     (use-package cycle-themes
        :ensure t
        :init (setq cycle-themes-theme-list
-              '('doom-one 'doom-molokai 'doom-snazzy 'doom-old-hope 'doom-henna 'doom-peacock))
+              '(doom-gruvbox doom-dracula))
        :config (cycle-themes-mode))
+  
 #+END_SRC
-
 * Clavier
 ** Which-Key
-
 #+BEGIN_SRC emacs-lisp 
   (use-package which-key
     :diminish which-key-mode
@@ -168,8 +160,8 @@
           which-key-min-display-lines 6
           which-key-max-display-columns nil))
 #+END_SRC
-
 ** General.el (main keybindings set here)
+[[https://github.com/noctuid/general.el][General.el]]
 
 #+BEGIN_SRC emacs-lisp 
   (use-package general)
@@ -181,7 +173,6 @@ it along with :keymaps 'override when you need to override other stuff
 
 *** SPC Leader Key
 **** Preamble
-
 #+BEGIN_SRC emacs-lisp 
     (general-define-key
      :states '(normal motion visual)
@@ -195,15 +186,13 @@ it along with :keymaps 'override when you need to override other stuff
      "." '(counsel-find-file :which-key "find file")
      "," '(counsel-recentf :which-key "recent files")
      "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
-     "SPC" '(avy-goto-char  :which-key "go to char")
+     "SPC" '(avy-goto-word-or-subword-1  :which-key "go to char")
      "x" '(counsel-M-x :which-key "M-x")
      "q" '(save-buffers-kill-terminal :which-key "quit emacs")
      "r" '(jump-to-register :which-key "registers")
      "c" 'org-capture
 #+END_SRC
-
 **** Application
-
 #+BEGIN_SRC emacs-lisp 
   ;; "Applications"
   "a" '(nil :which-key "applications")
@@ -223,23 +212,19 @@ it along with :keymaps 'override when you need to override other stuff
   "ar" 'ranger
   "ad" 'dired
 #+END_SRC
-
 **** Buffers
-
 #+BEGIN_SRC emacs-lisp 
   ;; Buffers
   "b" '(nil :which-key "buffer")
   "bb" '(counsel-switch-buffer :which-key "switch buffers")
   "bd" '(evil-delete-buffer :which-key "delete buffer")
-  ;;"bs" '(jib/switch-to-scratch-buffer :which-key "scratch buffer")
-  ;;"bm" '(jib/kill-other-buffers :which-key "kill other buffers")
+  "bs" '(jib/switch-to-scratch-buffer :which-key "scratch buffer")
+  "bm" '(jib/kill-other-buffers :which-key "kill other buffers")
   "bi" '(clone-indirect-buffer  :which-key "indirect buffer")
   "br" '(revert-buffer :which-key "revert buffer")
   "bn" '(evil-buffer-new :which-key "new")
 #+END_SRC
-
 **** Files
-
 #+BEGIN_SRC emacs-lisp 
   ;; Files
   "f" '(nil :which-key "files")
@@ -251,12 +236,10 @@ it along with :keymaps 'override when you need to override other stuff
   "fs" '(save-buffer :which-key "save buffer")
   "fS" '(evil-write-all :which-key "save all buffers")
   "fo" '(reveal-in-osx-finder :which-key "reveal in finder")
-  ;; "fO" '(jib/open-buffer-file-mac :which-key "open buffer file")
+  "fO" '(jib/open-buffer-file-mac :which-key "open buffer file")
 
 #+END_SRC
-
 **** Macros
-
 #+BEGIN_SRC emacs-lisp 
   ;; macros
   "m"  '(:ignore t :which-key "macros")
@@ -266,9 +249,7 @@ it along with :keymaps 'override when you need to override other stuff
   "ml" 'listecocher
   "md" 'flush-empty-lines
 #+END_SRC
-
 **** Help/Emacs
-
 #+BEGIN_SRC emacs-lisp 
   ;; Help/emacs
   "h" '(nil :which-key "help/emacs")
@@ -292,18 +273,14 @@ it along with :keymaps 'override when you need to override other stuff
   "hpi" 'package-install
   "hpd" 'package-delete
 #+END_SRC
-
 **** Text
-
 #+BEGIN_SRC emacs-lisp 
   ;; Help/emacs
   "x" '(nil :which-key "text")
   "xr" '(anzu-query-replace :which-key "find and replace")
   "xs" '(yas-insert-snippet :which-key "insert yasnippet")
 #+END_SRC
-
 **** Toggles/Visuals
-
 #+BEGIN_SRC emacs-lisp 
   ;; Toggles
   "t" '(nil :which-key "toggles")
@@ -323,13 +300,11 @@ it along with :keymaps 'override when you need to override other stuff
   "tx" '(hydra-text-scale/body :which-key "scale text")
   "tc" '(toggle-truncate-lines :which-key "truncate-lines")
 #+END_SRC
-
 **** Windows
-
 #+BEGIN_SRC emacs-lisp 
   ;; Windows
   "é" '(nil :which-key "window")
-  ;;"ém" '(jib/toggle-maximize-buffer :which-key "maximize buffer")
+  "ém" '(jib/toggle-maximize-buffer :which-key "maximize buffer")
   "éN" '(make-frame :which-key "make frame")
   "éd" '(evil-window-delete :which-key "delete window")
   "é-" '(split-window-vertically :which-key "split below")
@@ -344,9 +319,7 @@ it along with :keymaps 'override when you need to override other stuff
   "és"  'evil-window-vsplit
 
 #+END_SRC
-
 **** Jump
-
 #+BEGIN_SRC emacs-lisp 
   ;; Jump
   "j"   '(:ignore t :which-key "jump")
@@ -355,52 +328,40 @@ it along with :keymaps 'override when you need to override other stuff
   "jl"  '(avy-goto-line :which-key "jump to line")
 
 #+END_SRC
-
 **** Undotree
-
 #+BEGIN_SRC emacs-lisp 
    ;;undo-tree
    "u" '(:ignore u :which-key "undo")
    "ut" 'undo-tree-visualize
    "uq" 'undo-tree-visualizer-quit
 #+END_SRC
-
 **** Dashboard
-
 #+BEGIN_SRC emacs-lisp 
    ;;dashboard
    "d"   '(:ignore t :which-key "dash")
    "dk" 'dashboard-jump-to-bookmarks
    "dr" 'dashboard-jump-to-recent-files
 #+END_SRC
-
 **** Comment
-
 #+BEGIN_SRC emacs-lisp 
   ;; commenter une sélection
   "#"   '(comment-or-uncomment-region :which-key "comment")
 #+END_SRC
-
 **** Hydra
-
 #+BEGIN_SRC emacs-lisp 
   "i" '(nil :which-key "switch")
   "it" '(jb-hydra-theme-switcher/body :which-key "themes")
   "if" '(jb-hydra-variable-fonts/body :which-key "mixed-pitch face")
   "ié" '(jb-hydra-window/body :which-key "window control")
 #+END_SRC
-
 **** Ranger
-
 #+BEGIN_SRC emacs-lisp 
-     ;(define-key ranger-mode-map "t" 'ranger-next-file)
-     ;(define-key ranger-mode-map "s" 'ranger-prev-file)
-     ;(define-key ranger-mode-map "c" 'ranger-up-directory)
-     ;(define-key ranger-mode-map "r" 'ranger-find-file)
+     ;;(define-key ranger-mode-map "t" 'ranger-next-file)
+     ;;(define-key ranger-mode-map "s" 'ranger-prev-file)
+     ;;(define-key ranger-mode-map "c" 'ranger-up-directory)
+     ;;(define-key ranger-mode-map "r" 'ranger-find-file)
 #+END_SRC
-
 **** Subtree
-
 #+BEGIN_SRC emacs-lisp 
     ;; Subtree
     "s" '(:ignore t :which-key "Subtree")
@@ -408,9 +369,7 @@ it along with :keymaps 'override when you need to override other stuff
      "sw" 'widen
   ) ;; End SPC prefix block
 #+END_SRC
-
 *** All-mode keybindings
-
 Below are general keybindings for the various Evil modes.
 #+BEGIN_SRC emacs-lisp 
   ;; All-mode keymaps
@@ -465,9 +424,7 @@ Below are general keybindings for the various Evil modes.
     "C-w C-q" 'kill-this-buffer
    )
 #+END_SRC
-
 *** Non-insert mode keymaps
-
 #+BEGIN_SRC emacs-lisp 
   ;; Non-insert mode keymaps
   (general-def
@@ -494,9 +451,7 @@ Below are general keybindings for the various Evil modes.
     "h" 'evil-replace
     )
 #+END_SRC
-
 *** Insert mode keymaps (bringing Emacs binds to Evil)
-
 #+BEGIN_SRC emacs-lisp 
   ;; Insert keymaps
   ;; Many of these are emulating standard Emacs bindings in Evil insert mode, such as C-a, or C-e.
@@ -508,7 +463,6 @@ Below are general keybindings for the various Evil modes.
     "C-S-e" 'evil-end-of-line
     "C-n" 'evil-next-visual-line
     "C-p" 'evil-previous-visual-line
-    )
 
      ;;(define-key evil-insert-state-map (kbd "M-«") "<")
      ;;(define-key evil-insert-state-map (kbd "M-»") ">")
@@ -522,10 +476,121 @@ Below are general keybindings for the various Evil modes.
      ;;(define-key evil-insert-state-map (kbd "M-p") "&")
      ;;(define-key evil-insert-state-map (kbd "M-n") "~")
      ;;(define-key evil-insert-state-map (kbd "M-e") "€")
+    )
+#+END_SRC
+** Hydra
+Allows those cool 'transient' states -- press a key as many times as
+you want to run a function without doing anything else.
+#+BEGIN_SRC emacs-lisp 
+  (use-package hydra
+    :defer t)
+
+  ;; This Hydra lets me swich between variable pitch fonts. It turns off mixed-pitch 
+  ;; WIP
+  (defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 0)
+                                       :post (mixed-pitch-mode 1))
+    ("t" (set-face-attribute 'variable-pitch nil :family "Times New Roman" :height 160) "Times New Roman")
+    ("g" (set-face-attribute 'variable-pitch nil :family "EB Garamond" :height 160 :weight 'normal) "EB Garamond")
+    ;; ("r" (set-face-attribute 'variable-pitch nil :font "Roboto" :weight 'medium :height 160) "Roboto")
+    ("n" (set-face-attribute 'variable-pitch nil :slant 'normal :weight 'normal :height 160 :width 'normal :foundry "nil" :family "Nunito") "Nunito")
+    )
+
+  (defhydra jb-hydra-theme-switcher (:hint nil)
+    "
+       Dark                ^Light^
+  ----------------------------------------------
+  _1_ one              _z_ one-light 
+  _2_ vivendi          _x_ operandi
+  _3_ molokai          _c_ jake-plain
+  _4_ snazzy           _v_ flatwhite
+  _5_ old-hope         _b_ opera-light 
+  _6_ henna                ^
+  _7_ kaolin-galaxy        ^
+  _8_ peacock              ^
+  _9_ jake-plain-dark      ^
+  _0_ monokai-machine      ^
+  _-_ xcode                ^
+  _q_ quit                 ^
+  ^                        ^
+  "
+
+    ;; Dark
+    ("1" (jib/load-theme 'doom-one) "one")
+    ("2" (jib/load-theme 'modus-vivendi) "modus-vivendi")
+    ("3" (jib/load-theme 'doom-molokai) "molokai")
+    ("4" (jib/load-theme 'doom-snazzy) "snazzy")
+    ("5" (jib/load-theme 'doom-old-hope) "old-hope")
+    ("6" (jib/load-theme 'doom-henna) "henna")
+    ("7" (jib/load-theme 'kaolin-galaxy) "kaolin-galaxy")
+    ("8" (jib/load-theme 'doom-peacock) "peacock")
+    ("9" (jib/load-theme 'jake-doom-plain-dark) "jake-plain-dark")
+    ("0" (jib/load-theme 'doom-monokai-machine) "monokai-machine")
+    ("-" (jib/load-theme 'doom-xcode) "xcode")
+
+    ;; Light
+    ("z" (jib/load-theme 'doom-one-light) "one-light")
+    ("x" (jib/load-theme 'modus-operandi) "modus-operandi")
+    ("c" (jib/load-theme 'jake-doom-plain) "jake-plain")
+    ("v" (jib/load-theme 'doom-flatwhite) "flatwhite")
+    ("b" (jib/load-theme 'doom-opera-light) "opera-light")
+    ("q" nil))
+
+  ;; I think I need to initialize windresize to use its commands
+  ;;(windresize)
+  ;;(windresize-exit)
+
+  (use-package windresize)
+
+  ;; All-in-one window managment. Makes use of some custom functions,
+  ;; `ace-window' (for swapping), `windmove' (could probably be replaced
+  ;; by evil?) and `windresize'.
+  ;; inspired by https://github.com/jmercouris/configuration/blob/master/.emacs.d/hydra.el#L86
+  (defhydra jb-hydra-window (:hint nil)
+     "
+  Movement      ^Split^            ^Switch^        ^Resize^
+  ----------------------------------------------------------------
+  _M-<left>_  <   _/_ vertical      _b_uffer        _<left>_  <
+  _M-<right>_ >   _-_ horizontal    _f_ind file     _<down>_  ↓
+  _M-<up>_    ↑   _m_aximize        _s_wap          _<up>_    ↑
+  _M-<down>_  ↓   _c_lose           _[_backward     _<right>_ >
+  _q_uit          _e_qualize        _]_forward     ^
+  ^               ^               _K_ill         ^
+  ^               ^                  ^             ^
+  "
+     ;; Movement
+     ("M-<left>" windmove-left)
+     ("M-<down>" windmove-down)
+     ("M-<up>" windmove-up)
+     ("M-<right>" windmove-right)
+
+     ;; Split/manage
+     ("-" jib/split-window-vertically-and-switch)
+     ("/" jib/split-window-horizontally-and-switch)
+     ("c" evil-window-delete)
+     ("d" evil-window-delete)
+     ("m" delete-other-windows)
+     ("e" balance-windows)
+
+     ;; Switch
+     ("b" counsel-switch-buffer)
+     ("f" counsel-find-file)
+     ("P" project-find-file)
+     ("s" ace-swap-window)
+     ("[" previous-buffer)
+     ("]" next-buffer)
+     ("K" kill-this-buffer)
+
+     ;; Resize
+     ("<left>" windresize-left)
+     ("<right>" windresize-right)
+     ("<down>" windresize-down)
+     ("<up>" windresize-up)
+
+
+     ("q" nil))
 #+END_SRC
 
 ** Ranger
-
  #+BEGIN_SRC emacs-lisp
    (use-package ranger :ensure t)
    (setq ranger-show-hidden t) 
@@ -549,12 +614,11 @@ Below are general keybindings for the various Evil modes.
 	"r" 'ranger-show-drives
 	"q" 'ranger-close
 	)
-	;;(general-define-key 
-	;;:keymaps 'ranger-mode-map
-	;;"e" 'ranger-toggle-mark
-	;;)
+	(general-define-key 
+	:keymaps 'ranger-mode-map
+	"e" 'ranger-toggle-mark
+	)
  #+END_SRC
-
 ** Evil
 Example of how to override evil-collection: ~(evil-collection-define-key 'normal 'dired-mode-map (kbd "RET") 'dired-find-alternate-file)~
 #+BEGIN_SRC emacs-lisp 
@@ -594,9 +658,7 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
   (evil-define-key 'motion help-mode-map "q" 'kill-this-buffer)
   (evil-define-key 'motion calendar-mode-map "q" 'kill-this-buffer)
 #+END_SRC
-
 ** Key Chord
-
  #+BEGIN_SRC emacs-lisp
  ;;Exit insert by pressing  g and q quickly
    (use-package key-chord :ensure t)
@@ -605,135 +667,11 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
    (setq key-chord-two-keys-delay 0.6)
    (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
  #+END_SRC
-
-** Hydra
-Allows those cool 'transient' states -- press a key as many times as
-you want to run a function without doing anything else.
-#+BEGIN_SRC emacs-lisp 
-  (use-package hydra
-    :defer t)
-
-  ;; This Hydra lets me swich between variable pitch fonts. It turns off mixed-pitch 
-  ;; WIP
-  (defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 0)
-				       :post (mixed-pitch-mode 1))
-    ("t" (set-face-attribute 'variable-pitch nil :family "Times New Roman" :height 160) "Times New Roman")
-    ("g" (set-face-attribute 'variable-pitch nil :family "EB Garamond" :height 160 :weight 'normal) "EB Garamond")
-    ;; ("r" (set-face-attribute 'variable-pitch nil :font "Roboto" :weight 'medium :height 160) "Roboto")
-    ("n" (set-face-attribute 'variable-pitch nil :slant 'normal :weight 'normal :height 160 :width 'normal :foundry "nil" :family "Nunito") "Nunito")
-    )
-
-  (defhydra jb-hydra-theme-switcher (:hint nil)
-    "
-       Dark                ^Light^
-  ----------------------------------------------
-  _1_ one              _z_ one-light 
-  _2_ vivendi          _x_ operandi
-  _3_ molokai          _c_ jake-plain
-  _4_ snazzy           _v_ flatwhite
-  _5_ old-hope         _b_ opera-light 
-  _6_ henna                ^
-  _7_ kaolin-galaxy        ^
-  _8_ peacock              ^
-  _9_ jake-plain-dark      ^
-  _0_ monokai-machine      ^
-  _-_ xcode                ^
-  _q_ quit                 ^
-  ^                        ^
-  "
-
-    ;; Dark
-    ("1" (load-theme 'doom-one) "one")
-    ("2" (load-theme 'modus-vivendi) "modus-vivendi")
-    ("3" (load-theme 'doom-molokai) "molokai")
-    ("4" (load-theme 'doom-snazzy) "snazzy")
-    ("5" (load-theme 'doom-old-hope) "old-hope")
-    ("6" (load-theme 'doom-henna) "henna")
-    ("7" (load-theme 'kaolin-galaxy) "kaolin-galaxy")
-    ("8" (load-theme 'doom-peacock) "peacock")
-    ("9" (load-theme 'jake-doom-plain-dark) "jake-plain-dark")
-    ("0" (load-theme 'doom-monokai-machine) "monokai-machine")
-    ("-" (load-theme 'doom-xcode) "xcode")
-
-    ;; Light
-    ("z" (load-theme 'doom-one-light) "one-light")
-    ("x" (load-theme 'modus-operandi) "modus-operandi")
-    ("c" (load-theme 'jake-doom-plain) "jake-plain")
-    ("v" (load-theme 'doom-flatwhite) "flatwhite")
-    ("b" (load-theme 'doom-opera-light) "opera-light")
-    ("q" nil))
-
-  ;; I think I need to initialize windresize to use its commands
-  ;;(windresize)
-  ;;(windresize-exit)
-
-  ;;(use-package windresize)
-
-  ;; All-in-one window managment. Makes use of some custom functions,
-  ;; `ace-window' (for swapping), `windmove' (could probably be replaced
-  ;; by evil?) and `windresize'.
-  ;; inspired by https://github.com/jmercouris/configuration/blob/master/.emacs.d/hydra.el#L86
-  ;;(defhydra jb-hydra-window (:hint nil)
- ;;    "
- ;; Movement      ^Split^            ^Switch^        ^Resize^
- ;; ----------------------------------------------------------------
- ;; _M-<left>_  <   _/_ vertical      _b_uffer        _<left>_  <
- ;; _M-<right>_ >   _-_ horizontal    _f_ind file     _<down>_  ↓
- ;; _M-<up>_    ↑   _m_aximize        _s_wap          _<up>_    ↑
- ;; _M-<down>_  ↓   _c_lose           _[_backward     _<right>_ >
- ;; _q_uit          _e_qualize        _]_forward     ^
- ;; ^               ^               _K_ill         ^
- ;; ^               ^                  ^             ^
- ;; "
-     ;; Movement
-     ;;("M-<left>" windmove-left)
-     ;;("M-<down>" windmove-down)
-     ;;("M-<up>" windmove-up)
-     ;;("M-<right>" windmove-right)
-
-     ;; Split/manage
-     ;;("-" jib/split-window-vertically-and-switch)
-     ;;("/" jib/split-window-horizontally-and-switch)
-     ;;("c" evil-window-delete)
-     ;;("d" evil-window-delete)
-     ;;("m" delete-other-windows)
-     ;;("e" balance-windows)
-
-     ;; Switch
-     ;;("b" counsel-switch-buffer)
-     ;;("f" counsel-find-file)
-     ;;("P" project-find-file)
-     ;;("s" ace-swap-window)
-     ;;("[" previous-buffer)
-     ;;("]" next-buffer)
-     ;;("K" kill-this-buffer)
-
-     ;; Resize
-     ;;("<left>" windresize-left)
-     ;;("<right>" windresize-right)
-     ;;("<down>" windresize-down)
-     ;;("<up>" windresize-up)
-
-
-     ;;("q" nil))
-
-  (defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("t" text-scale-increase "in")
-  ("s" text-scale-decrease "out")
-  ("e" nil "finished" :exit t))
-  (fset 'yes-or-no-p  'y-or-n-p)
-
-#+END_SRC
-
 * Undo Redo
-
 #+BEGIN_SRC emacs-lisp 
   (use-package undo-fu)
 #+END_SRC
-
 * Doom modeline
-
 #+BEGIN_SRC emacs-lisp
     ;; (use-package minions :ensure t
     ;;   :hook (doom-modeline-mode . minions-mode))
@@ -758,9 +696,7 @@ you want to run a function without doing anything else.
   (setq doom-modeline-icon nil)
 
 #+END_SRC
-
 * En cours de test
-
 #+BEGIN_SRC emacs-lisp
     (use-package undo-tree :ensure t
       :init
@@ -792,9 +728,17 @@ you want to run a function without doing anything else.
       (set-frame-parameter nil 'alpha '(85 . 50))
 	(set-frame-parameter nil 'alpha '(100 . 100)))))
 #+END_SRC
-
+* Dashboard
+# #+BEGIN_SRC emacs-lisp 
+#   (require 'dashboard)
+#   (dashboard-setup-startup-hook)
+#   ;; Or if you use use-package
+#   (use-package dashboard
+#     :ensure t
+#     :config
+#     (dashboard-setup-startup-hook))
+# #+END_SRC
 * Org
-
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :ensure t)
@@ -821,9 +765,7 @@ you want to run a function without doing anything else.
   (setq org-log-done nil)
   (setq org-agenda-files '("~/tasks.org"))
 #+END_SRC
-
 * Macros
-
 #+BEGIN_SRC emacs-lisp
 (fset 'weekly-schedule
    (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([121 121 112 112 112 112 112 112 112 114 114 114 114 114 114 114 114 114 114 114 114 S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up up S-up S-up S-up S-up S-up S-up up S-up S-up S-up S-up S-up up S-up S-up S-up S-up up S-up S-up S-up up S-up S-up up S-up 111 1 backspace backspace backspace backspace escape 1 105 42 42 42 32] 0 "%d")) arg)))
@@ -841,4 +783,3 @@ you want to run a function without doing anything else.
 (fset 'flush-empty-lines
    [?\M-x ?f ?l ?u ?s ?h ?  ?l ?i ?n ?e ?s return ?^ ?$ return])
 #+END_SRC
-

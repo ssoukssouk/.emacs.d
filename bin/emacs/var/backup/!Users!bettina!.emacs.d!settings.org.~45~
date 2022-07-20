@@ -8,16 +8,8 @@
 
 * Todo
 ** split window AND switch
-** cycle themes
-** installer les thèmes de jack
-** regarder les fonctions de jack
-*** split and switch
-*** les autres
-** insert mode carac spéciaux
-** open browser
 ** régler la zone bizarre en fin de lignes c’est moche
 * Use package
-
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 
@@ -39,10 +31,9 @@
 (require 'use-package) ; guess what this one does too ?
 ;; (setq use-package-always-ensure t) ;; Cette commande permet d’éviter les ensure t
 (require 'org)
+
 #+END_SRC
-
 * Custom set variables
-
 #+BEGIN_SRC emacs-lisp
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
@@ -61,9 +52,7 @@
   (setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
   (setq display-line-numbers 'relative)
 #+END_SRC
-
-* Nettoyage .emacs. 
-
+* Nettoyage .emacs.d
 #+BEGIN_SRC emacs-lisp
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.emacs.d/bin/emacs/")
@@ -81,9 +70,7 @@
 (load custom-file t)
 
 #+END_SRC
-
 * Backups
-
 #+BEGIN_SRC emacs-lisp
   (setq delete-old-versions -1 )		; delete excess backup versions silently
   (setq version-control t )		; use version control
@@ -94,9 +81,7 @@
   ;; (setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
   ;; (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/auto-save-list/" t)) ) ;transform backups file name
 #+END_SRC
-
 * UI
-
 #+BEGIN_SRC emacs-lisp
   ;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
   (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
@@ -129,9 +114,7 @@
   (smooth-scrolling-mode t)
   )
 #+END_SRC
-
 * Themes
-
 #+BEGIN_SRC emacs-lisp
     (use-package doom-modeline
       :ensure t
@@ -143,18 +126,16 @@
 
     (use-package doom-themes
       :ensure t
-      :init (load-theme 'doom-old-hope t))
-      
+      :init (load-theme 'doom-gruvbox t))
+
     (use-package cycle-themes
        :ensure t
        :init (setq cycle-themes-theme-list
               '('doom-one 'doom-molokai 'doom-snazzy 'doom-old-hope 'doom-henna 'doom-peacock))
        :config (cycle-themes-mode))
 #+END_SRC
-
 * Clavier
 ** Which-Key
-
 #+BEGIN_SRC emacs-lisp 
   (use-package which-key
     :diminish which-key-mode
@@ -168,8 +149,8 @@
           which-key-min-display-lines 6
           which-key-max-display-columns nil))
 #+END_SRC
-
 ** General.el (main keybindings set here)
+[[https://github.com/noctuid/general.el][General.el]]
 
 #+BEGIN_SRC emacs-lisp 
   (use-package general)
@@ -181,7 +162,6 @@ it along with :keymaps 'override when you need to override other stuff
 
 *** SPC Leader Key
 **** Preamble
-
 #+BEGIN_SRC emacs-lisp 
     (general-define-key
      :states '(normal motion visual)
@@ -195,15 +175,13 @@ it along with :keymaps 'override when you need to override other stuff
      "." '(counsel-find-file :which-key "find file")
      "," '(counsel-recentf :which-key "recent files")
      "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
-     "SPC" '(avy-goto-char  :which-key "go to char")
+     "SPC" '(avy-goto-word-or-subword-1  :which-key "go to char")
      "x" '(counsel-M-x :which-key "M-x")
      "q" '(save-buffers-kill-terminal :which-key "quit emacs")
      "r" '(jump-to-register :which-key "registers")
      "c" 'org-capture
 #+END_SRC
-
 **** Application
-
 #+BEGIN_SRC emacs-lisp 
   ;; "Applications"
   "a" '(nil :which-key "applications")
@@ -223,9 +201,7 @@ it along with :keymaps 'override when you need to override other stuff
   "ar" 'ranger
   "ad" 'dired
 #+END_SRC
-
 **** Buffers
-
 #+BEGIN_SRC emacs-lisp 
   ;; Buffers
   "b" '(nil :which-key "buffer")
@@ -237,9 +213,7 @@ it along with :keymaps 'override when you need to override other stuff
   "br" '(revert-buffer :which-key "revert buffer")
   "bn" '(evil-buffer-new :which-key "new")
 #+END_SRC
-
 **** Files
-
 #+BEGIN_SRC emacs-lisp 
   ;; Files
   "f" '(nil :which-key "files")
@@ -254,9 +228,7 @@ it along with :keymaps 'override when you need to override other stuff
   ;; "fO" '(jib/open-buffer-file-mac :which-key "open buffer file")
 
 #+END_SRC
-
 **** Macros
-
 #+BEGIN_SRC emacs-lisp 
   ;; macros
   "m"  '(:ignore t :which-key "macros")
@@ -266,9 +238,7 @@ it along with :keymaps 'override when you need to override other stuff
   "ml" 'listecocher
   "md" 'flush-empty-lines
 #+END_SRC
-
 **** Help/Emacs
-
 #+BEGIN_SRC emacs-lisp 
   ;; Help/emacs
   "h" '(nil :which-key "help/emacs")
@@ -292,18 +262,14 @@ it along with :keymaps 'override when you need to override other stuff
   "hpi" 'package-install
   "hpd" 'package-delete
 #+END_SRC
-
 **** Text
-
 #+BEGIN_SRC emacs-lisp 
   ;; Help/emacs
   "x" '(nil :which-key "text")
   "xr" '(anzu-query-replace :which-key "find and replace")
   "xs" '(yas-insert-snippet :which-key "insert yasnippet")
 #+END_SRC
-
 **** Toggles/Visuals
-
 #+BEGIN_SRC emacs-lisp 
   ;; Toggles
   "t" '(nil :which-key "toggles")
@@ -323,9 +289,7 @@ it along with :keymaps 'override when you need to override other stuff
   "tx" '(hydra-text-scale/body :which-key "scale text")
   "tc" '(toggle-truncate-lines :which-key "truncate-lines")
 #+END_SRC
-
 **** Windows
-
 #+BEGIN_SRC emacs-lisp 
   ;; Windows
   "é" '(nil :which-key "window")
@@ -344,9 +308,7 @@ it along with :keymaps 'override when you need to override other stuff
   "és"  'evil-window-vsplit
 
 #+END_SRC
-
 **** Jump
-
 #+BEGIN_SRC emacs-lisp 
   ;; Jump
   "j"   '(:ignore t :which-key "jump")
@@ -355,52 +317,40 @@ it along with :keymaps 'override when you need to override other stuff
   "jl"  '(avy-goto-line :which-key "jump to line")
 
 #+END_SRC
-
 **** Undotree
-
 #+BEGIN_SRC emacs-lisp 
    ;;undo-tree
    "u" '(:ignore u :which-key "undo")
    "ut" 'undo-tree-visualize
    "uq" 'undo-tree-visualizer-quit
 #+END_SRC
-
 **** Dashboard
-
 #+BEGIN_SRC emacs-lisp 
    ;;dashboard
    "d"   '(:ignore t :which-key "dash")
    "dk" 'dashboard-jump-to-bookmarks
    "dr" 'dashboard-jump-to-recent-files
 #+END_SRC
-
 **** Comment
-
 #+BEGIN_SRC emacs-lisp 
   ;; commenter une sélection
   "#"   '(comment-or-uncomment-region :which-key "comment")
 #+END_SRC
-
 **** Hydra
-
 #+BEGIN_SRC emacs-lisp 
   "i" '(nil :which-key "switch")
   "it" '(jb-hydra-theme-switcher/body :which-key "themes")
   "if" '(jb-hydra-variable-fonts/body :which-key "mixed-pitch face")
   "ié" '(jb-hydra-window/body :which-key "window control")
 #+END_SRC
-
 **** Ranger
-
 #+BEGIN_SRC emacs-lisp 
-     ;(define-key ranger-mode-map "t" 'ranger-next-file)
-     ;(define-key ranger-mode-map "s" 'ranger-prev-file)
-     ;(define-key ranger-mode-map "c" 'ranger-up-directory)
-     ;(define-key ranger-mode-map "r" 'ranger-find-file)
+     ;;(define-key ranger-mode-map "t" 'ranger-next-file)
+     ;;(define-key ranger-mode-map "s" 'ranger-prev-file)
+     ;;(define-key ranger-mode-map "c" 'ranger-up-directory)
+     ;;(define-key ranger-mode-map "r" 'ranger-find-file)
 #+END_SRC
-
 **** Subtree
-
 #+BEGIN_SRC emacs-lisp 
     ;; Subtree
     "s" '(:ignore t :which-key "Subtree")
@@ -408,9 +358,7 @@ it along with :keymaps 'override when you need to override other stuff
      "sw" 'widen
   ) ;; End SPC prefix block
 #+END_SRC
-
 *** All-mode keybindings
-
 Below are general keybindings for the various Evil modes.
 #+BEGIN_SRC emacs-lisp 
   ;; All-mode keymaps
@@ -465,9 +413,7 @@ Below are general keybindings for the various Evil modes.
     "C-w C-q" 'kill-this-buffer
    )
 #+END_SRC
-
 *** Non-insert mode keymaps
-
 #+BEGIN_SRC emacs-lisp 
   ;; Non-insert mode keymaps
   (general-def
@@ -494,9 +440,7 @@ Below are general keybindings for the various Evil modes.
     "h" 'evil-replace
     )
 #+END_SRC
-
 *** Insert mode keymaps (bringing Emacs binds to Evil)
-
 #+BEGIN_SRC emacs-lisp 
   ;; Insert keymaps
   ;; Many of these are emulating standard Emacs bindings in Evil insert mode, such as C-a, or C-e.
@@ -508,7 +452,6 @@ Below are general keybindings for the various Evil modes.
     "C-S-e" 'evil-end-of-line
     "C-n" 'evil-next-visual-line
     "C-p" 'evil-previous-visual-line
-    )
 
      ;;(define-key evil-insert-state-map (kbd "M-«") "<")
      ;;(define-key evil-insert-state-map (kbd "M-»") ">")
@@ -522,10 +465,9 @@ Below are general keybindings for the various Evil modes.
      ;;(define-key evil-insert-state-map (kbd "M-p") "&")
      ;;(define-key evil-insert-state-map (kbd "M-n") "~")
      ;;(define-key evil-insert-state-map (kbd "M-e") "€")
+    )
 #+END_SRC
-
 ** Ranger
-
  #+BEGIN_SRC emacs-lisp
    (use-package ranger :ensure t)
    (setq ranger-show-hidden t) 
@@ -549,12 +491,11 @@ Below are general keybindings for the various Evil modes.
 	"r" 'ranger-show-drives
 	"q" 'ranger-close
 	)
-	;;(general-define-key 
-	;;:keymaps 'ranger-mode-map
-	;;"e" 'ranger-toggle-mark
-	;;)
+	(general-define-key 
+	:keymaps 'ranger-mode-map
+	"e" 'ranger-toggle-mark
+	)
  #+END_SRC
-
 ** Evil
 Example of how to override evil-collection: ~(evil-collection-define-key 'normal 'dired-mode-map (kbd "RET") 'dired-find-alternate-file)~
 #+BEGIN_SRC emacs-lisp 
@@ -594,9 +535,7 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
   (evil-define-key 'motion help-mode-map "q" 'kill-this-buffer)
   (evil-define-key 'motion calendar-mode-map "q" 'kill-this-buffer)
 #+END_SRC
-
 ** Key Chord
-
  #+BEGIN_SRC emacs-lisp
  ;;Exit insert by pressing  g and q quickly
    (use-package key-chord :ensure t)
@@ -605,7 +544,6 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
    (setq key-chord-two-keys-delay 0.6)
    (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
  #+END_SRC
-
 ** Hydra
 Allows those cool 'transient' states -- press a key as many times as
 you want to run a function without doing anything else.
@@ -725,15 +663,11 @@ you want to run a function without doing anything else.
   (fset 'yes-or-no-p  'y-or-n-p)
 
 #+END_SRC
-
 * Undo Redo
-
 #+BEGIN_SRC emacs-lisp 
   (use-package undo-fu)
 #+END_SRC
-
 * Doom modeline
-
 #+BEGIN_SRC emacs-lisp
     ;; (use-package minions :ensure t
     ;;   :hook (doom-modeline-mode . minions-mode))
@@ -758,9 +692,7 @@ you want to run a function without doing anything else.
   (setq doom-modeline-icon nil)
 
 #+END_SRC
-
 * En cours de test
-
 #+BEGIN_SRC emacs-lisp
     (use-package undo-tree :ensure t
       :init
@@ -792,9 +724,17 @@ you want to run a function without doing anything else.
       (set-frame-parameter nil 'alpha '(85 . 50))
 	(set-frame-parameter nil 'alpha '(100 . 100)))))
 #+END_SRC
-
+* Dashboard
+# #+BEGIN_SRC emacs-lisp 
+#   (require 'dashboard)
+#   (dashboard-setup-startup-hook)
+#   ;; Or if you use use-package
+#   (use-package dashboard
+#     :ensure t
+#     :config
+#     (dashboard-setup-startup-hook))
+# #+END_SRC
 * Org
-
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :ensure t)
@@ -821,9 +761,7 @@ you want to run a function without doing anything else.
   (setq org-log-done nil)
   (setq org-agenda-files '("~/tasks.org"))
 #+END_SRC
-
 * Macros
-
 #+BEGIN_SRC emacs-lisp
 (fset 'weekly-schedule
    (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([121 121 112 112 112 112 112 112 112 114 114 114 114 114 114 114 114 114 114 114 114 S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up up S-up S-up S-up S-up S-up S-up up S-up S-up S-up S-up S-up up S-up S-up S-up S-up up S-up S-up S-up up S-up S-up up S-up 111 1 backspace backspace backspace backspace escape 1 105 42 42 42 32] 0 "%d")) arg)))
@@ -841,4 +779,3 @@ you want to run a function without doing anything else.
 (fset 'flush-empty-lines
    [?\M-x ?f ?l ?u ?s ?h ?  ?l ?i ?n ?e ?s return ?^ ?$ return])
 #+END_SRC
-
