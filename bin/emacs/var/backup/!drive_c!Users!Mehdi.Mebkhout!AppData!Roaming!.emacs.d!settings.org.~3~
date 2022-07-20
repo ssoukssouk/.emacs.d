@@ -124,7 +124,7 @@
   ("e" nil "finished" :exit t))
   (fset 'yes-or-no-p  'y-or-n-p)
 #+END_SRC
-* Themes
+ Themes
 #+BEGIN_SRC emacs-lisp
     (use-package doom-modeline
       :ensure t
@@ -347,13 +347,6 @@ it along with :keymaps 'override when you need to override other stuff
   ;; commenter une sélection
   "#"   '(comment-or-uncomment-region :which-key "comment")
 #+END_SRC
-**** Hydra
-#+BEGIN_SRC emacs-lisp 
-  "i" '(nil :which-key "switch")
-  "it" '(jb-hydra-theme-switcher/body :which-key "themes")
-  "if" '(jb-hydra-variable-fonts/body :which-key "mixed-pitch face")
-  "ié" '(jb-hydra-window/body :which-key "window control")
-#+END_SRC
 **** Ranger
 #+BEGIN_SRC emacs-lisp 
      ;;(define-key ranger-mode-map "t" 'ranger-next-file)
@@ -478,118 +471,15 @@ Below are general keybindings for the various Evil modes.
      ;;(define-key evil-insert-state-map (kbd "M-e") "€")
     )
 #+END_SRC
-** Hydra
-Allows those cool 'transient' states -- press a key as many times as
-you want to run a function without doing anything else.
-#+BEGIN_SRC emacs-lisp 
-  (use-package hydra
-    :defer t)
-
-  ;; This Hydra lets me swich between variable pitch fonts. It turns off mixed-pitch 
-  ;; WIP
-  (defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 0)
-                                       :post (mixed-pitch-mode 1))
-    ("t" (set-face-attribute 'variable-pitch nil :family "Times New Roman" :height 160) "Times New Roman")
-    ("g" (set-face-attribute 'variable-pitch nil :family "EB Garamond" :height 160 :weight 'normal) "EB Garamond")
-    ;; ("r" (set-face-attribute 'variable-pitch nil :font "Roboto" :weight 'medium :height 160) "Roboto")
-    ("n" (set-face-attribute 'variable-pitch nil :slant 'normal :weight 'normal :height 160 :width 'normal :foundry "nil" :family "Nunito") "Nunito")
-    )
-
-  (defhydra jb-hydra-theme-switcher (:hint nil)
-    "
-       Dark                ^Light^
-  ----------------------------------------------
-  _1_ one              _z_ one-light 
-  _2_ vivendi          _x_ operandi
-  _3_ molokai          _c_ jake-plain
-  _4_ snazzy           _v_ flatwhite
-  _5_ old-hope         _b_ opera-light 
-  _6_ henna                ^
-  _7_ kaolin-galaxy        ^
-  _8_ peacock              ^
-  _9_ jake-plain-dark      ^
-  _0_ monokai-machine      ^
-  _-_ xcode                ^
-  _q_ quit                 ^
-  ^                        ^
-  "
-
-    ;; Dark
-    ("1" (jib/load-theme 'doom-one) "one")
-    ("2" (jib/load-theme 'modus-vivendi) "modus-vivendi")
-    ("3" (jib/load-theme 'doom-molokai) "molokai")
-    ("4" (jib/load-theme 'doom-snazzy) "snazzy")
-    ("5" (jib/load-theme 'doom-old-hope) "old-hope")
-    ("6" (jib/load-theme 'doom-henna) "henna")
-    ("7" (jib/load-theme 'kaolin-galaxy) "kaolin-galaxy")
-    ("8" (jib/load-theme 'doom-peacock) "peacock")
-    ("9" (jib/load-theme 'jake-doom-plain-dark) "jake-plain-dark")
-    ("0" (jib/load-theme 'doom-monokai-machine) "monokai-machine")
-    ("-" (jib/load-theme 'doom-xcode) "xcode")
-
-    ;; Light
-    ("z" (jib/load-theme 'doom-one-light) "one-light")
-    ("x" (jib/load-theme 'modus-operandi) "modus-operandi")
-    ("c" (jib/load-theme 'jake-doom-plain) "jake-plain")
-    ("v" (jib/load-theme 'doom-flatwhite) "flatwhite")
-    ("b" (jib/load-theme 'doom-opera-light) "opera-light")
-    ("q" nil))
-
-  ;; I think I need to initialize windresize to use its commands
-  ;;(windresize)
-  ;;(windresize-exit)
-
-  (use-package windresize)
-
-  ;; All-in-one window managment. Makes use of some custom functions,
-  ;; `ace-window' (for swapping), `windmove' (could probably be replaced
-  ;; by evil?) and `windresize'.
-  ;; inspired by https://github.com/jmercouris/configuration/blob/master/.emacs.d/hydra.el#L86
-  (defhydra jb-hydra-window (:hint nil)
-     "
-  Movement      ^Split^            ^Switch^        ^Resize^
-  ----------------------------------------------------------------
-  _M-<left>_  <   _/_ vertical      _b_uffer        _<left>_  <
-  _M-<right>_ >   _-_ horizontal    _f_ind file     _<down>_  ↓
-  _M-<up>_    ↑   _m_aximize        _s_wap          _<up>_    ↑
-  _M-<down>_  ↓   _c_lose           _[_backward     _<right>_ >
-  _q_uit          _e_qualize        _]_forward     ^
-  ^               ^               _K_ill         ^
-  ^               ^                  ^             ^
-  "
-     ;; Movement
-     ("M-<left>" windmove-left)
-     ("M-<down>" windmove-down)
-     ("M-<up>" windmove-up)
-     ("M-<right>" windmove-right)
-
-     ;; Split/manage
-     ("-" jib/split-window-vertically-and-switch)
-     ("/" jib/split-window-horizontally-and-switch)
-     ("c" evil-window-delete)
-     ("d" evil-window-delete)
-     ("m" delete-other-windows)
-     ("e" balance-windows)
-
-     ;; Switch
-     ("b" counsel-switch-buffer)
-     ("f" counsel-find-file)
-     ("P" project-find-file)
-     ("s" ace-swap-window)
-     ("[" previous-buffer)
-     ("]" next-buffer)
-     ("K" kill-this-buffer)
-
-     ;; Resize
-     ("<left>" windresize-left)
-     ("<right>" windresize-right)
-     ("<down>" windresize-down)
-     ("<up>" windresize-up)
-
-
-     ("q" nil))
-#+END_SRC
-
+** Key Chord
+ #+BEGIN_SRC emacs-lisp
+ ;;Exit insert by pressing  g and q quickly
+   (use-package key-chord :ensure t)
+   (require 'key-chord)
+   (key-chord-mode 1)
+   (setq key-chord-two-keys-delay 0.6)
+   ;;(key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
+ #+END_SRC
 ** Ranger
  #+BEGIN_SRC emacs-lisp
    (use-package ranger :ensure t)
@@ -655,21 +545,33 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
 
     (evil-mode 1))
 
+  (use-package evil-surround
+    :after evil
+    :defer 2
+    :config
+    (global-evil-surround-mode 1))
+
+  (use-package evil-collection
+    :after evil
+    :config
+    (setq evil-collection-mode-list '(dired (custom cus-edit) (package-menu package) calc diff-mode))
+    (evil-collection-init))
+
+  (use-package evil-snipe
+    :diminish evil-snipe-mode
+    :diminish evil-snipe-local-mode
+    :after evil
+    :config
+    (evil-snipe-mode +1))
+
+  ;; not working right now, from https://jblevins.org/log/dired-open
+  ;; (evil-define-key 'motion 'dired-mode-map "s-o" '(lambda () (interactive)
+  ;; 												  (let ((fn (dired-get-file-for-visit)))
+  ;; 													(start-process "default-app" nil "open" fn))))
+
+  ;;  (evil-define-key 'motion 'dired-mode-map "Q" 'kill-this-buffer)
   (evil-define-key 'motion help-mode-map "q" 'kill-this-buffer)
   (evil-define-key 'motion calendar-mode-map "q" 'kill-this-buffer)
-#+END_SRC
-** Key Chord
- #+BEGIN_SRC emacs-lisp
- ;;Exit insert by pressing  g and q quickly
-   (use-package key-chord :ensure t)
-   (require 'key-chord)
-   (key-chord-mode 1)
-   (setq key-chord-two-keys-delay 0.6)
-   (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
- #+END_SRC
-* Undo Redo
-#+BEGIN_SRC emacs-lisp 
-  (use-package undo-fu)
 #+END_SRC
 * Doom modeline
 #+BEGIN_SRC emacs-lisp
@@ -729,15 +631,45 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
 	(set-frame-parameter nil 'alpha '(100 . 100)))))
 #+END_SRC
 * Dashboard
-# #+BEGIN_SRC emacs-lisp 
-#   (require 'dashboard)
-#   (dashboard-setup-startup-hook)
-#   ;; Or if you use use-package
-#   (use-package dashboard
-#     :ensure t
-#     :config
-#     (dashboard-setup-startup-hook))
-# #+END_SRC
+#+BEGIN_SRC emacs-lisp 
+  (setq initial-buffer-choice t)
+
+  (use-package dashboard
+    :disabled t
+    :init
+    (add-hook 'after-init-hook 'dashboard-refresh-buffer)
+    (add-hook 'dashboard-mode-hook 'hide-mode-line-mode)
+    :hook (on-first-file . (lambda () (kill-buffer "*dashboard*")))
+    :config
+    (setq dashboard-items '(
+                            ;; (bookmarks  . 5)
+                            ;; (recents . 6)
+                            (registers . 14)))
+
+    ;; Header, footer, messages
+    (setq dashboard-banner-logo-title "Welcome to Emacs!")
+    (setq dashboard-footer-messages '(""))
+    (setq dashboard-footer-icon (all-the-icons-octicon "zap"
+                                                       :height 0.00001
+                                                       :v-adjust -0.05
+                                                       :face 'font-lock-keyword-face))
+    (setq dashboard-startup-banner 'logo)
+    ;; (setq dashboard-startup-banner '"~/Dropbox/Mackup/emacs-stuff/banner.txt")
+    ;; General config
+    (setq dashboard-center-content t
+          dashboard-set-heading-icons nil
+          dashboard-set-file-icons nil
+          dashboard-week-agenda nil
+          dashboard-center-content t
+          dashboard-set-init-info nil
+          dashboard-set-navigator t
+          dashboard-items-default-length 30
+          dashboard-page-separator "\n\n")
+    (dashboard-setup-startup-hook)
+    :general
+    (general-define-key :keymaps 'dashboard-mode-map
+                        "e" nil))
+#+END_SRC
 * Org
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets

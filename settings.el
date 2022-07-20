@@ -120,12 +120,390 @@
           '(doom-gruvbox doom-dracula))
    :config (cycle-themes-mode))
 
-(use-package avy :ensure t
-  :commands (avy-goto-word-1))
+(use-package which-key
+  :diminish which-key-mode
+  :init
+  (which-key-mode)
+  (which-key-setup-minibuffer)
+  :config
+  (setq which-key-idle-delay 0.3)
+  (setq which-key-prefix-prefix "")
+  (setq which-key-sort-order 'which-key-key-order-alpha
+        which-key-min-display-lines 6
+        which-key-max-display-columns nil))
 
-(use-package counsel :ensure t)
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
+(use-package general)
+
+(general-define-key
+ :states '(normal motion visual)
+ :keymaps 'override
+ :prefix "SPC"
+
+ ;; Top level functions
+ "/" '(counsel-git-grep :which-key "grep")
+ ";" '(spacemacs/deft :which-key "deft")
+ ":" '(project-find-file :which-key "p-find file")
+ "." '(counsel-find-file :which-key "find file")
+ "," '(counsel-recentf :which-key "recent files")
+ "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
+ "SPC" '(avy-goto-word-or-subword-1  :which-key "go to char")
+ "x" '(counsel-M-x :which-key "M-x")
+ "q" '(save-buffers-kill-terminal :which-key "quit emacs")
+ "r" '(jump-to-register :which-key "registers")
+ "c" 'org-capture
+
+;; "Applications"
+"a" '(nil :which-key "applications")
+"ao" '(org-agenda :which-key "org-agenda")
+;"am" '(mu4e :which-key "mu4e")
+"aC" '(calc :which-key "calc")
+;"ac" '(org-capture :which-key "org-capture")
+;"aqq" '(org-ql-view :which-key "org-ql-view")
+;"aqs" '(org-ql-search :which-key "org-ql-search")
+
+;"ab" '(nil :which-key "browse url")
+;"abf" '(browse-url-firefox :which-key "firefox")
+;"abc" '(browse-url-chrome :which-key "chrome")
+;"abx" '(xwidget-webkit-browse-url :which-key "xwidget")
+;"abg" '(jib/er-google :which-key "google search")
+
+"ar" 'ranger
+"ad" 'dired
+
+;; Buffers
+"b" '(nil :which-key "buffer")
+"bb" '(counsel-switch-buffer :which-key "switch buffers")
+"bd" '(evil-delete-buffer :which-key "delete buffer")
+"bs" '(jib/switch-to-scratch-buffer :which-key "scratch buffer")
+"bm" '(jib/kill-other-buffers :which-key "kill other buffers")
+"bi" '(clone-indirect-buffer  :which-key "indirect buffer")
+"br" '(revert-buffer :which-key "revert buffer")
+"bn" '(evil-buffer-new :which-key "new")
+
+;; Files
+"f" '(nil :which-key "files")
+"fb" '(counsel-bookmark :which-key "bookmarks")
+"ff" '(counsel-find-file :which-key "find file")
+"fn" '(spacemacs/new-empty-buffer :which-key "new file")
+"fr" '(counsel-recentf :which-key "recent files")
+"fR" '(rename-file :which-key "rename file")
+"fs" '(save-buffer :which-key "save buffer")
+"fS" '(evil-write-all :which-key "save all buffers")
+"fo" '(reveal-in-osx-finder :which-key "reveal in finder")
+"fO" '(jib/open-buffer-file-mac :which-key "open buffer file")
+
+;; macros
+"m"  '(:ignore t :which-key "macros")
+"ms" 'weekly-schedule
+"mj" 'archive-jour
+"mt" 'gotoday
+"ml" 'listecocher
+"md" 'flush-empty-lines
+
+;; Help/emacs
+"h" '(nil :which-key "help/emacs")
+
+"hv" '(counsel-describe-variable :which-key "des. variable")
+"hb" '(counsel-descbinds :which-key "des. bindings")
+"hM" '(describe-mode :which-key "des. mode")
+"hf" '(counsel-describe-function :which-key "des. func")
+"hF" '(counsel-describe-face :which-key "des. face")
+"hk" '(describe-key :which-key "des. key")
+
+"hed" '((lambda () (interactive) (jump-to-register 67)) :which-key "edit dotfile")
+
+"hm" '(nil :which-key "switch mode")
+"hme" '(emacs-lisp-mode :which-key "elisp mode")
+"hmo" '(org-mode :which-key "org mode")
+"hmt" '(text-mode :which-key "text mode")
+
+"hp" '(nil :which-key "packages")
+"hpr" 'package-refresh-contents
+"hpi" 'package-install
+"hpd" 'package-delete
+
+;; Help/emacs
+"x" '(nil :which-key "text")
+"xr" '(anzu-query-replace :which-key "find and replace")
+"xs" '(yas-insert-snippet :which-key "insert yasnippet")
+
+;; Toggles
+"t" '(nil :which-key "toggles")
+"tv" '(visual-line-mode :which-key "visual line mode")
+"tn" '(display-line-numbers-mode :which-key "display line numbers")
+"ta" '(mixed-pitch-mode :which-key "variable pitch mode")
+;;"tC" '(visual-fill-column-mode :which-key "visual fill column mode")
+;;"tw" '(writeroom-mode :which-key "writeroom-mode")
+"tR" '(read-only-mode :which-key "read only mode")
+"tI" '(toggle-input-method :which-key "toggle input method")
+;;"tr" '(display-fill-column-indicator-mode :which-key "fill column indicator")
+"tm" '(hide-mode-line-mode :which-key "hide modeline mode")
+"tw" '(whitespace-mode :which-key "white space")
+"th" '(counsel-load-theme :which-key "choose theme")
+"tf" '(toggle-frame-fullscreen :which-key "fullscreen")
+"tt" '(toggle-transparency :which-key "transparancy")
+"tx" '(hydra-text-scale/body :which-key "scale text")
+"tc" '(toggle-truncate-lines :which-key "truncate-lines")
+
+;; Windows
+"é" '(nil :which-key "window")
+"ém" '(jib/toggle-maximize-buffer :which-key "maximize buffer")
+"éN" '(make-frame :which-key "make frame")
+"éd" '(evil-window-delete :which-key "delete window")
+"é-" '(split-window-vertically :which-key "split below")
+"é/" '(split-window-horizontally :which-key "split right")
+"él" '(evil-window-right :which-key "evil-window-right")
+"éh" '(evil-window-left :which-key "evil-window-left")
+"éj" '(evil-window-down :which-key "evil-window-down")
+"ék" '(evil-window-up :which-key "evil-window-up")
+"éz" '(text-scale-adjust :which-key "text zoom")
+"é TAB" '(evil-window-next :wich-key "next")
+"éD"  'delete-other-windows
+"és"  'evil-window-vsplit
+
+;; Jump
+"j"   '(:ignore t :which-key "jump")
+"jj"  '(avy-goto-char :which-key "jump to char")
+"jé"  '(avy-goto-word-0 :which-key "jump to word")
+"jl"  '(avy-goto-line :which-key "jump to line")
+
+;;undo-tree
+"u" '(:ignore u :which-key "undo")
+"ut" 'undo-tree-visualize
+"uq" 'undo-tree-visualizer-quit
+
+;;dashboard
+"d"   '(:ignore t :which-key "dash")
+"dk" 'dashboard-jump-to-bookmarks
+"dr" 'dashboard-jump-to-recent-files
+
+;; commenter une sélection
+"#"   '(comment-or-uncomment-region :which-key "comment")
+
+"i" '(nil :which-key "switch")
+"it" '(jb-hydra-theme-switcher/body :which-key "themes")
+"if" '(jb-hydra-variable-fonts/body :which-key "mixed-pitch face")
+"ié" '(jb-hydra-window/body :which-key "window control")
+
+;;(define-key ranger-mode-map "t" 'ranger-next-file)
+;;(define-key ranger-mode-map "s" 'ranger-prev-file)
+;;(define-key ranger-mode-map "c" 'ranger-up-directory)
+;;(define-key ranger-mode-map "r" 'ranger-find-file)
+
+;; Subtree
+  "s" '(:ignore t :which-key "Subtree")
+  "sn" 'org-narrow-to-subtree
+   "sw" 'widen
+) ;; End SPC prefix block
+
+;; All-mode keymaps
+(general-def
+  :keymaps 'override
+
+  ;; Emacs --------
+  "M-x" 'counsel-M-x
+  "ß" 'evil-window-next ;; option-s
+  "Í" 'other-frame ;; option-shift-s
+  "C-S-B" 'counsel-switch-buffer
+  "∫" 'counsel-switch-buffer ;; option-b
+  "s-o" 'jb-hydra-window/body
+
+  ;; Remapping normal help features to use Counsel version
+  "C-h v" 'counsel-describe-variable
+  "C-h o" 'counsel-describe-symbol
+  "C-h f" 'counsel-describe-function
+  "C-h F" 'counsel-describe-face
+
+  ;; Editing ------
+  "M-v" 'simpleclip-paste
+  "M-V" 'evil-paste-after ;; shift-paste uses the internal clipboard
+  "M-c" 'simpleclip-copy
+  "M-u" 'capitalize-dwim ;; Default is upcase-dwim
+  "M-U" 'upcase-dwim ;; M-S-u (switch upcase and capitalize)
+  "M-z" 'undo-fu-only-undo
+  "M-S" 'undo-fu-only-redo
+
+  ;; Utility ------
+  "C-c c" 'org-capture
+  "C-c a" 'org-agenda
+  "C-s" 'swiper ;; Large files will use grep (faster)
+  "s-\"" 'ispell-word ;; that's super-shift-'
+  ;;"M-+" 'jib/calc-speaking-time
+  "C-'" 'avy-goto-char-2
+
+  "C-x C-b" 'bufler-list
+
+  ;; super-number functions
+  "s-1" 'mw-thesaurus-lookup-dwim
+  "s-!" 'mw-thesaurus-lookup
+  "s-2" 'ispell-buffer
+  "s-3" 'revert-buffer
+  ;;"s-4" '(lambda () (interactive) (counsel-file-jump nil jib/dropbox))
+  ;;"s-5" '(lambda () (interactive) (counsel-rg nil jib/dropbox))
+  "s-6" 'org-capture
+  )
+
+(general-def
+ :keymaps 'emacs
+  "C-w C-q" 'kill-this-buffer
+ )
+
+;; Non-insert mode keymaps
+(general-def
+  :states '(normal visual motion)
+  "gc" 'comment-dwim
+  "u" 'undo-fu-only-undo
+  "U" 'undo-fu-only-redo
+  "gC" 'comment-line
+  "|" '(lambda () (interactive) (org-agenda nil "k")) ;; Opens my n custom org-super-agenda view
+  "C-|" '(lambda () (interactive) (org-agenda nil "j")) ;; Opens my m custom org-super-agenda view
+
+  "s" 'evil-previous-visual-line
+  "t" 'evil-next-visual-line
+
+  "T" 'scroll-half-page-up
+  "S" 'scroll-half-page-down
+
+  "r" 'evil-forward-char
+  "c" 'evil-backward-char
+
+  "é" 'evil-forward-word-begin
+  "e" 'evil-forward-word-end
+  "b" 'evil-backward-word-begin
+  "h" 'evil-replace
+  )
+
+;; Insert keymaps
+;; Many of these are emulating standard Emacs bindings in Evil insert mode, such as C-a, or C-e.
+(general-def
+  :states '(insert)
+  "C-a" 'evil-beginning-of-visual-line
+  "C-e" 'evil-end-of-visual-line
+  "C-S-a" 'evil-beginning-of-line
+  "C-S-e" 'evil-end-of-line
+  "C-n" 'evil-next-visual-line
+  "C-p" 'evil-previous-visual-line
+
+   ;;(define-key evil-insert-state-map (kbd "M-«") "<")
+   ;;(define-key evil-insert-state-map (kbd "M-»") ">")
+   ;;(define-key evil-insert-state-map (kbd "M-(") "[")
+   ;;(define-key evil-insert-state-map (kbd "M-)") "]")
+   ;;(define-key evil-insert-state-map (kbd "M-b") "|")
+   ;;(define-key evil-insert-state-map (kbd "M-ê") "\\")
+   ;;(define-key evil-insert-state-map (kbd "M-à") "/")
+   ;;(define-key evil-insert-state-map (kbd "M-y") "{")
+   ;;(define-key evil-insert-state-map (kbd "M-x") "}")
+   ;;(define-key evil-insert-state-map (kbd "M-p") "&")
+   ;;(define-key evil-insert-state-map (kbd "M-n") "~")
+   ;;(define-key evil-insert-state-map (kbd "M-e") "€")
+  )
+
+(use-package hydra
+  :defer t)
+
+;; This Hydra lets me swich between variable pitch fonts. It turns off mixed-pitch 
+;; WIP
+(defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 0)
+                                     :post (mixed-pitch-mode 1))
+  ("t" (set-face-attribute 'variable-pitch nil :family "Times New Roman" :height 160) "Times New Roman")
+  ("g" (set-face-attribute 'variable-pitch nil :family "EB Garamond" :height 160 :weight 'normal) "EB Garamond")
+  ;; ("r" (set-face-attribute 'variable-pitch nil :font "Roboto" :weight 'medium :height 160) "Roboto")
+  ("n" (set-face-attribute 'variable-pitch nil :slant 'normal :weight 'normal :height 160 :width 'normal :foundry "nil" :family "Nunito") "Nunito")
+  )
+
+(defhydra jb-hydra-theme-switcher (:hint nil)
+  "
+     Dark                ^Light^
+----------------------------------------------
+_1_ one              _z_ one-light 
+_2_ vivendi          _x_ operandi
+_3_ molokai          _c_ jake-plain
+_4_ snazzy           _v_ flatwhite
+_5_ old-hope         _b_ opera-light 
+_6_ henna                ^
+_7_ kaolin-galaxy        ^
+_8_ peacock              ^
+_9_ jake-plain-dark      ^
+_0_ monokai-machine      ^
+_-_ xcode                ^
+_q_ quit                 ^
+^                        ^
+"
+
+  ;; Dark
+  ("1" (jib/load-theme 'doom-one) "one")
+  ("2" (jib/load-theme 'modus-vivendi) "modus-vivendi")
+  ("3" (jib/load-theme 'doom-molokai) "molokai")
+  ("4" (jib/load-theme 'doom-snazzy) "snazzy")
+  ("5" (jib/load-theme 'doom-old-hope) "old-hope")
+  ("6" (jib/load-theme 'doom-henna) "henna")
+  ("7" (jib/load-theme 'kaolin-galaxy) "kaolin-galaxy")
+  ("8" (jib/load-theme 'doom-peacock) "peacock")
+  ("9" (jib/load-theme 'jake-doom-plain-dark) "jake-plain-dark")
+  ("0" (jib/load-theme 'doom-monokai-machine) "monokai-machine")
+  ("-" (jib/load-theme 'doom-xcode) "xcode")
+
+  ;; Light
+  ("z" (jib/load-theme 'doom-one-light) "one-light")
+  ("x" (jib/load-theme 'modus-operandi) "modus-operandi")
+  ("c" (jib/load-theme 'jake-doom-plain) "jake-plain")
+  ("v" (jib/load-theme 'doom-flatwhite) "flatwhite")
+  ("b" (jib/load-theme 'doom-opera-light) "opera-light")
+  ("q" nil))
+
+;; I think I need to initialize windresize to use its commands
+;;(windresize)
+;;(windresize-exit)
+
+(use-package windresize)
+
+;; All-in-one window managment. Makes use of some custom functions,
+;; `ace-window' (for swapping), `windmove' (could probably be replaced
+;; by evil?) and `windresize'.
+;; inspired by https://github.com/jmercouris/configuration/blob/master/.emacs.d/hydra.el#L86
+(defhydra jb-hydra-window (:hint nil)
+   "
+Movement      ^Split^            ^Switch^        ^Resize^
+----------------------------------------------------------------
+_M-<left>_  <   _/_ vertical      _b_uffer        _<left>_  <
+_M-<right>_ >   _-_ horizontal    _f_ind file     _<down>_  ↓
+_M-<up>_    ↑   _m_aximize        _s_wap          _<up>_    ↑
+_M-<down>_  ↓   _c_lose           _[_backward     _<right>_ >
+_q_uit          _e_qualize        _]_forward     ^
+^               ^               _K_ill         ^
+^               ^                  ^             ^
+"
+   ;; Movement
+   ("M-<left>" windmove-left)
+   ("M-<down>" windmove-down)
+   ("M-<up>" windmove-up)
+   ("M-<right>" windmove-right)
+
+   ;; Split/manage
+   ("-" jib/split-window-vertically-and-switch)
+   ("/" jib/split-window-horizontally-and-switch)
+   ("c" evil-window-delete)
+   ("d" evil-window-delete)
+   ("m" delete-other-windows)
+   ("e" balance-windows)
+
+   ;; Switch
+   ("b" counsel-switch-buffer)
+   ("f" counsel-find-file)
+   ("P" project-find-file)
+   ("s" ace-swap-window)
+   ("[" previous-buffer)
+   ("]" next-buffer)
+   ("K" kill-this-buffer)
+
+   ;; Resize
+   ("<left>" windresize-left)
+   ("<right>" windresize-right)
+   ("<down>" windresize-down)
+   ("<up>" windresize-up)
+
+
+   ("q" nil))
 
 (use-package ranger :ensure t)
 (setq ranger-show-hidden t) 
@@ -154,170 +532,50 @@
      "e" 'ranger-toggle-mark
      )
 
-;;Exit insert by pressing  and then j quickly
+(use-package evil
+  :init
+  ;; (setq evil-want-keybinding t)
+  (setq evil-want-fine-undo t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-Y-yank-to-eol t)
+  :config
+
+  (evil-set-initial-state 'dashboard-mode 'motion)
+  (evil-set-initial-state 'debugger-mode 'motion)
+  (evil-set-initial-state 'pdf-view-mode 'motion)
+  (evil-set-initial-state 'bufler-list-mode 'emacs)
+  (evil-set-initial-state 'inferior-python-mode 'emacs)
+  (evil-set-initial-state 'term-mode 'emacs)
+
+  ;; ----- Keybindings
+  ;; I tried using evil-define-key for these. Didn't work.
+  ;; (define-key evil-motion-state-map "/" 'swiper)
+  (define-key evil-window-map "\C-q" 'evil-delete-buffer) ;; Maps C-w C-q to evil-delete-buffer (The first C-w puts you into evil-window-map)
+  (define-key evil-window-map "\C-w" 'kill-this-buffer)
+  (define-key evil-motion-state-map "\C-b" 'evil-scroll-up) ;; Makes C-b how C-u is
+
+  ;; ----- Setting cursor colors
+  (setq evil-emacs-state-cursor    '("#649bce" box))
+  (setq evil-normal-state-cursor   '("#ebcb8b" box))
+  (setq evil-operator-state-cursor '("#ebcb8b" hollow))
+  (setq evil-visual-state-cursor   '("#677691" box))
+  (setq evil-insert-state-cursor   '("#eb998b" (bar . 2)))
+  (setq evil-replace-state-cursor  '("#eb998b" hbar))
+  (setq evil-motion-state-cursor   '("#ad8beb" box))
+
+  (evil-mode 1))
+
+(evil-define-key 'motion help-mode-map "q" 'kill-this-buffer)
+(evil-define-key 'motion calendar-mode-map "q" 'kill-this-buffer)
+
+;;Exit insert by pressing  g and q quickly
   (use-package key-chord :ensure t)
   (require 'key-chord)
   (key-chord-mode 1)
-
-  (use-package evil :ensure t
-    :init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding t)
-    (setq evil-want-C-u-scroll t)
-    (setq evil-want-C-i-jump nil)
-    (setq evil-respect-visual-line-mode t)
-    (setq evil-undo-system 'undo-tree)
-    :config
-    (evil-mode 1)
-    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-    (evil-set-leader nil (kbd "SPC"))
-    ;; Use visual line motions even outside of visual-line-mode buffers
-    (define-key evil-normal-state-map "s" 'evil-previous-visual-line)
-    (define-key evil-normal-state-map "t" 'evil-next-visual-line)
-  
-    (define-key evil-visual-state-map "s" 'evil-previous-visual-line)
-    (define-key evil-visual-state-map "t" 'evil-next-visual-line)
-
-    (define-key evil-normal-state-map "T" 'scroll-half-page-up)
-    (define-key evil-normal-state-map "S" 'scroll-half-page-down)
-
-    (define-key evil-normal-state-map "r" 'evil-forward-char)
-    (define-key evil-normal-state-map "c" 'evil-backward-char)
-
-    (define-key evil-normal-state-map "é" 'evil-forward-word-begin)
-    (define-key evil-normal-state-map "e" 'evil-forward-word-end)
-    (define-key evil-normal-state-map "b" 'evil-backward-word-begin)
-    (define-key evil-normal-state-map "h" 'evil-replace)
-
-    (define-key ranger-mode-map "t" 'ranger-next-file)
-    (define-key ranger-mode-map "s" 'ranger-prev-file)
-    (define-key ranger-mode-map "c" 'ranger-up-directory)
-    (define-key ranger-mode-map "r" 'ranger-find-file)
-
-    (define-key evil-insert-state-map (kbd "M-«") "<")
-    (define-key evil-insert-state-map (kbd "M-»") ">")
-    (define-key evil-insert-state-map (kbd "M-(") "[")
-    (define-key evil-insert-state-map (kbd "M-)") "]")
-    (define-key evil-insert-state-map (kbd "M-b") "|")
-    (define-key evil-insert-state-map (kbd "M-ê") "\\")
-    (define-key evil-insert-state-map (kbd "M-à") "/")
-    (define-key evil-insert-state-map (kbd "M-y") "{")
-    (define-key evil-insert-state-map (kbd "M-x") "}")
-    (define-key evil-insert-state-map (kbd "M-p") "&")
-    (define-key evil-insert-state-map (kbd "M-n") "~")
-  )
-
   (setq key-chord-two-keys-delay 0.6)
   (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
 
-(use-package which-key :ensure t)
-(require 'which-key)
-(which-key-mode)
-(which-key-setup-minibuffer)
-(setq which-key-max-display-columns 6)
-(setq which-key-idle-delay 0.5)
-
-(use-package general :ensure t
-  :config
-  (general-evil-setup t)
-  (general-define-key
-   :states '(normal visual insert emacs)
-   :prefix "SPC"
-   :non-normal-prefix "C-SPC"
-
-    ;; simple command
-    "'"   '(iterm-focus :which-key "iterm")
-    "?"   '(iterm-goto-filedir-or-home :which-key "iterm - goto dir")
-    "/"   'counsel-ag
-    "TAB" '(switch-to-prev-buffer :which-key "prev buffer")
-    "SPC" '(avy-goto-word-or-subword-1  :which-key "go to char")
-
-    ;; Applications
-    "a" '(:ignore t :which-key "Applications")
-    "ar" 'ranger
-    "ad" 'dired
-
-    ;; Subtree
-    "s" '(:ignore t :which-key "Subtree")
-    "sn" 'org-narrow-to-subtree
-    "sw" 'widen
-
-    ;; bind to simple key press
-    "b"   '(:ignore t :which-key "buffers")
-    "bb"  'ivy-switch-buffer  ; change buffer, chose using ivy
-    "bd"  'kill-current-buffer ;Ferme le buffer 
-    "be"  'eval-buffer
-    "bn"  'evil-buffer-new
-    "/"   'counsel-git-grep   ; find string in git project
-
-    ;; bind to double key press
-    "f"   '(:ignore t :which-key "files")
-    "ff"  'counsel-find-file
-    "fs"  'save-buffer
-
-    ;; windows
-    "é"   '(:ignore t :which-key "windows")
-    "é TAB"'evil-window-next
-    "éd"  'evil-window-delete
-    "éD"  'delete-other-windows
-    "és"  'evil-window-vsplit
-
-    ;; toggles
-    "t"  '(:ignore t :which-key "toggles")
-    "tw" 'whitespace-mode
-    "th" '(counsel-load-theme :which-key "choose theme")
-    "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
-    "tt" '(toggle-transparency :which-key "transparancy")
-    "tx" '(hydra-text-scale/body :which-key "scale text")
-    "tl" '(display-line-numbers-mode :which-key "linum")
-    "tc" '(toggle-truncate-lines :which-key "truncate-lines")
-
-    ;; macros
-    "m"  '(:ignore t :which-key "macros")
-    "ms" 'weekly-schedule
-    "mj" 'archive-jour
-    "mt" 'gotoday
-    "ml" 'listecocher
-    "md" 'flush-empty-lines
-
-    ;;quit
-    "q"  '(:ignore q :which-key "quit")
-    "qq"  'evil-quit-all
-    "qs"  'evil-save-and-quit
-
-    ;;undo-tree
-    "u" '(:ignore u :which-key "undo")
-    "ut" 'undo-tree-visualize
-    "uq" 'undo-tree-visualizer-quit
-
-    ;;jump
-    "j"   '(:ignore t :which-key "jump")
-    "jj"  '(avy-goto-char :which-key "jump to char")
-    "jé"  '(avy-goto-word-0 :which-key "jump to word")
-    "jl"  '(avy-goto-line :which-key "jump to line")
-
-    ;;functions
-    "x"   '(:ignore t :which-key "fun")
-    "xf"  '(describe-function :which-key "desc-fun")
-    "xv"  '(describe-variable :which-key "descr-var")
-    "xk"  '(describe-package :which-key "descr-pack")
-    "xp"  '(check-parens :which-key "check-parens")
-    "xc"  '(clm/toggle-command-log-buffer :which-key "cmd-log")
-    "xr"  '(query-replace :which-key "searchAndReplace")
-
-    ;;dashboard
-    "d"   '(:ignore t :which-key "dash")
-    "dk" 'dashboard-jump-to-bookmarks
-    "dr" 'dashboard-jump-to-recent-files
-
-    ;;pomodoro
-    "p"   '(:ignore t :which-key "pomodoro")
-    "ps"  'org-timer-set-timer
-    "pp"  'org-timer-pause-or-continue
-
-    ;; commenter une sélection
-    "#"   '(comment-or-uncomment-region :which-key "comment")
-    ))
+(use-package undo-fu)
 
 ;; (use-package minions :ensure t
   ;;   :hook (doom-modeline-mode . minions-mode))
@@ -370,22 +628,6 @@
      100)
     (set-frame-parameter nil 'alpha '(85 . 50))
       (set-frame-parameter nil 'alpha '(100 . 100)))))
-
-(use-package dashboard
-  :ensure t
-  :init
-  (progn
-    (setq dashboard-items '((recents  . 5)
-			    (bookmarks . 5)))
-    (setq dashboard-center-content t)
-    (setq dashboard-startup-banner 'logo)
-    (setq dashboard-set-heading-icons nil)
-    (setq dashboard-set-file-icons nil)
-    (setq dashboard-show-shortcuts nil)
-    )
-  :config
-  (dashboard-setup-startup-hook)
-  )
 
 (use-package org-bullets
   :ensure t)
