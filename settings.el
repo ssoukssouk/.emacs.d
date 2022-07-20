@@ -109,6 +109,14 @@
           '('doom-one 'doom-molokai 'doom-snazzy 'doom-old-hope 'doom-henna 'doom-peacock))
    :config (cycle-themes-mode))
 
+(use-package all-the-icons)
+
+;; Loading theme based on the time.
+(let ((hour (string-to-number (substring (current-time-string) 11 13))))
+  (if (or (> hour 19) (< hour 7))
+      (load-theme 'doom-one t) ;; Night
+    (load-theme 'doom-opera-light t))) ;; Day
+
 (use-package which-key
   :diminish which-key-mode
   :init
@@ -120,6 +128,8 @@
   (setq which-key-sort-order 'which-key-key-order-alpha
         which-key-min-display-lines 6
         which-key-max-display-columns nil))
+
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (use-package general)
 
@@ -188,6 +198,7 @@
 "mt" 'gotoday
 "ml" 'listecocher
 "md" 'flush-empty-lines
+"mé" 'jib/return-week-number
 
 ;; Help/emacs
 "h" '(nil :which-key "help/emacs")
@@ -239,12 +250,12 @@
 ;;"ém" '(jib/toggle-maximize-buffer :which-key "maximize buffer")
 "éN" '(make-frame :which-key "make frame")
 "éd" '(evil-window-delete :which-key "delete window")
-"é-" '(split-window-vertically :which-key "split below")
-"é/" '(split-window-horizontally :which-key "split right")
-"él" '(evil-window-right :which-key "evil-window-right")
-"éh" '(evil-window-left :which-key "evil-window-left")
-"éj" '(evil-window-down :which-key "evil-window-down")
-"ék" '(evil-window-up :which-key "evil-window-up")
+"é-" '(jib/split-window-vertically-and-switch :which-key "split below")
+"é/" '(jib/split-window-horizontally-and-switch :which-key "split right")
+"ér" '(evil-window-right :which-key "evil-window-right")
+"éc" '(evil-window-left :which-key "evil-window-left")
+"ét" '(evil-window-down :which-key "evil-window-down")
+"és" '(evil-window-up :which-key "evil-window-up")
 "éz" '(text-scale-adjust :which-key "text zoom")
 "é TAB" '(evil-window-next :wich-key "next")
 "éD"  'delete-other-windows
@@ -374,19 +385,6 @@
   "C-p" 'evil-previous-visual-line
   )
 
-   ;;(define-key evil-insert-state-map (kbd "M-«") "<")
-   ;;(define-key evil-insert-state-map (kbd "M-»") ">")
-   ;;(define-key evil-insert-state-map (kbd "M-(") "[")
-   ;;(define-key evil-insert-state-map (kbd "M-)") "]")
-   ;;(define-key evil-insert-state-map (kbd "M-b") "|")
-   ;;(define-key evil-insert-state-map (kbd "M-ê") "\\")
-   ;;(define-key evil-insert-state-map (kbd "M-à") "/")
-   ;;(define-key evil-insert-state-map (kbd "M-y") "{")
-   ;;(define-key evil-insert-state-map (kbd "M-x") "}")
-   ;;(define-key evil-insert-state-map (kbd "M-p") "&")
-   ;;(define-key evil-insert-state-map (kbd "M-n") "~")
-   ;;(define-key evil-insert-state-map (kbd "M-e") "€")
-
 (use-package ranger :ensure t)
 (setq ranger-show-hidden t) 
 (setq ranger-show-literal nil) 
@@ -449,6 +447,21 @@
 
 (evil-define-key 'motion help-mode-map "q" 'kill-this-buffer)
 (evil-define-key 'motion calendar-mode-map "q" 'kill-this-buffer)
+
+   ;; Pour pouvoir taper les caractères spéciaux en insert mode
+   (define-key evil-insert-state-map (kbd "M-«") "<")
+   (define-key evil-insert-state-map (kbd "M-»") ">")
+   (define-key evil-insert-state-map (kbd "M-(") "[")
+   (define-key evil-insert-state-map (kbd "M-)") "]")
+   (define-key evil-insert-state-map (kbd "M-b") "|")
+   (define-key evil-insert-state-map (kbd "M-ê") "\\")
+   (define-key evil-insert-state-map (kbd "M-à") "/")
+   (define-key evil-insert-state-map (kbd "M-y") "{")
+   (define-key evil-insert-state-map (kbd "M-x") "}")
+   (define-key evil-insert-state-map (kbd "M-p") "&")
+   (define-key evil-insert-state-map (kbd "M-n") "~")
+   (define-key evil-insert-state-map (kbd "M-e") "€")
+   (define-key evil-insert-state-map (kbd "M-,") "'")
 
 ;;Exit insert by pressing  g and q quickly
   (use-package key-chord :ensure t)
@@ -648,7 +661,11 @@
  "os" '(org-schedule :which-key "schedule")
  )
 (setq org-log-done nil)
-(setq org-agenda-files '("~/tasks.org"))
+
+;;c’est trop bien ce qu’il y a en dessous surtout le visual line
+(org-indent-mode) ;; Keeps org items like text under headings, lists, nicely indented
+(visual-line-mode 1) ;; Nice line wrappingsetq org-agenda-files '("~/tasks.org"))
+(setq org-startup-folded 'show2levels) ;; Org files start up folded by default
 
 (fset 'weekly-schedule
    (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([121 121 112 112 112 112 112 112 112 114 114 114 114 114 114 114 114 114 114 114 114 S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-down S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up S-up up S-up S-up S-up S-up S-up S-up up S-up S-up S-up S-up S-up up S-up S-up S-up S-up up S-up S-up S-up up S-up S-up up S-up 111 1 backspace backspace backspace backspace escape 1 105 42 42 42 32] 0 "%d")) arg)))
@@ -665,3 +682,19 @@
 
 (fset 'flush-empty-lines
    [?\M-x ?f ?l ?u ?s ?h ?  ?l ?i ?n ?e ?s return ?^ ?$ return])
+
+(use-package restart-emacs :defer t)
+
+(defun jib/return-week-number ()
+  (interactive)
+  (message "It is week %s of the year." (format-time-string "%U")))
+
+(defun jib/split-window-vertically-and-switch ()
+  (interactive)
+  (split-window-vertically)
+  (other-window 1))
+
+(defun jib/split-window-horizontally-and-switch ()
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1))

@@ -4,18 +4,17 @@
 #+STARTUP: fold
 #+PROPERTY: header-args :results silent :tangle yes
 #+HTML_HEAD: <link rel="stylesheet" href="https://sandyuraz.com/styles/org.min.css">
-#+SEQ_TODO: TODO(t) | DISABLED(d) DONE(D)
+#+SEQ_TODO: TODO(t) | DISABLED(d)
 
 * Todo
-** TODO cycle themes
-** TODO installer les thèmes de jack
-** TODO open browser
-** TODO centered cursor
+** split window AND switch
+** cycle themes
+** installer les thèmes de jack
 ** regarder les fonctions de jack
 *** split and switch
 *** les autres
+** open browser
 ** ajouter org mode indent
-** split window AND switch
 ** insert mode carac spéciaux
 ** régler la zone bizarre en fin de lignes c’est moche
 * Use package

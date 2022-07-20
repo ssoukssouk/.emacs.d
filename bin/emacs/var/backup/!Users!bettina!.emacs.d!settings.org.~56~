@@ -4,18 +4,17 @@
 #+STARTUP: fold
 #+PROPERTY: header-args :results silent :tangle yes
 #+HTML_HEAD: <link rel="stylesheet" href="https://sandyuraz.com/styles/org.min.css">
-#+SEQ_TODO: TODO(t) | DISABLED(d) DONE(D)
+#+SEQ_TODO: TODO(t) | DISABLED(d)
 
 * Todo
-** TODO cycle themes
-** TODO installer les thèmes de jack
-** TODO open browser
-** TODO centered cursor
+** split window AND switch
+** cycle themes
+** installer les thèmes de jack
 ** regarder les fonctions de jack
 *** split and switch
 *** les autres
+** open browser
 ** ajouter org mode indent
-** split window AND switch
 ** insert mode carac spéciaux
 ** régler la zone bizarre en fin de lignes c’est moche
 * Use package
@@ -177,8 +176,6 @@
     (setq which-key-sort-order 'which-key-key-order-alpha
           which-key-min-display-lines 6
           which-key-max-display-columns nil))
-
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+END_SRC
 
 ** General.el (main keybindings set here)
@@ -277,7 +274,6 @@ it along with :keymaps 'override when you need to override other stuff
   "mt" 'gotoday
   "ml" 'listecocher
   "md" 'flush-empty-lines
-  "mé" 'jib/return-week-number
 #+END_SRC
 
 **** Help/Emacs
@@ -345,12 +341,12 @@ it along with :keymaps 'override when you need to override other stuff
   ;;"ém" '(jib/toggle-maximize-buffer :which-key "maximize buffer")
   "éN" '(make-frame :which-key "make frame")
   "éd" '(evil-window-delete :which-key "delete window")
-  "é-" '(jib/split-window-vertically-and-switch :which-key "split below")
-  "é/" '(jib/split-window-horizontally-and-switch :which-key "split right")
-  "ér" '(evil-window-right :which-key "evil-window-right")
-  "éc" '(evil-window-left :which-key "evil-window-left")
-  "ét" '(evil-window-down :which-key "evil-window-down")
-  "és" '(evil-window-up :which-key "evil-window-up")
+  "é-" '(split-window-vertically :which-key "split below")
+  "é/" '(split-window-horizontally :which-key "split right")
+  "él" '(evil-window-right :which-key "evil-window-right")
+  "éh" '(evil-window-left :which-key "evil-window-left")
+  "éj" '(evil-window-down :which-key "evil-window-down")
+  "ék" '(evil-window-up :which-key "evil-window-up")
   "éz" '(text-scale-adjust :which-key "text zoom")
   "é TAB" '(evil-window-next :wich-key "next")
   "éD"  'delete-other-windows
@@ -608,7 +604,6 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
      (define-key evil-insert-state-map (kbd "M-p") "&")
      (define-key evil-insert-state-map (kbd "M-n") "~")
      (define-key evil-insert-state-map (kbd "M-e") "€")
-     (define-key evil-insert-state-map (kbd "M-,") "'")
      
 #+END_SRC
 
@@ -874,13 +869,15 @@ you want to run a function without doing anything else.
   (interactive)
   (message "It is week %s of the year." (format-time-string "%U")))
 
-(defun jib/split-window-vertically-and-switch ()
+(defun jib/switch-to-scratch-buffer ()
   (interactive)
-  (split-window-vertically)
-  (other-window 1))
+  (switch-to-buffer "*scratch*"))
 
-(defun jib/split-window-horizontally-and-switch ()
-  (interactive)
-  (split-window-horizontally)
-  (other-window 1))
+(defun jib/save-and-close-this-buffer (buffer)
+  "Saves and closes given buffer."
+  (if (get-buffer buffer)
+	  (let ((b (get-buffer buffer)))
+		(save-buffer b)
+		(kill-buffer b))))
+
 #+END_SRC
