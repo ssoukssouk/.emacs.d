@@ -1,13 +1,8 @@
-;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8; mode: lisp-data -*-
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8 -*- 
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Horgiba.org"
- (filename . "g:/OrgMode/Horgiba.org")
- (front-context-string . "#+SEQ_TODO: TODO")
- (rear-context-string)
- (position . 1))
-("settings.org"
+(("settings.org"
  (filename . "~/.emacs.d/settings.org")
  (front-context-string . "* Use package\n#+")
  (rear-context-string)
