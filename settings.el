@@ -62,7 +62,7 @@
 ;; (setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
 ;; (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/auto-save-list/" t)) ) ;transform backups file name
 
-;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
+(setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
 (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
 
 (setq coding-system-for-read 'utf-8 )	; use utf-8 by default
@@ -296,8 +296,6 @@
   "s" '(:ignore t :which-key "Subtree")
   "sn" 'org-narrow-to-subtree
   "sw" 'widen
-  "ss" 'outline-show-subtree
-  "ss" 'outline-hide-subtree
 ) ;; End SPC prefix block
 
 ;; All-mode keymaps
@@ -670,6 +668,8 @@
 
  "e" '(org-end-of-subtree :which-key "end-subtree")
  "h" '(outline-up-heading :which-key "prev-heading")
+ "s" 'outline-show-subtree
+ "t" 'outline-hide-subtree
 
  "i" '(:ignore t :which-key "insert")
  "it" '(org-time-stamp :which-key "timestamp")

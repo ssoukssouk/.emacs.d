@@ -101,7 +101,7 @@
 * UI
 
 #+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
+  ;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
   (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
 
   (setq coding-system-for-read 'utf-8 )	; use utf-8 by default

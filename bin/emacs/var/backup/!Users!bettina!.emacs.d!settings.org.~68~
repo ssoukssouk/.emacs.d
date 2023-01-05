@@ -101,7 +101,7 @@
 * UI
 
 #+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
+  ;; (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
   (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
 
   (setq coding-system-for-read 'utf-8 )	; use utf-8 by default
@@ -420,6 +420,8 @@ it along with :keymaps 'override when you need to override other stuff
     "s" '(:ignore t :which-key "Subtree")
     "sn" 'org-narrow-to-subtree
     "sw" 'widen
+    "ss" 'outline-show-subtree
+    "ss" 'outline-hide-subtree
   ) ;; End SPC prefix block
 #+END_SRC
 
@@ -841,8 +843,6 @@ you want to run a function without doing anything else.
 
    "e" '(org-end-of-subtree :which-key "end-subtree")
    "h" '(outline-up-heading :which-key "prev-heading")
-   "s" 'outline-show-subtree
-   "t" 'outline-hide-subtree
 
    "i" '(:ignore t :which-key "insert")
    "it" '(org-time-stamp :which-key "timestamp")
