@@ -36,6 +36,8 @@
 (setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
 (setq display-line-numbers 'relative)
 
+(set-variable (quote scheme-program-name) "stk")
+
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.emacs.d/bin/emacs/")
       url-history-file (expand-file-name "url/history" user-emacs-directory))
@@ -112,10 +114,10 @@
 (use-package all-the-icons)
 
 ;; Loading theme based on the time.
-(let ((hour (string-to-number (substring (current-time-string) 11 13))))
-  (if (or (> hour 19) (< hour 7))
-      (load-theme 'doom-one t) ;; Night
-    (load-theme 'doom-opera-light t))) ;; Day
+;;(let ((hour (string-to-number (substring (current-time-string) 11 13))))
+;;  (if (or (> hour 19) (< hour 7))
+ ;;     (load-theme 'old-hope t) ;; Night
+ ;;   (load-theme 'old-hope t))) ;; Day
 
 (use-package which-key
   :diminish which-key-mode
@@ -414,7 +416,7 @@
 
 (use-package evil
   :init
-  ;; (setq evil-want-keybinding t)
+  (setq evil-want-keybinding t)
   (setq evil-want-fine-undo t)
   (setq evil-want-keybinding nil)
   (setq evil-want-Y-yank-to-eol t)
@@ -462,6 +464,21 @@
    (define-key evil-insert-state-map (kbd "M-n") "~")
    (define-key evil-insert-state-map (kbd "M-e") "€")
    (define-key evil-insert-state-map (kbd "M-,") "'")
+
+   ;; pareil mais dans le minibuffer
+   (define-key minibuffer-local-map (kbd "M-«") "<")
+   (define-key minibuffer-local-map (kbd "M-»") ">")
+   (define-key minibuffer-local-map (kbd "M-(") "[")
+   (define-key minibuffer-local-map (kbd "M-)") "]")
+   (define-key minibuffer-local-map (kbd "M-b") "|")
+   (define-key minibuffer-local-map (kbd "M-ê") "\\")
+   (define-key minibuffer-local-map (kbd "M-à") "/")
+   (define-key minibuffer-local-map (kbd "M-y") "{")
+   (define-key minibuffer-local-map (kbd "M-x") "}")
+   (define-key minibuffer-local-map (kbd "M-p") "&")
+   (define-key minibuffer-local-map (kbd "M-n") "~")
+   (define-key minibuffer-local-map (kbd "M-e") "€")
+   (define-key minibuffer-local-map (kbd "M-,") "'")
 
 ;;Exit insert by pressing  g and q quickly
   (use-package key-chord :ensure t)
@@ -638,6 +655,15 @@
     (set-frame-parameter nil 'alpha '(85 . 50))
       (set-frame-parameter nil 'alpha '(100 . 100)))))
 
+;;; Always do syntax highlighting 
+(global-font-lock-mode 1) 
+
+;;; Also highlight parens 
+(setq show-paren-delay 0 show-paren-style 'parenthesis) (show-paren-mode 1) 
+
+;;; This is the binary name of my scheme implementation 
+(setq scheme-program-name "mzscheme")
+
 (use-package org-bullets
   :ensure t)
 (org-bullets-mode 1)
@@ -664,7 +690,7 @@
 
 ;;c’est trop bien ce qu’il y a en dessous surtout le visual line
 (org-indent-mode) ;; Keeps org items like text under headings, lists, nicely indented
-(visual-line-mode 1) ;; Nice line wrappingsetq org-agenda-files '("~/tasks.org"))
+(visual-line-mode) ;; Nice line wrappingsetq org-agenda-files '("~/tasks.org"))
 (setq org-startup-folded 'show2levels) ;; Org files start up folded by default
 
 (fset 'weekly-schedule

@@ -42,6 +42,7 @@
 ;; (setq use-package-always-ensure t) ;; Cette commande permet d’éviter les ensure t
 (require 'org)
 #+END_SRC
+
 * Custom set variables
 
 #+BEGIN_SRC emacs-lisp
@@ -61,8 +62,6 @@
    )
   (setq org-clock-sound "~/.emacs.d/downloads/ding.wav")
   (setq display-line-numbers 'relative)
-  
-  (set-variable (quote scheme-program-name) "stk")
 #+END_SRC
 
 * Nettoyage .emacs. 
@@ -562,7 +561,7 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
 #+BEGIN_SRC emacs-lisp 
   (use-package evil
     :init
-    (setq evil-want-keybinding t)
+    ;; (setq evil-want-keybinding t)
     (setq evil-want-fine-undo t)
     (setq evil-want-keybinding nil)
     (setq evil-want-Y-yank-to-eol t)
@@ -611,20 +610,6 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
      (define-key evil-insert-state-map (kbd "M-e") "€")
      (define-key evil-insert-state-map (kbd "M-,") "'")
      
-     ;; pareil mais dans le minibuffer
-     (define-key minibuffer-local-map (kbd "M-«") "<")
-     (define-key minibuffer-local-map (kbd "M-»") ">")
-     (define-key minibuffer-local-map (kbd "M-(") "[")
-     (define-key minibuffer-local-map (kbd "M-)") "]")
-     (define-key minibuffer-local-map (kbd "M-b") "|")
-     (define-key minibuffer-local-map (kbd "M-ê") "\\")
-     (define-key minibuffer-local-map (kbd "M-à") "/")
-     (define-key minibuffer-local-map (kbd "M-y") "{")
-     (define-key minibuffer-local-map (kbd "M-x") "}")
-     (define-key minibuffer-local-map (kbd "M-p") "&")
-     (define-key minibuffer-local-map (kbd "M-n") "~")
-     (define-key minibuffer-local-map (kbd "M-e") "€")
-     (define-key minibuffer-local-map (kbd "M-,") "'")
 #+END_SRC
 
 ** Key Chord
@@ -823,19 +808,6 @@ you want to run a function without doing anything else.
        100)
       (set-frame-parameter nil 'alpha '(85 . 50))
 	(set-frame-parameter nil 'alpha '(100 . 100)))))
-#+END_SRC
-
-* Racket Mode
-
-#+BEGIN_SRC emacs-lisp
-;;; Always do syntax highlighting 
-(global-font-lock-mode 1) 
-
-;;; Also highlight parens 
-(setq show-paren-delay 0 show-paren-style 'parenthesis) (show-paren-mode 1) 
-
-;;; This is the binary name of my scheme implementation 
-(setq scheme-program-name "mzscheme")
 #+END_SRC
 
 * Org
