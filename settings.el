@@ -418,7 +418,7 @@
   :init
   (setq evil-want-keybinding t)
   (setq evil-want-fine-undo t)
-  (setq evil-want-keybinding nil)
+  ;;(setq evil-want-keybinding nil)
   (setq evil-want-Y-yank-to-eol t)
   :config
 
@@ -464,6 +464,7 @@
    (define-key evil-insert-state-map (kbd "M-n") "~")
    (define-key evil-insert-state-map (kbd "M-e") "€")
    (define-key evil-insert-state-map (kbd "M-,") "'")
+   (define-key evil-insert-state-map (kbd "M-i") "¨")
 
    ;; pareil mais dans le minibuffer
    (define-key minibuffer-local-map (kbd "M-«") "<")
@@ -479,6 +480,7 @@
    (define-key minibuffer-local-map (kbd "M-n") "~")
    (define-key minibuffer-local-map (kbd "M-e") "€")
    (define-key minibuffer-local-map (kbd "M-,") "'")
+   (define-key minibuffer-local-map (kbd "M-i") "¨")
 
 ;;Exit insert by pressing  g and q quickly
   (use-package key-chord :ensure t)
@@ -654,15 +656,6 @@
      100)
     (set-frame-parameter nil 'alpha '(85 . 50))
       (set-frame-parameter nil 'alpha '(100 . 100)))))
-
-;;; Always do syntax highlighting 
-(global-font-lock-mode 1) 
-
-;;; Also highlight parens 
-(setq show-paren-delay 0 show-paren-style 'parenthesis) (show-paren-mode 1) 
-
-;;; This is the binary name of my scheme implementation 
-(setq scheme-program-name "mzscheme")
 
 (use-package org-bullets
   :ensure t)

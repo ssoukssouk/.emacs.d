@@ -180,6 +180,8 @@
           which-key-max-display-columns nil))
 
     (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+    (global-set-key (kbd "TAB") 'outline-show-subtree)
+    (global-set-key (kbd "TAB") 'outline-hide-subtree)
 #+END_SRC
 
 ** General.el (main keybindings set here)
@@ -564,7 +566,7 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
     :init
     (setq evil-want-keybinding t)
     (setq evil-want-fine-undo t)
-    (setq evil-want-keybinding nil)
+    ;;(setq evil-want-keybinding nil)
     (setq evil-want-Y-yank-to-eol t)
     :config
 
@@ -610,6 +612,7 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
      (define-key evil-insert-state-map (kbd "M-n") "~")
      (define-key evil-insert-state-map (kbd "M-e") "€")
      (define-key evil-insert-state-map (kbd "M-,") "'")
+     (define-key evil-insert-state-map (kbd "M-i") "¨")
      
      ;; pareil mais dans le minibuffer
      (define-key minibuffer-local-map (kbd "M-«") "<")
@@ -625,6 +628,7 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
      (define-key minibuffer-local-map (kbd "M-n") "~")
      (define-key minibuffer-local-map (kbd "M-e") "€")
      (define-key minibuffer-local-map (kbd "M-,") "'")
+     (define-key minibuffer-local-map (kbd "M-i") "¨")
 #+END_SRC
 
 ** Key Chord
@@ -647,7 +651,7 @@ you want to run a function without doing anything else.
 
   ;; This Hydra lets me swich between variable pitch fonts. It turns off mixed-pitch 
   ;; WIP
-  (defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 0)
+  (defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 1)
 				       :post (mixed-pitch-mode 1))
     ("t" (set-face-attribute 'variable-pitch nil :family "Times New Roman" :height 160) "Times New Roman")
     ("g" (set-face-attribute 'variable-pitch nil :family "EB Garamond" :height 160 :weight 'normal) "EB Garamond")
@@ -823,19 +827,6 @@ you want to run a function without doing anything else.
        100)
       (set-frame-parameter nil 'alpha '(85 . 50))
 	(set-frame-parameter nil 'alpha '(100 . 100)))))
-#+END_SRC
-
-* Racket Mode
-
-#+BEGIN_SRC emacs-lisp
-;;; Always do syntax highlighting 
-(global-font-lock-mode 1) 
-
-;;; Also highlight parens 
-(setq show-paren-delay 0 show-paren-style 'parenthesis) (show-paren-mode 1) 
-
-;;; This is the binary name of my scheme implementation 
-(setq scheme-program-name "mzscheme")
 #+END_SRC
 
 * Org
