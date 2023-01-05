@@ -522,24 +522,24 @@
  "
 
    ;; Dark
-   ("1" (load-theme 'doom-one) "one")
-   ("2" (load-theme 'modus-vivendi) "modus-vivendi")
-   ("3" (load-theme 'doom-molokai) "molokai")
-   ("4" (load-theme 'doom-snazzy) "snazzy")
-   ("5" (load-theme 'doom-old-hope) "old-hope")
-   ("6" (load-theme 'doom-henna) "henna")
-   ("7" (load-theme 'kaolin-galaxy) "kaolin-galaxy")
-   ("8" (load-theme 'doom-peacock) "peacock")
-   ("9" (load-theme 'jake-doom-plain-dark) "jake-plain-dark")
-   ("0" (load-theme 'doom-monokai-machine) "monokai-machine")
-   ("-" (load-theme 'doom-xcode) "xcode")
+   ("1" (load-theme 'doom-one t) "one")
+   ("2" (load-theme 'modus-vivendi t) "modus-vivendi")
+   ("3" (load-theme 'doom-molokai t) "molokai")
+   ("4" (load-theme 'doom-snazzy t) "snazzy")
+   ("5" (load-theme 'doom-old-hope t) "old-hope")
+   ("6" (load-theme 'doom-henna t) "henna")
+   ("7" (load-theme 'kaolin-galaxy t) "kaolin-galaxy")
+   ("8" (load-theme 'doom-peacock t) "peacock")
+   ("9" (load-theme 'jake-doom-plain-dark t) "jake-plain-dark")
+   ("0" (load-theme 'doom-monokai-machine t) "monokai-machine")
+   ("-" (load-theme 'doom-xcode t) "xcode")
 
    ;; Light
-   ("z" (load-theme 'doom-one-light) "one-light")
-   ("x" (load-theme 'modus-operandi) "modus-operandi")
-   ("c" (load-theme 'jake-doom-plain) "jake-plain")
-   ("v" (load-theme 'doom-flatwhite) "flatwhite")
-   ("b" (load-theme 'doom-opera-light) "opera-light")
+   ("z" (load-theme 'doom-one-light t) "one-light")
+   ("x" (load-theme 'modus-operandi t) "modus-operandi")
+   ("c" (load-theme 'jake-doom-plain t) "jake-plain")
+   ("v" (load-theme 'doom-flatwhite t) "flatwhite")
+   ("b" (load-theme 'doom-opera-light t) "opera-light")
    ("q" nil))
 
  ;; I think I need to initialize windresize to use its commands

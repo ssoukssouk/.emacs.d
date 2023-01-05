@@ -151,7 +151,7 @@
     (use-package cycle-themes
        :ensure t
        :init (setq cycle-themes-theme-list
-              '('doom-one 'doom-molokai 'doom-snazzy 'doom-old-hope 'doom-henna 'doom-peacock 'modus-vivendi 'kaolin-galaxy 'jake-doom-plain-dark 'doom-monokai-machine 'modus-operandi 'jake-doom-plain))
+              '('doom-one 'doom-molokai 'doom-snazzy 'doom-old-hope 'doom-henna 'doom-peacock))
        :config (cycle-themes-mode))
 
     (use-package all-the-icons)
