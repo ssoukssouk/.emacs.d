@@ -180,8 +180,6 @@
           which-key-max-display-columns nil))
 
     (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-    (global-set-key (kbd "TAB") 'outline-show-subtree)
-    (global-set-key (kbd "TAB") 'outline-hide-subtree)
 #+END_SRC
 
 ** General.el (main keybindings set here)
@@ -421,7 +419,7 @@ it along with :keymaps 'override when you need to override other stuff
     ;; Subtree
     "s" '(:ignore t :which-key "Subtree")
     "sn" 'org-narrow-to-subtree
-     "sw" 'widen
+    "sw" 'widen
   ) ;; End SPC prefix block
 #+END_SRC
 
@@ -638,7 +636,7 @@ Example of how to override evil-collection: ~(evil-collection-define-key 'normal
    (use-package key-chord :ensure t)
    (require 'key-chord)
    (key-chord-mode 1)
-   (setq key-chord-two-keys-delay 0.6)
+   (setq key-chord-two-keys-delay 0.8)
    (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
  #+END_SRC
 
@@ -843,6 +841,8 @@ you want to run a function without doing anything else.
 
    "e" '(org-end-of-subtree :which-key "end-subtree")
    "h" '(outline-up-heading :which-key "prev-heading")
+   "s" 'outline-show-subtree
+   "t" 'outline-hide-subtree
 
    "i" '(:ignore t :which-key "insert")
    "it" '(org-time-stamp :which-key "timestamp")

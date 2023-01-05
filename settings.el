@@ -295,7 +295,9 @@
 ;; Subtree
   "s" '(:ignore t :which-key "Subtree")
   "sn" 'org-narrow-to-subtree
-   "sw" 'widen
+  "sw" 'widen
+  "ss" 'outline-show-subtree
+  "ss" 'outline-hide-subtree
 ) ;; End SPC prefix block
 
 ;; All-mode keymaps
@@ -486,7 +488,7 @@
   (use-package key-chord :ensure t)
   (require 'key-chord)
   (key-chord-mode 1)
-  (setq key-chord-two-keys-delay 0.6)
+  (setq key-chord-two-keys-delay 0.8)
   (key-chord-define evil-insert-state-map "gq" 'evil-normal-state)
 
 (use-package hydra
@@ -494,7 +496,7 @@
 
  ;; This Hydra lets me swich between variable pitch fonts. It turns off mixed-pitch 
  ;; WIP
- (defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 0)
+ (defhydra jb-hydra-variable-fonts (:pre (mixed-pitch-mode 1)
 				      :post (mixed-pitch-mode 1))
    ("t" (set-face-attribute 'variable-pitch nil :family "Times New Roman" :height 160) "Times New Roman")
    ("g" (set-face-attribute 'variable-pitch nil :family "EB Garamond" :height 160 :weight 'normal) "EB Garamond")
